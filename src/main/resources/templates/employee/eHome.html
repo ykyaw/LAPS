@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Employee Homepage</title>
+	<th:block th:include = "common :: header"></th:block>
+	<th:block th:include = "common :: navbar"></th:block>
+</head>
+<body>
+	<h1>Employee Home Page</h1>
+	<h2>This is the main page for all employees (admin, manager, employees) to apply leaves and to check all personal stuff</h2>
+	<p>If employee is manager or admin, he would see additional buttons to go to his manager or admin home page</p>
+	
+	
+	 <a href ="/"> <button>Submit Leave Application</button></a>
+	 <a href ="/"> <button>Manage Leave Application</button></a>
+	 <a href ="/"> <button>Claim Compensation</button></a>
+	 <a href ="/"> <button>View Personal leave History</button></a>
+
+
+	<th:block th:include = "common :: footer"></th:block>
+</body>
+</html>

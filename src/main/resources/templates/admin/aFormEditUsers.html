@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+	<th:block th:include = "common :: header"></th:block>
+	<th:block th:include = "common :: navbar"></th:block>
+</head>
+<body>
+<h1>Manage Approval Hierarchy</h1>
+ 
+<form action="#" th:object="${userlist}" th:action="@{/admin/save}" method="post" >
+		
+		<fieldset>
+			<input type="hidden" th:field="*{userId}">  
+		</fieldset>
+		
+		<fieldset>
+			<input type="hidden" th:field="*{enabled}">  
+		</fieldset>
+		
+		<fieldset>
+			Username: <input type="text" th:field="*{username}" readonly>  
+		</fieldset>
+		
+		<fieldset>
+			Authority: <input type="text" th:field="*{authorities}" readonly>  
+		</fieldset>
+		  
+		<fieldset>
+			Approving Manager: <input type="text" th:field="*{manager}">
+		</fieldset>
+		
+		<fieldset>
+			<input type="hidden" th:field="*{managerId}">
+		</fieldset>
+		
+		<fieldset>
+			<button type="submit" >Save</button>
+		</fieldset>
+		
+	</form>
+	<th:block th:include = "common :: footer"></th:block>
+</body>
+</html>

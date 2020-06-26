@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>User Listing</title>
+	<th:block th:include = "common :: header"></th:block>
+	<th:block th:include = "common :: navbar"></th:block>
+</head>
+<body>
+<h1>ISS User Listing</h1>
+
+<!-- Add Hyperlink -->
+	<h2 th:if="${not #lists.isEmpty(dlist)}">User List</h2>
+	<table class="w3-container" border="1" th:if="${not #lists.isEmpty(userlist)}">
+		<tr>
+			<th>Id</th>
+			<th>User Name</th>
+			<th>Direct Manager</th>
+			<th> </th>
+		</tr>
+		<tr th:each="user:${userlist}">
+			<td th:text=${user.userId}>Id</td>
+			<td th:text=${user.username}> Username</td>
+			<td th:text=${user.manager}> Manager</td>
+			<td><a th:href="@{/admin/edit/}+${user.username}" >Manage Approval Hierarchy</a></td>
+		</tr>
+	</table>
+	<th:block th:include = "common :: footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,36 @@
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Common and shared html layout</title>
+</head>
+<body>
+	<div th:fragment="header">
+		Logged user: <span sec:authentication="name"></span> </br>
+	</div>
+	
+	<div th:fragment="navbar">
+		
+		<div sec:authorize="hasAnyRole('EMPLOYEE','ADMIN','MANAGER' )">
+  			<!-- This content is shown to all users, which include user, admin, manager -->
+  			<a href ="/logout"><button> Log out</button></a>
+		</div>
+		
+		<div sec:authorize="hasRole('ADMIN')">
+  			<!-- Home button will show up, if I am an admin, to allow me to go back to admin page -->
+  			<a href ="/"> <button>Admin Home</button></a>
+		</div>
+		
+		<div sec:authorize="hasRole('MANAGER')">
+  			<!-- Home button will show up, if I am an manager, to allow me to go back to manager page -->
+  			<a href ="/"> <button>Manager Home</button></a>
+		</div>
+	</div>
+	
+	<div th:fragment="footer">
+		<small>(c) ISS 2020 SA50 Team 1</small>
+	</div>
+</body>
+</html>
