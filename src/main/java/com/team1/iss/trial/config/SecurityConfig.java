@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.team1.iss.trial.common.CommConstants;
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
@@ -36,9 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure (HttpSecurity http) throws Exception{
 		http.csrf().disable()
 		.authorizeRequests() //This means we need to authorise all requests
-		.antMatchers("/manager/**").hasRole("MANAGER") //This means for the manager API, allow only those with manager role. ** means anything after /manager/ also controlled
-		.antMatchers("/admin/**").hasRole("ADMIN") //This means for the admin API, allow only those with ADMIN role. ** means anything after /admin/ also controlled
-		.antMatchers("/employee/**").hasAnyRole("EMPLOYEE", "ADMIN", "MANAGER") // This means for users API, allow anyone with either ADMIN or USER role
+		.antMatchers("/manager/**").hasRole(CommConstants.UserType.MANAGER) //This means for the manager API, allow only those with manager role. ** means anything after /manager/ also controlled
+		.antMatchers("/admin/**").hasRole(CommConstants.UserType.AMDIN) //This means for the admin API, allow only those with ADMIN role. ** means anything after /admin/ also controlled
+		.antMatchers("/employee/**").hasAnyRole(CommConstants.UserType.AMDIN,CommConstants.UserType.EMPLOYEE,CommConstants.UserType.MANAGER) // This means for users API, allow anyone with either ADMIN or USER role
 		.antMatchers("/").permitAll() //This is the root, means at root level, permit everyone
 		.and().formLogin().loginPage("/login")
 		.and()
