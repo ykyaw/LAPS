@@ -16,19 +16,19 @@ import org.springframework.util.StringUtils;
 
 @Controller
 public class LoginController {
-	
-	@PostMapping("/login")
-	public String login(@RequestParam("username") String username,
-			@RequestParam("password") String password,
-			Map<String, Object>map, HttpSession session) {
-		if(!StringUtils.isEmpty(username)&&password.equals("123")) {
-			//login successfully redirect page to index
-			session.setAttribute("loginUser", username);
-			return "redirect:index";
-		}else {
-			map.put("msg", "username or password error");
-			return "login";
-		}
-	}
+//	
+//	@PostMapping("/login")
+//	public String login(@RequestParam("username") String username,
+//			@RequestParam("password") String password,
+//			Map<String, Object>map, HttpSession session) {
+//		if(!StringUtils.isEmpty(username)&&password.equals("123")) {
+//			//login successfully redirect page to index
+//			session.setAttribute("loginUser", username);
+//			return "redirect:index";
+//		}else {
+//			map.put("msg", "username or password error");
+//			return "login";
+//		}
+//	}
 
 }

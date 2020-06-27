@@ -13,17 +13,17 @@
 	
 	<div th:fragment="navbar">
 		
-		<div sec:authorize="hasAnyRole('EMPLOYEE','ADMIN','MANAGER' )">
+		<div sec:authorize="hasAnyAuthority('EMPLOYEE','ADMIN','MANAGER' )">
   			<!-- This content is shown to all users, which include user, admin, manager -->
   			<a href ="/logout"><button> Log out</button></a>
 		</div>
 		
-		<div sec:authorize="hasRole('ADMIN')">
+		<div sec:authorize="hasAuthority('ADMIN')">
   			<!-- Home button will show up, if I am an admin, to allow me to go back to admin page -->
   			<a href ="/"> <button>Admin Home</button></a>
 		</div>
 		
-		<div sec:authorize="hasRole('MANAGER')">
+		<div sec:authorize="hasAuthority('MANAGER')">
   			<!-- Home button will show up, if I am an manager, to allow me to go back to manager page -->
   			<a href ="/"> <button>Manager Home</button></a>
 		</div>
