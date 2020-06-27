@@ -39,6 +39,8 @@ public class User implements Serializable{
 	@Column
 	private int annualLeaveEntitlement;
 	@Column
+	private int medicalLeaveEntitlement;
+	@Column
 	private boolean enabled;
 	@OneToMany(mappedBy = "owner",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<OverTime> overtimeList;
@@ -54,8 +56,10 @@ public class User implements Serializable{
 	
 
 
+	
+
 	public User(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
-			boolean enabled, List<OverTime> overtimeList) {
+			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList) {
 		super();
 		this.uid = uid;
 		this.userType = userType;
@@ -63,12 +67,13 @@ public class User implements Serializable{
 		this.photo = photo;
 		this.email = email;
 		this.annualLeaveEntitlement = annualLeaveEntitlement;
+		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
 		this.enabled = enabled;
 		this.overtimeList = overtimeList;
 	}
 
 	public User(int uid, String userType, String name, byte[] photo, String password, String email,
-			int annualLeaveEntitlement, boolean enabled, List<OverTime> overtimeList) {
+			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList) {
 		super();
 		this.uid = uid;
 		this.userType = userType;
@@ -77,8 +82,26 @@ public class User implements Serializable{
 		this.password = password;
 		this.email = email;
 		this.annualLeaveEntitlement = annualLeaveEntitlement;
+		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
 		this.enabled = enabled;
 		this.overtimeList = overtimeList;
+	}
+	
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public int getMedicalLeaveEntitlement() {
+		return medicalLeaveEntitlement;
+	}
+
+	public void setMedicalLeaveEntitlement(int medicalLeaveEntitlement) {
+		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
 	}
 
 	public List<OverTime> getOvertimeList() {

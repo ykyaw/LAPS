@@ -30,19 +30,22 @@ public class Employee extends User{
 	}
 	
 	
+	
 
 	public Employee(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
-			boolean enabled, List<OverTime> overtimeList,Manager manager,List<LA> laList) {
-		super(uid, userType, name, photo, email, annualLeaveEntitlement, enabled, overtimeList);
+			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,Manager manager,List<LA> laList) {
+		super(uid, userType, name, photo, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled, overtimeList);
 		this.manager = manager;
 		this.laList = laList;
 	}
 
 
 
+
 	public Employee(int uid, String userType, String name, byte[] photo, String password, String email,
-			int annualLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,Manager manager,List<LA> laList) {
-		super(uid, userType, name, photo, password, email, annualLeaveEntitlement, enabled, overtimeList);
+			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,Manager manager,List<LA> laList) {
+		super(uid, userType, name, photo, password, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled,
+				overtimeList);
 		this.manager = manager;
 		this.laList = laList;
 	}
