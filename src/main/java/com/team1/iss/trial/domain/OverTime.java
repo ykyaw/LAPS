@@ -21,15 +21,16 @@ public class OverTime {
 	@ManyToOne
 	@JoinColumn(name = "ownerId",insertable = false, updatable = false)
 	private Employee owner;
-	
-	
+	@Column
+	private String status;
 
-	public OverTime(int uid, long startTime, long endTime, Employee owner) {
+	public OverTime(int uid, long startTime, long endTime, Employee owner, String status) {
 		super();
 		this.uid = uid;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.owner = owner;
+		this.status = status;
 	}
 
 	public OverTime() {
@@ -41,9 +42,15 @@ public class OverTime {
 		this.uid = uid;
 	}
 	
-	
 
-	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatu(String status) {
+		this.status = status;
+	}
+
 	public Employee getOwner() {
 		return owner;
 	}
