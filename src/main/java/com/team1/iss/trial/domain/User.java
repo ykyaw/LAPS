@@ -1,6 +1,7 @@
 package com.team1.iss.trial.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -167,6 +168,14 @@ public class User implements Serializable{
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "User [uid=" + uid + ", userType=" + userType + ", name=" + name + ", photo=" + Arrays.toString(photo)
+				+ ", password=" + password + ", email=" + email + ", annualLeaveEntitlement=" + annualLeaveEntitlement
+				+ ", medicalLeaveEntitlement=" + medicalLeaveEntitlement + ", enabled=" + enabled + ", overtimeList="
+				+ overtimeList + "]";
 	}
 	
 	

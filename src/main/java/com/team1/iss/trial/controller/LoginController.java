@@ -6,10 +6,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.team1.iss.trial.common.CommConstants;
+import com.team1.iss.trial.domain.User;
+import com.team1.iss.trial.repo.UserRepository;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 
@@ -30,5 +35,16 @@ public class LoginController {
 //			return "login";
 //		}
 //	}
+	
+	@Autowired
+	UserRepository userRepository;
 
+	@GetMapping("/test")
+	public void test() {
+		User user = userRepository.findById(6).get();
+		user.setUserType(CommConstants.UserType.AMDIN);
+		System.out.println(user);
+//		userRepository.updateUserType(user);
+		userRepository.updateUserType(CommConstants.UserType.AMDIN,6);
+	}
 }
