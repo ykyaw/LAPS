@@ -14,7 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.team1.iss.trial.common.CommConstants;
 
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
@@ -30,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.jdbcAuthentication().dataSource(dataSource)
-		.usersByUsernameQuery("SELECT t1.username, t1.password, t2.enabled FROM userlogin AS t1 INNER JOIN user AS t2 ON t1.username = t2.username where t1.username = ?")
-		.authoritiesByUsernameQuery("select username, authorities from user where username = ?");
+		.usersByUsernameQuery("SELECT t1.name, t1.password, t1.enabled FROM user AS t1 where t1.name = ?")
+		.authoritiesByUsernameQuery("select name, user_type from user where name = ?");
 	}
 	
 	@Override

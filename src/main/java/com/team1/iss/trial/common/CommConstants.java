@@ -2,6 +2,8 @@ package com.team1.iss.trial.common;
 
 public class CommConstants {
 	
+	public static final int MEDICAL_ALLOCATION=60;
+	
 	public static class UserType {
 		public static final String AMDIN="ADMIN";
 		public static final String EMPLOYEE="EMPLOYEE";

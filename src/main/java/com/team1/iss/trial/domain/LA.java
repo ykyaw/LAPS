@@ -24,6 +24,7 @@ public class LA implements Serializable{
 	private String type;
 	private String status;
 	private String reasons;
+	private String rejectReason;
 	@ManyToOne
 	@JoinColumn(name = "disseminationId")
 	private Employee dissemination;
@@ -44,7 +45,7 @@ public class LA implements Serializable{
 	
 
 	public LA(int uid, long fromTime, long toTime, String type, String status, String reasons, Employee dissemination,
-			String contact, Employee owner) {
+			String contact, Employee owner,String rejectReason) {
 		super();
 		this.uid = uid;
 		this.fromTime = fromTime;
@@ -55,6 +56,17 @@ public class LA implements Serializable{
 		this.dissemination = dissemination;
 		this.contact = contact;
 		this.owner = owner;
+		this.rejectReason=rejectReason;
+	}
+	
+	
+
+	public String getRejectReason() {
+		return rejectReason;
+	}
+
+	public void setRejectReason(String rejectReason) {
+		this.rejectReason = rejectReason;
 	}
 
 	public int getUid() {

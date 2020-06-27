@@ -20,14 +20,21 @@ public class Manager extends Employee{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Manager(int uid, String name, byte[] photo, int annualLeaveEntitlement, Manager manager, List<LA> laList,List<Employee> employees) {
-		super(uid, name, photo, annualLeaveEntitlement, manager, laList);
+	
+
+
+	public Manager(int uid, String name, byte[] photo, String email, int annualLeaveEntitlement, boolean enabled,
+			List<OverTime> overtimeList, Manager manager, List<LA> laList,List<Employee> employees) {
+		super(uid, name, photo, email, annualLeaveEntitlement, enabled, overtimeList, manager, laList);
 		this.employees=employees;
 	}
 
-	public Manager(int uid, String name, byte[] photo, String password, int annualLeaveEntitlement, Manager manager,
-			List<LA> laList,List<Employee> employees) {
-		super(uid, name, photo, password, annualLeaveEntitlement, manager, laList);
+
+
+
+	public Manager(int uid, String name, byte[] photo, String password, String email, int annualLeaveEntitlement,
+			boolean enabled, List<OverTime> overtimeList, Manager manager, List<LA> laList,List<Employee> employees) {
+		super(uid, name, photo, password, email, annualLeaveEntitlement, enabled, overtimeList, manager, laList);
 		this.employees=employees;
 	}
 

@@ -1,16 +1,20 @@
 package com.team1.iss.trial.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,7 +33,13 @@ public class User implements Serializable{
 	@Column
 	private String password;
 	@Column
+	private String email;
+	@Column
 	private int annualLeaveEntitlement;
+	@Column
+	private boolean enabled;
+	@OneToMany(mappedBy = "owner",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private List<OverTime> overtimeList;
 	
 	public User() {
 		super();
@@ -40,27 +50,56 @@ public class User implements Serializable{
 		this.uid = uid;
 	}
 	
-	
-	
-	public User(int uid, String name, byte[] photo, String password, int annualLeaveEntitlement) {
+
+	public User(int uid, String name, byte[] photo, String email, int annualLeaveEntitlement, boolean enabled,
+			List<OverTime> overtimeList) {
+		super();
+		this.uid = uid;
+		this.name = name;
+		this.photo = photo;
+		this.email = email;
+		this.annualLeaveEntitlement = annualLeaveEntitlement;
+		this.enabled = enabled;
+		this.overtimeList = overtimeList;
+	}
+
+	public User(int uid, String name, byte[] photo, String password, String email, int annualLeaveEntitlement,
+			boolean enabled, List<OverTime> overtimeList) {
 		super();
 		this.uid = uid;
 		this.name = name;
 		this.photo = photo;
 		this.password = password;
+		this.email = email;
 		this.annualLeaveEntitlement = annualLeaveEntitlement;
+		this.enabled = enabled;
+		this.overtimeList = overtimeList;
+	}
+	
+
+	public List<OverTime> getOvertimeList() {
+		return overtimeList;
 	}
 
-	
-	public User(int uid, String name, byte[] photo, int annualLeaveEntitlement) {
-		super();
-		this.uid = uid;
-		this.name = name;
-		this.photo = photo;
-		this.annualLeaveEntitlement = annualLeaveEntitlement;
+	public void setOvertimeList(List<OverTime> overtimeList) {
+		this.overtimeList = overtimeList;
 	}
-	
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 	public int getAnnualLeaveEntitlement() {
 		return annualLeaveEntitlement;
