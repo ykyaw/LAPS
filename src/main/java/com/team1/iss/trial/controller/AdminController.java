@@ -18,7 +18,7 @@ import com.team1.iss.trial.services.interfaces.IAdminService;
 
 
 @Controller
-@RequestMapping("/admin")
+//@RequestMapping("/admin")
 public class AdminController {
 	
 	@Autowired

@@ -23,18 +23,19 @@ public class Manager extends Employee{
 	
 
 
-	public Manager(int uid, String name, byte[] photo, String email, int annualLeaveEntitlement, boolean enabled,
-			List<OverTime> overtimeList, Manager manager, List<LA> laList,List<Employee> employees) {
-		super(uid, name, photo, email, annualLeaveEntitlement, enabled, overtimeList, manager, laList);
+	public Manager(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
+			boolean enabled, List<OverTime> overtimeList, Manager manager, List<LA> laList,List<Employee> employees) {
+		super(uid, userType, name, photo, email, annualLeaveEntitlement, enabled, overtimeList, manager, laList);
 		this.employees=employees;
 	}
 
 
 
 
-	public Manager(int uid, String name, byte[] photo, String password, String email, int annualLeaveEntitlement,
-			boolean enabled, List<OverTime> overtimeList, Manager manager, List<LA> laList,List<Employee> employees) {
-		super(uid, name, photo, password, email, annualLeaveEntitlement, enabled, overtimeList, manager, laList);
+	public Manager(int uid, String userType, String name, byte[] photo, String password, String email,
+			int annualLeaveEntitlement, boolean enabled, List<OverTime> overtimeList, Manager manager,
+			List<LA> laList,List<Employee> employees) {
+		super(uid, userType, name, photo, password, email, annualLeaveEntitlement, enabled, overtimeList, manager, laList);
 		this.employees=employees;
 	}
 

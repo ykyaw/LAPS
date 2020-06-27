@@ -31,10 +31,10 @@ public class HomeController {
 		return "security/denied";
 	}
 	
-	@RequestMapping("/login")
-	public String loginpage() {
-		return "security/login";
-	}
+//	@RequestMapping("/login")
+//	public String loginpage() {
+//		return "security/login";
+//	}
 	
 	
 	@RequestMapping("/logout-success")

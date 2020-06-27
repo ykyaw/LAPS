@@ -26,6 +26,8 @@ public class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int uid;
+	@Column(insertable = false, updatable = false)
+	private String userType;
 	@Column
 	private String name;
 	@Column
@@ -51,10 +53,12 @@ public class User implements Serializable{
 	}
 	
 
-	public User(int uid, String name, byte[] photo, String email, int annualLeaveEntitlement, boolean enabled,
-			List<OverTime> overtimeList) {
+
+	public User(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
+			boolean enabled, List<OverTime> overtimeList) {
 		super();
 		this.uid = uid;
+		this.userType = userType;
 		this.name = name;
 		this.photo = photo;
 		this.email = email;
@@ -63,10 +67,11 @@ public class User implements Serializable{
 		this.overtimeList = overtimeList;
 	}
 
-	public User(int uid, String name, byte[] photo, String password, String email, int annualLeaveEntitlement,
-			boolean enabled, List<OverTime> overtimeList) {
+	public User(int uid, String userType, String name, byte[] photo, String password, String email,
+			int annualLeaveEntitlement, boolean enabled, List<OverTime> overtimeList) {
 		super();
 		this.uid = uid;
+		this.userType = userType;
 		this.name = name;
 		this.photo = photo;
 		this.password = password;
@@ -75,7 +80,6 @@ public class User implements Serializable{
 		this.enabled = enabled;
 		this.overtimeList = overtimeList;
 	}
-	
 
 	public List<OverTime> getOvertimeList() {
 		return overtimeList;
