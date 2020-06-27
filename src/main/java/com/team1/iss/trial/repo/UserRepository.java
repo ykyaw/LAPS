@@ -12,8 +12,8 @@ import com.team1.iss.trial.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
-//	List<User> findByUsername(String name);
-//	
+	List<User> findByName(String s);
+	
 //	@Query("Select u.username from User u")
 //	ArrayList<String> findAllUsernames();
 
