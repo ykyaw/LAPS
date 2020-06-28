@@ -23,6 +23,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 //	@Query("Select u.username from User u")
 //	ArrayList<String> findAllUsernames();
 
+
 //	@Modifying
 //	@Transactional
 //	@Query("update user set user_type = :#{#user.userType} "
@@ -56,6 +57,11 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 
 	@Query(value = "SELECT um.name FROM user ue, user um where ue.manager_id=um.uid and ue.uid=?1", nativeQuery=true)
 	public String findUserManagerName(@Param("uid") int employeeId);
-
+	
 
 }
+
+
+
+
+

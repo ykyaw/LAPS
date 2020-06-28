@@ -10,19 +10,29 @@
 <h1>ISS User Listing</h1>
 
 <!-- Add Hyperlink -->
-	<h2 th:if="${not #lists.isEmpty(dlist)}">User List</h2>
+	<h2 th:if="${not #lists.isEmpty(userlist)}">User List</h2>
 	<table class="w3-container" border="1" th:if="${not #lists.isEmpty(userlist)}">
 		<tr>
 			<th>Id</th>
-			<th>User Name</th>
-			<th>Direct Manager</th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Role</th>
+			<th>Account Status</th>
+			<th>Annual Leave Entitled</th>
+			<th>Medical Leave Entitled</th>
+			<th>Manager in Charge</th>
 			<th> </th>
 		</tr>
 		<tr th:each="user:${userlist}">
-			<td th:text=${user.userId}>Id</td>
-			<td th:text=${user.username}> Username</td>
-			<td th:text=${user.manager}> Manager</td>
-			<td><a th:href="@{/admin/edit/}+${user.username}" >Manage Approval Hierarchy</a></td>
+			<td th:text=${user.uid}>Id</td>
+			<td th:text=${user.name}> Name</td>
+			<td th:text=${user.email}> Email</td>
+			<td th:text=${user.userType}>Role</td>
+			<td th:text=${user.enabled}> Enabled</td>
+			<td th:text=${user.annualLeaveEntitlement}> Annual Leave Entitled</td>
+			<td th:text=${user.medicalLeaveEntitlement}> Medical Leave Entitled</td>
+			<td th:text=${user.ManagerName}> Manager</td>
+			<td><a th:href="@{/admin/edit/}+${user.name}" >Manage Approval Hierarchy</a></td>
 		</tr>
 	</table>
 	<th:block th:include = "common :: footer"></th:block>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add User Page</title>
+</head>
+<body>
+
+	<h1 th:utext="#{user.page.add}"></h1> 
+	<form action="#" th:object="${usertohtml}" th:action="@{/admin/save}" method="post">
+		<fieldset>
+		<input type="hidden" th:field="*{uid}"> 
+		</fieldset>
+		<fieldset>
+		<p>Account Status:</p>
+				<div>
+				  <input type="radio" th:field="*{enabled}" name="accountstatus" value="true"
+				         checked>
+				  <label for="true">Active</label>
+				</div>
+				<div>
+				  <input type="radio" th:field="*{enabled}" name="accountstatus" value="false">
+				  <label for="false">Inactive</label>
+				</div>
+		</fieldset>
+		
+		<fieldset>
+			<p>Select a user Type:</p>
+				<div>
+				  <input type="radio" th:field="*{userType}" id="#{CommConstants.UserType.EMPLOYEE}" name="emptype" value="EMPLOYEE"
+				         checked>
+				  <label for="EMPLOYEE">Employee</label>
+				</div>
+				<div>
+				  <input type="radio" th:field="*{userType}" id="#{CommConstants.UserType.AMDIN}" name="emptype" value="ADMIN">
+				  <label for="ADMIN">Administrator</label>
+				</div>
+				<div>
+				  <input type="radio" th:field="*{userType}" id="{CommConstants.UserType.MANAGER}" name="emptype" value="MANAGER">
+				  <label for="MANAGER">Manager</label>
+				</div>
+			
+		</fieldset>
+		<fieldset>
+			Name: <input type="text" th:field="*{name}">
+		</fieldset>
+		<fieldset>
+			Password: <input type="text" th:field="*{password}">
+		</fieldset>
+		<fieldset>
+			Email: <input type="text" th:field="*{email}">
+			<!--<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>  -->
+			
+		</fieldset>
+		<!--  
+		<fieldset>
+			Photo: <label for="photo"></label>
+  			<input type="photo" id="photo" name="photo">>
+		</fieldset>
+		 -->
+		<fieldset>
+			Annual leave entitled per year: <input type="text" th:field="*{annualLeaveEntitlement}">
+		</fieldset>
+		<fieldset>
+			Medical leave entitled per year: <input type="text" th:field="*{medicalLeaveEntitlement}">
+		</fieldset>	
+		<fieldset>
+			<button type="submit" >Submit</button>
+		</fieldset>
+	</form>
+</body>
+</html>
