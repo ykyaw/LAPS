@@ -50,7 +50,6 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	public void updateUserManager(@Param("managerId") int managerId, @Param("uid") int uid);
 	
 
-
 	@Query(value = "select manager_id from User where uid=:uid", nativeQuery=true)
 	public void findUserManagerId(@Param("uid") int employeeId);
 	
@@ -58,8 +57,33 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query(value = "SELECT um.name FROM user ue, user um where ue.manager_id=um.uid and ue.uid=?1", nativeQuery=true)
 	public String findUserManagerName(@Param("uid") int employeeId);
 	
+	@Query(value= "select uid from user where uid = (select max(uid) from team1trial.user)", nativeQuery=true)
+	public int findlatestUID();
+	
+	@Modifying
+	@Transactional
+	@Query("update User set medical_leave_entitlement=:medicalleaveentitlement")
+	public void updateAllMedicalLeave(@Param("medicalleaveentitlement") int medicalleaveentitlement);
+	
+	@Modifying
+	@Transactional
+	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALprof where user_type != 'ADMIN' ")
+	public void updateProfAnnualLeave(@Param("ALprof") int ALprof);
+	
+	@Modifying
+	@Transactional
+	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALadmin where user_type LIKE 'ADMIN' ")
+	public void updateAdminAnnualLeave(@Param("ALadmin") int ALadmin);
+	
+	
+//	update team1trial.user set annual_leave_entitlement = annual_leave_entitlement + 3 
+//			where user_type LIKE 'ADMIN';
+	
+//	@Query("update User set user_type=:userType where uid=:uid")
+//	public void updateUserType(@Param("userType") String userType,@Param("uid") int uid);
+};
 
-}
+
 
 
 

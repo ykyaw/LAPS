@@ -30,6 +30,9 @@ public class AdminServiceImpl implements IAdminService {
 	@Autowired
 	UserRepository uRepo;
 	
+	@Autowired
+	ManagerRepository mRepo;
+	
 
 	@Override
 	public boolean updateUserType(String userType, int uid) {
@@ -37,9 +40,8 @@ public class AdminServiceImpl implements IAdminService {
 		return true;
 	}
 	
-	
 	@Override
-	public boolean updateUserManager(int uid, int managerId) {
+	public boolean updateUserManager(int managerId, int uid) {
 		uRepo.updateUserManager(managerId, uid); 
 		return true;
 	}
@@ -70,7 +72,11 @@ public class AdminServiceImpl implements IAdminService {
 	}
 	
 	@Override
-	public boolean convertuser(User user) {
+	public boolean saveNewUser(User user) {
+		
+//		Manager m = mRepo.findById(user.getManager().getUid()).get();
+//		user.setManager(m);	
+		
 		if(user.getUserType().equals(CommConstants.UserType.AMDIN))
 		{
 			User a1 = new Admin();
@@ -80,7 +86,9 @@ public class AdminServiceImpl implements IAdminService {
 			a1.setName(user.getName());
 			a1.setPassword(user.getPassword());
 			a1.setEnabled(user.isEnabled());
+//			a1.setManager(m);
 			uRepo.save(a1);
+			
 		} else if (user.getUserType().equals(CommConstants.UserType.EMPLOYEE))
 		{
 			User a1 = new Employee();
@@ -90,6 +98,7 @@ public class AdminServiceImpl implements IAdminService {
 			a1.setName(user.getName());
 			a1.setPassword(user.getPassword());
 			a1.setEnabled(user.isEnabled());
+//			a1.setManager(m);
 			uRepo.save(a1);
 		} else {
 			User a1 = new Manager();
@@ -99,11 +108,13 @@ public class AdminServiceImpl implements IAdminService {
 			a1.setName(user.getName());
 			a1.setPassword(user.getPassword());
 			a1.setEnabled(user.isEnabled());
+//			a1.setManager(m);
 			uRepo.save(a1);
 		}
+		
+		
 		return false;
 	}
-	
 	
 
 	@Override
@@ -138,6 +149,35 @@ public class AdminServiceImpl implements IAdminService {
 	public User findUserById(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public ArrayList<Manager> findAllManager() {
+	    ArrayList<Manager> list = (ArrayList<Manager>) mRepo.findAll();
+		return list;
+	}
+	
+	@Override
+	public int findlatestUID() {
+		return uRepo.findlatestUID();
+	}
+
+	@Override
+	public boolean updateAllMedicalLeave(int medical_leave_entitlement) {
+		uRepo.updateAllMedicalLeave(medical_leave_entitlement);
+		return true;
+	}
+
+	@Override
+	public boolean updateProfAnnualLeave(int profAL) {
+		uRepo.updateProfAnnualLeave(profAL);
+		return true;
+	}
+
+	@Override
+	public boolean updateAdminAnnualLeave(int adminAL) {
+		uRepo.updateAdminAnnualLeave(adminAL);
+		return true;
 	}
 
 }
