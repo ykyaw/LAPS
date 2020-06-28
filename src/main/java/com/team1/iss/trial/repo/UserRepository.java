@@ -58,6 +58,11 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query(value = "SELECT um.name FROM user ue, user um where ue.manager_id=um.uid and ue.uid=?1", nativeQuery=true)
 	public String findUserManagerName(@Param("uid") int employeeId);
 	
+	@Modifying
+	@Transactional
+	@Query("update User set name=:name, enabled=:enabled, user_type=:userType, annual_leave_entitlement=:al, medical_leave_entitlement=:ml where uid=:uid")
+	public void updateUser(@Param("name")String name, @Param("enabled")boolean enabled, @Param("userType")String userType, @Param("al")int al,@Param("ml")int ml, @Param("uid") int uid); 
+	
 
 }
 

@@ -12,15 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.team1.iss.trial.common.CommConstants;
 
 import com.team1.iss.trial.domain.Manager;
+import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.domain.User;
-import com.team1.iss.trial.domain.UserForm;
+import com.team1.iss.trial.domain.FormEditUser;
 import com.team1.iss.trial.repo.ManagerRepository;
 
 import com.team1.iss.trial.domain.Admin;
@@ -56,18 +59,44 @@ public class AdminController {
 	
 	@RequestMapping("/list")
 	public String list(Model model) {
-		List<UserForm> uf = aservice.findAllwithManagerName();
-		model.addAttribute("userlist", uf);
+		List<User> u1 = aservice.findAll();
+		for(User u:u1) {
+			u.setPassword(""); //so as not to send password over
+		}
+		model.addAttribute("userlist", u1);
 		return "admin/aShowAllUsers";
 	}
 	
-	@RequestMapping("/edit/{username}")
-	public String editForm(@PathVariable("username")String username, Model model) {
-		User u1 = aservice.findUserByUsername(username);
-
-		model.addAttribute("userlist", u1);
-		
+	@RequestMapping("/updatemg/{uid}")
+	public String updateManager(@PathVariable("uid")int uid, Model model) {
+		User u1 = aservice.findUserById(uid);
+		List<Manager> m1 = aservice.findAllManager();
+        model.addAttribute("u1tohtml",u1);
+        model.addAttribute("m1tohtml",m1);
+		return "admin/aFormEditUserManager";
+	}	
+	@RequestMapping("/updatemg")
+	public String saveupdatedManager(@ModelAttribute("usertohtml") User user,  Model model) {
+		aservice.updateUserManager(user.getManager().getUid(), user.getUid());
+		return "forward:/admin/list";
+	}
+	
+	@RequestMapping("/edit/{uid}")
+	public String editForm(@PathVariable("uid")int uid, Model model) {
+		FormEditUser uf = aservice.editUser(uid);
+		List<String> usertype = new ArrayList();
+		usertype.add(CommConstants.UserType.AMDIN);
+		usertype.add(CommConstants.UserType.EMPLOYEE);
+		usertype.add(CommConstants.UserType.MANAGER);
+		model.addAttribute("edituserform", uf);
+		model.addAttribute("usertypetohtml", usertype);
 		return "admin/aFormEditUsers";
+	}
+	
+	@RequestMapping("/save_edit")
+	public String saveEditedUser(@ModelAttribute("edituserform") FormEditUser userform,  Model model) {
+		aservice.updateUser(userform);	
+		return "forward:/admin/list";
 	}
 	
 

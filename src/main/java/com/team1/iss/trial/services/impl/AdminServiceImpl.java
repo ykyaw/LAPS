@@ -1,6 +1,7 @@
 package com.team1.iss.trial.services.impl;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -16,7 +17,7 @@ import com.team1.iss.trial.domain.Employee;
 
 import com.team1.iss.trial.domain.Manager;
 import com.team1.iss.trial.domain.User;
-import com.team1.iss.trial.domain.UserForm;
+import com.team1.iss.trial.domain.FormEditUser;
 import com.team1.iss.trial.repo.ManagerRepository;
 import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.interfaces.IAdminService;
@@ -30,6 +31,9 @@ public class AdminServiceImpl implements IAdminService {
 	@Autowired
 	UserRepository uRepo;
 	
+	@Autowired
+	ManagerRepository mRepo;
+	
 
 	@Override
 	public boolean updateUserType(String userType, int uid) {
@@ -39,7 +43,7 @@ public class AdminServiceImpl implements IAdminService {
 	
 	
 	@Override
-	public boolean updateUserManager(int uid, int managerId) {
+	public boolean updateUserManager(int managerId, int uid) {
 		uRepo.updateUserManager(managerId, uid); 
 		return true;
 	}
@@ -51,22 +55,17 @@ public class AdminServiceImpl implements IAdminService {
 	}
 	
 	@Override
-	public ArrayList<UserForm> findAllwithManagerName() {
-		ArrayList<User> list = (ArrayList<User>) uRepo.findAll();
-		ArrayList<UserForm> listform = new ArrayList<>();
-		for(User u : list) {
-			UserForm uf = new UserForm();
-			uf.setAnnualLeaveEntitlement(u.getAnnualLeaveEntitlement());
-			uf.setEmail(u.getEmail());
-			uf.setEnabled(u.isEnabled());
-			uf.setMedicalLeaveEntitlement(u.getMedicalLeaveEntitlement());
-			uf.setName(u.getName());
-			uf.setUid(u.getUid());
-			uf.setUserType(u.getUserType());
-			uf.setManagerName(uRepo.findUserManagerName(u.getUid()));
-			listform.add(uf);
-		}
-		return listform;
+	public FormEditUser editUser(int uid) {
+		User u1 = uRepo.findById(uid).get();
+		FormEditUser uf = new FormEditUser();		
+		uf.setUid(u1.getUid());
+		uf.setEmail(u1.getEmail());
+		uf.setName(u1.getName());
+		uf.setEnabled(u1.isEnabled());				
+		uf.setUserType(u1.getUserType());
+		uf.setAnnualLeaveEntitlement(u1.getAnnualLeaveEntitlement());
+		uf.setMedicalLeaveEntitlement(u1.getMedicalLeaveEntitlement());
+		return uf;
 	}
 	
 	@Override
@@ -104,6 +103,24 @@ public class AdminServiceImpl implements IAdminService {
 		return false;
 	}
 	
+	@Override
+	public boolean updateUser(FormEditUser fu) {
+		uRepo.updateUser(fu.getName(), fu.isEnabled(), fu.getUserType(), fu.getAnnualLeaveEntitlement(), fu.getMedicalLeaveEntitlement(), fu.getUid());
+		return false;
+	}
+
+	
+	 @Override
+	    public ArrayList<Manager> findAllManager() {
+	        ArrayList<Manager> list = (ArrayList<Manager>) mRepo.findAll();
+	        return list;
+	    }
+	 
+		@Override
+		public User findUserById(Integer id) {
+			return uRepo.findById(id).get();
+		}
+	
 	
 
 	@Override
@@ -134,11 +151,6 @@ public class AdminServiceImpl implements IAdminService {
 		return null;
 	}
 
-	@Override
-	public User findUserById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
 

@@ -8,8 +8,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.team1.iss.trial.domain.Manager;
 import com.team1.iss.trial.domain.User;
-import com.team1.iss.trial.domain.UserForm;
+import com.team1.iss.trial.domain.FormEditUser;
 
 
 
@@ -18,7 +19,8 @@ public interface IAdminService {
 	public boolean updateUserType(String userType, int uid);
 	public boolean updateUserManager(int uid, int managerId);
 	public String findUserManagerby(int uid);
-	public ArrayList<UserForm> findAllwithManagerName();
+	public FormEditUser editUser(int uid);
+	public boolean updateUser(FormEditUser fu);
 	
 	public boolean convertuser(User user);
 	
@@ -29,6 +31,7 @@ public interface IAdminService {
 	public ArrayList<String> findAllUsernames();
 	public User findUserByUsername(String username);
 	public User findUserById(Integer id);
+	ArrayList<Manager> findAllManager();
 
 }
 
