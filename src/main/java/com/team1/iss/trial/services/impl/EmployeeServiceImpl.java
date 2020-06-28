@@ -20,6 +20,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	 @Autowired
 	 LARepository laRepo;
 	 
+	 
 	 @Override
 	 public List<LA> findAllLeave() {
 			return (List<LA>) laRepo.findAllLeave();

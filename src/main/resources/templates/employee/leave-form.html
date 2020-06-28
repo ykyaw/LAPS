@@ -58,18 +58,29 @@
 				<label class="col-sm-2 col-form-label">duration</label>
 				<div class="row col-sm-10">
 					<div class='col-sm-6 input-group date' id='fromtime'>
-						<input type='text' class="form-control" /> <span
+						<input type='text' class="form-control" name="fromTime" /> <span
 							class="input-group-addon"> <span
 							class="glyphicon glyphicon-calendar"></span>
 						</span>
 					</div>
 					<div class='col-sm-6 input-group date' id='totime'>
-						<input type='text' class="form-control" /> <span
+						<input type='text' class="form-control" name="toTime" /> <span
 							class="input-group-addon"> <span
 							class="glyphicon glyphicon-calendar"></span>
 						</span>
 					</div>
 
+				</div>
+			</div>
+			<div class="form-group row">
+				<labe class="col-sm-2 col-form-label">dissemination</label>
+				<div class="col-sm-10">
+					<select class="form-control" name="dissemination"
+						th:value="${la!=null}?${la.dissemination.uid}">
+						<option th:each="employee:${employees}"
+							th:selected="${la!=null}?${la.dissemination.uid == employee.uid}" th:value="${employee.uid}"
+							th:text="${employee.name}">1</option>
+					</select>
 				</div>
 			</div>
 			<button type="submit" class="btn btn-primary btn-lg btn-block"
@@ -79,8 +90,12 @@
 
 	<script type="text/javascript">
 		$(function() {
-			$('#fromtime').datetimepicker();
-			$('#totime').datetimepicker();
+			$('#fromtime').datetimepicker({
+                format: 'L'//L date only; LT time only
+            });
+			$('#totime').datetimepicker({
+                format: 'L'
+            });
 		});
 	</script>
 </body>
