@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Confirmation</title>
+</head>
+<body>
+<h1>Confirmation</h1>
+
+ <form action="#" th:object="${la}" method="get">
+ 	
+		<fieldset>
+			<table class="w3-container">
+				<h2>  you have <span th:text=${la.status}> made a desicion on </span> this aaplication</h2>
+				<tr >
+					<td th:text=${la.uid}>ID</td>
+					<td th:text=${la.owner}>Applicant ID</td>
+					<td th:text=${la.fromTime}>Leave Period From</td>
+					<td th:text=${la.toTime}>Leave Period To</td>
+					<td th:text=${la.type}>Leave Type</td>
+					<td th:text=${la.reason}>Reason for Leave</td>
+					<td th:text=${la.disseminationId}>Dissemination</td>
+					<td th:text=${la.rcontact}>Contact</td>
+					
+				</tr>
+			</table>
+		</fieldset>
+			<fieldset>
+			<button type="submit" th:formaction="@{/manager/listforapproval}">Back to View Applications pending approval</button>
+	
+		</fieldset>
+		
+		
+				
+
+
+	</form> 
+
+</body>
+</html>

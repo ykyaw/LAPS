@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Individual Application Details</title>
+</head>
+<body>
+
+<h1>Individual Application Details</h1>
+
+ <form action="#" th:object="${la}" th:action="@{/manager/listforapproval}"method="post">
+		<fieldset>
+			<table class="w3-container">
+				<tr th:text="${la}">
+					<td th:text=${la.uid}>ID</td>
+					<td th:text=${la.owner}>Applicant ID</td>
+					<td th:text=${la.fromTime}>Leave Period From</td>
+					<td th:text=${la.toTime}>Leave Period To</td>
+					<td th:text=${la.type}>Leave Type</td>
+					<td th:text=${la.reason}>Reason for Leave</td>
+					<td th:text=${la.disseminationId}>Dissemination</td>
+					<td th:text=${la.contact}>Contact</td>
+				</tr>
+			</table>
+		</fieldset>
+		<fieldset>
+			Reject Reason: <input type="text" th:text="${la.rejectreason}" th:value="${la.rejectreason}">
+		</fieldset>
+			<fieldset>
+			<button type="submit" th:formaction="@{/manager/approveapplication}">Approve</button>
+			<button  type="submit" th:formaction="@{/manager/rejectapplication}">Reject</button>
+		</fieldset>
+
+	</form> 
+
+</body>
+</html>
