@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	<h1 th:utext="#{user.page.add}"></h1> 
+	<h1>Create new Users</h1> 
 	<form action="#" th:object="${usertohtml}" th:action="@{/admin/save}" method="post">
 		<fieldset>
 		<input type="hidden" th:field="*{uid}"> 
@@ -50,8 +50,28 @@
 		<fieldset>
 			Email: <input type="text" th:field="*{email}">
 			<!--<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>  -->
-			
 		</fieldset>
+		
+		<!-- <fieldset>
+		 <div th:object="${managertohtml}">
+			<label for="Manager in charge">Manager in Charge:</label>
+			<select class="form-control" required="required" >
+			<option disabled="disabled" selected="selected" > -- Select manager --</option>
+			<option th:each="managertohtml : ${managertohtml}" th:value="${managertohtml.uid}" th:text="${managertohtml.name}" ></option>
+			</select>
+			</div>
+		</fieldset>  -->
+		
+			<fieldset>
+		    Manager in charge:
+		    <select th:field="*{manager.uid}" >
+		        <option th:each="manager:${managertohtml}" th:value="${manager.uid}" th:text="${manager.name}"></option>
+		    </select>
+		</fieldset>
+			
+			
+			
+
 		<!--  
 		<fieldset>
 			Photo: <label for="photo"></label>

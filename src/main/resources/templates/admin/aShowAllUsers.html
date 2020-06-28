@@ -17,22 +17,21 @@
 			<th>Name</th>
 			<th>Email</th>
 			<th>Role</th>
-			<th>Account Status</th>
-			<th>Annual Leave Entitled</th>
-			<th>Medical Leave Entitled</th>
 			<th>Manager in Charge</th>
-			<th> </th>
 		</tr>
 		<tr th:each="user:${userlist}">
 			<td th:text=${user.uid}>Id</td>
 			<td th:text=${user.name}> Name</td>
 			<td th:text=${user.email}> Email</td>
 			<td th:text=${user.userType}>Role</td>
-			<td th:text=${user.enabled}> Enabled</td>
-			<td th:text=${user.annualLeaveEntitlement}> Annual Leave Entitled</td>
-			<td th:text=${user.medicalLeaveEntitlement}> Medical Leave Entitled</td>
-			<td th:text=${user.ManagerName}> Manager</td>
-			<td><a th:href="@{/admin/edit/}+${user.name}" >Manage Approval Hierarchy</a></td>
+			<td >
+				<span th:text="${user.manager.name}" th:if="${user.manager != null}" > Manager </span>
+				<span th:text="${user.manager}" th:if="${user.manager == null}"> Manager </span>
+			</td>
+			<td>
+			<a th:href="@{/admin/edit/}+${user.uid}" ><button>Edit User</button></a>
+			<a th:href="@{/admin/updatemg/}+${user.uid}" ><button>Update Manager</button></a>
+			</td>
 		</tr>
 	</table>
 	<th:block th:include = "common :: footer"></th:block>
