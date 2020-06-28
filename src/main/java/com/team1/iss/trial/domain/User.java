@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -44,6 +46,9 @@ public class User implements Serializable{
 	private boolean enabled;
 	@OneToMany(mappedBy = "owner",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<OverTime> overtimeList;
+	@ManyToOne
+	@JoinColumn(name = "managerId",insertable = false, updatable = false)
+	private Manager manager;
 	
 	public User() {
 		super();
@@ -55,11 +60,8 @@ public class User implements Serializable{
 	}
 	
 
-
-	
-
 	public User(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
-			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList) {
+			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList, Manager manager) {
 		super();
 		this.uid = uid;
 		this.userType = userType;
@@ -70,10 +72,12 @@ public class User implements Serializable{
 		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
 		this.enabled = enabled;
 		this.overtimeList = overtimeList;
+		this.manager = manager;
 	}
 
 	public User(int uid, String userType, String name, byte[] photo, String password, String email,
-			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList) {
+			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,
+			Manager manager) {
 		super();
 		this.uid = uid;
 		this.userType = userType;
@@ -85,8 +89,18 @@ public class User implements Serializable{
 		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
 		this.enabled = enabled;
 		this.overtimeList = overtimeList;
+		this.manager = manager;
 	}
 	
+	
+
+	public Manager getManager() {
+		return manager;
+	}
+
+	public void setManager(Manager manager) {
+		this.manager = manager;
+	}
 
 	public User(int uid, String userType, String name, String password, String email, int annualLeaveEntitlement,
 			int medicalLeaveEntitlement, boolean enabled) {
