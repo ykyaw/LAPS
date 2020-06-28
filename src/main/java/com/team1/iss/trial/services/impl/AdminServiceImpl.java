@@ -50,24 +50,24 @@ public class AdminServiceImpl implements IAdminService {
 		return list;
 	}
 	
-//	@Override
-//	public ArrayList<UserForm> findAllwithManagerName() {
-//		ArrayList<User> list = (ArrayList<User>) uRepo.findAll();
-//		ArrayList<UserForm> listform = new ArrayList<>();
-//		for(User u : list) {
-//			UserForm uf = new UserForm();
-//			uf.setAnnualLeaveEntitlement(u.getAnnualLeaveEntitlement());
-//			uf.setEmail(u.getEmail());
-//			uf.setEnabled(u.isEnabled());
-//			uf.setMedicalLeaveEntitlement(u.getMedicalLeaveEntitlement());
-//			uf.setName(u.getName());
-//			uf.setUid(u.getUid());
-//			uf.setUserType(u.getUserType());
-//			uf.setManagerName(uRepo.findUserManagerName(u.getUid()));
-//			listform.add(uf);
-//		}
-//		return listform;
-//	}
+	@Override
+	public ArrayList<UserForm> findAllwithManagerName() {
+		ArrayList<User> list = (ArrayList<User>) uRepo.findAll();
+		ArrayList<UserForm> listform = new ArrayList<>();
+		for(User u : list) {
+			UserForm uf = new UserForm();
+			uf.setAnnualLeaveEntitlement(u.getAnnualLeaveEntitlement());
+			uf.setEmail(u.getEmail());
+			uf.setEnabled(u.isEnabled());
+			uf.setMedicalLeaveEntitlement(u.getMedicalLeaveEntitlement());
+			uf.setName(u.getName());
+			uf.setUid(u.getUid());
+			uf.setUserType(u.getUserType());
+			uf.setManagerName(uRepo.findUserManagerName(u.getUid()));
+			listform.add(uf);
+		}
+		return listform;
+	}
 	
 	@Override
 	public boolean convertuser(User user) {

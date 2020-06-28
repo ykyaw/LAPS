@@ -26,10 +26,10 @@ public interface LARepository extends JpaRepository<LA, Integer>{
     @Query("FROM LA WHERE status = ?1")
     public List<LA> findLADetailsByStatus(String status);
 
-    @Modifying
-    @Transactional  //Spring transactional
-    @Query("update LA set LA.uid = ?1 where uid=LA.uid")
-    public void updateLA(@Param("la") LA la);
+//    @Modifying
+//    @Transactional  //Spring transactional
+//    @Query("update LA set LA.uid = ?1 where uid=LA.uid")
+//    public void updateLA(@Param("la") LA la);
 
 //    @Query("update LA set fromTime=:#{#la.fromTime},xxx=xxx where uid=:#{#la.uid}")
 //    public void updateLA1(@Param("la") LA la);

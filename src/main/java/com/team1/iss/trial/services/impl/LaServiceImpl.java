@@ -40,7 +40,7 @@ public class LaServiceImpl implements ILaService {
     //Update the LA
     @Override
     public void updateLA(LA la) {
-        larepo.updateLA(la);
+//        larepo.updateLA(la);
 //        ArrayList<LA> list = (ArrayList<LA>) larepo.findAll();
 //        for (LA la_in : list) {
 //            if (la_in.getUid() == la.getUid()) {
