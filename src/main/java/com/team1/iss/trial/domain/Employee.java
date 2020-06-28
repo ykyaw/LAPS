@@ -18,9 +18,6 @@ import com.team1.iss.trial.common.CommConstants;
 @DiscriminatorValue(CommConstants.UserType.EMPLOYEE)
 public class Employee extends User{
 
-	@ManyToOne
-	@JoinColumn(name = "managerId",insertable = false, updatable = false)
-	private Manager manager;
 	@OneToMany(mappedBy = "owner",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<LA> laList;
 	
@@ -33,9 +30,9 @@ public class Employee extends User{
 	
 
 	public Employee(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
-			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,Manager manager,List<LA> laList) {
-		super(uid, userType, name, photo, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled, overtimeList);
-		this.manager = manager;
+			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList, Manager manager,List<LA> laList) {
+		super(uid, userType, name, photo, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled, overtimeList,
+				manager);
 		this.laList = laList;
 	}
 
@@ -43,12 +40,13 @@ public class Employee extends User{
 
 
 	public Employee(int uid, String userType, String name, byte[] photo, String password, String email,
-			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,Manager manager,List<LA> laList) {
+			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,
+			Manager manager,List<LA> laList) {
 		super(uid, userType, name, photo, password, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled,
-				overtimeList);
-		this.manager = manager;
+				overtimeList, manager);
 		this.laList = laList;
 	}
+
 
 
 	public Employee(int uid) {
@@ -56,14 +54,6 @@ public class Employee extends User{
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public Manager getManager() {
-		return manager;
-	}
-
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
 
 	public List<LA> getLaList() {
 		return laList;
