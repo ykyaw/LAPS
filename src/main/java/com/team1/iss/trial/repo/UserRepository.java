@@ -17,6 +17,13 @@ import com.team1.iss.trial.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
+
+	List<User> findByName(String s);
+	
+//	@Query("Select u.username from User u")
+//	ArrayList<String> findAllUsernames();
+
+
 //	@Modifying
 //	@Transactional
 //	@Query("update user set user_type = :#{#user.userType} "
@@ -35,6 +42,26 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Modifying
 	@Transactional
 	@Query("update User set user_type=:userType where uid=:uid")
-	public void updateUserType(@Param("userType") String userType,@Param("uid") int uid);
+	public void updateUserType(@Param("userType") String userType,@Param("uid") int uid); 
+	
+	@Modifying
+	@Transactional
+	@Query("update User set manager_id=:managerId where uid=:uid")
+	public void updateUserManager(@Param("managerId") int managerId, @Param("uid") int uid);
+	
+
+
+	@Query(value = "select manager_id from User where uid=:uid", nativeQuery=true)
+	public void findUserManagerId(@Param("uid") int employeeId);
+	
+
+	@Query(value = "SELECT um.name FROM user ue, user um where ue.manager_id=um.uid and ue.uid=?1", nativeQuery=true)
+	public String findUserManagerName(@Param("uid") int employeeId);
+	
 
 }
+
+
+
+
+

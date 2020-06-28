@@ -19,21 +19,32 @@ public class Admin extends User{
 
 
 
+
+
+
 	public Admin(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
-			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList) {
-		super(uid, userType, name, photo, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled, overtimeList);
+			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList, Manager manager) {
+		super(uid, userType, name, photo, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled, overtimeList,
+				manager);
 		// TODO Auto-generated constructor stub
 	}
+
+
+
 
 
 
 
 	public Admin(int uid, String userType, String name, byte[] photo, String password, String email,
-			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList) {
+			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,
+			Manager manager) {
 		super(uid, userType, name, photo, password, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled,
-				overtimeList);
+				overtimeList, manager);
 		// TODO Auto-generated constructor stub
 	}
+
+
+
 
 
 

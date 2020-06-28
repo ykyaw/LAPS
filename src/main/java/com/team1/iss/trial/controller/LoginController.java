@@ -41,10 +41,10 @@ public class LoginController {
 
 	@GetMapping("/test")
 	public void test() {
-		User user = userRepository.findById(6).get();
-		user.setUserType(CommConstants.UserType.AMDIN);
-		System.out.println(user);
 //		userRepository.updateUserType(user);
-		userRepository.updateUserType(CommConstants.UserType.AMDIN,6);
+		userRepository.updateUserType(CommConstants.UserType.AMDIN,1);
+//		User user = userRepository.findById(1).get();
+//		user.setUserType(CommConstants.UserType.AMDIN);
+//		System.out.println(user);
 	}
 }
