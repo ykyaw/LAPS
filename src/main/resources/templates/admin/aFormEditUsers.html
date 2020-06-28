@@ -7,32 +7,46 @@
 	<th:block th:include = "common :: navbar"></th:block>
 </head>
 <body>
-<h1>Manage Approval Hierarchy</h1>
+<h1>Edit Users</h1>
  
-<form action="#" th:object="${userlist}" th:action="@{/admin/save}" method="post" >
+<form action="#" th:object="${edituserform}" th:action="@{/admin/save_edit}" method="post" >
+		
 		
 		<fieldset>
-			<input type="hidden" th:field="*{userId}">  
+			Employee Id: <input type="text" th:field="*{uid}" readonly>
+		</fieldset>
+	
+		<fieldset>
+			Email: <input type="text" th:field="*{email}" readonly>
 		</fieldset>
 		
 		<fieldset>
-			<input type="hidden" th:field="*{enabled}">  
+			Name: <input type="text" th:field="*{name}">  
+		</fieldset>
+		  	
+		<fieldset>
+			Account Status
+			<select th:field="*{enabled}" >
+ <!--                <option th:each="status:${statustohtml}" th:value="${status}" th:text="${status}"></option> -->
+                <option th:value="${true}"> Enabled</option>
+                <option th:value="${false}"> Disabled</option>
+            </select>
+		</fieldset>
+			
+		<fieldset>
+			Employee Role
+
+			<select th:field="*{userType}" >
+                <option th:each="type:${usertypetohtml}" th:value="${type}" th:text="${type}"></option>
+            </select>
 		</fieldset>
 		
 		<fieldset>
-			Username: <input type="text" th:field="*{username}" readonly>  
+			Annual Leave<input type="number" th:field="*{annualLeaveEntitlement}">
 		</fieldset>
 		
 		<fieldset>
-			Authority: <input type="text" th:field="*{authorities}" readonly>  
-		</fieldset>
-		  
-		<fieldset>
-			Approving Manager: <input type="text" th:field="*{manager}">
-		</fieldset>
-		
-		<fieldset>
-			<input type="hidden" th:field="*{managerId}">
+			Medical Leave<input type="number" th:field="*{medicalLeaveEntitlement}">
 		</fieldset>
 		
 		<fieldset>

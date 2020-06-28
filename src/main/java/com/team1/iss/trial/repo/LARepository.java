@@ -1,5 +1,6 @@
 package com.team1.iss.trial.repo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -61,4 +62,7 @@ public interface LARepository extends JpaRepository<LA, Integer>{
 	
 	@Query(value = "SELECT a FROM LA a where a.status="+CommConstants.ApplicationStatus.APPROVED)
 	public List<LA> getApprovedLA();
+	
+	@Query(nativeQuery = true, value = "select * from la where status in ('APPLIED','UPDATED')")
+	public ArrayList<LA> getPendingLA();
 }
