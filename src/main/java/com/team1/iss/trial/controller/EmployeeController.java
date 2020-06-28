@@ -16,8 +16,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/employee")
+@Controller
 public class EmployeeController {
 	@Autowired
 	private LaServiceImpl laServiceImpl;
@@ -25,49 +24,50 @@ public class EmployeeController {
 	@Autowired
 	private IEmployeeService eService;
 
-	@RequestMapping("")
+	@RequestMapping("/employee")
 	public String user() {
 		return ("employee/eHome");
 	}
 
-	//Get All LAs
-	@RequestMapping(value= "/las", method = RequestMethod.GET)
+	// Get All LAs
+	@RequestMapping(value = "/employee/las", method = RequestMethod.GET)
 	public String listAllLAs(Model model) {
 		model.addAttribute("LA", laServiceImpl.findAll());
 		return "las";
 
 	}
 
-	//Get single LA details by provide id
-	@RequestMapping(value= "/la/{uid}", method = RequestMethod.GET)
+	// Get single LA details by provide id
+	@RequestMapping(value= "/employee/la/{uid}", method = RequestMethod.GET)
 	public String getLAById(Model model, @PathVariable int uid) {
-		model.addAttribute("LA",laServiceImpl.getLaById(uid));
+		try {
+			LA la = laServiceImpl.getLaById(uid);
+			model.addAttribute("LA",la);
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		return "laDetails";
 	}
 
-	//Create a new LA with full LA details info in Body
-	@RequestMapping(value="/la", method = RequestMethod.POST)
+	// Create a new LA with full LA details info in Body
+	@RequestMapping(value = "/employee/la", method = RequestMethod.POST)
 	public void saveLA(@RequestBody LA la) {
 		laServiceImpl.saveLA(la);
 	}
 
-	//Update an existing LA with udpated Body, not sure how to input uid
-	@RequestMapping(value="/la/{uid}", method = RequestMethod.PUT)
+	// Update an existing LA with udpated Body, not sure how to input uid
+	@RequestMapping(value = "/employee/la/{uid}", method = RequestMethod.PUT)
 	public void updateLA(@RequestBody LA la, int uid) {
 		laServiceImpl.updateLA(la);
 	}
 
-	//Delete an existing LA
-	@RequestMapping(value="/la/{uid}", method = RequestMethod.DELETE)
+	// Delete an existing LA
+	@RequestMapping(value = "/employee/la/{uid}", method = RequestMethod.DELETE)
 	public void deleteLA(int uid) {
 		laServiceImpl.deleteLA(uid);
 	}
-	
-	@RequestMapping("/employee")
-	public String home() {
-		return "employee/eHome";
-	}
-	
+
 	@RequestMapping("/employee/lalist")
 	public String la(Model model) {
 		model.addAttribute("laList", eService.findAllLeave());
@@ -75,18 +75,13 @@ public class EmployeeController {
 	}
 
 	@RequestMapping("/employee/apply")
-	public String addLeave(Model model, HttpSession session) {
-//		System.out.println(session);
-		model.addAttribute("la", new LA());
-		model.addAttribute("uid",1);
-		model.addAttribute("employee",new User(1));
-//		System.out.println("in add leave");
-		List<String> applicationType= new ArrayList();
+	public String addLeave(Model model) {
+		List<String> applicationType = new ArrayList();
 		applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
 		applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
 		applicationType.add(CommConstants.LeaveType.COMPENSATION_LEAVE);
 		model.addAttribute("types", applicationType);
-		return ("employee/leave-form");
+		return "employee/leave-form";
 	}
 //		/* Testing using simpler Code to create Leave Application */
 //		@RequestMapping("/employee/apply")
@@ -96,7 +91,7 @@ public class EmployeeController {
 //		model.addAttribute("LAModelToHtml", la1);
 //		return "employee/leave-form";
 //	}
-	
+
 	@RequestMapping("/employee/save")
 	public String saveLeave(@ModelAttribute("la") @Valid LA la, BindingResult result, Model model) {
 		if (result.hasErrors()) {
@@ -105,4 +100,4 @@ public class EmployeeController {
 		}
 		return "employee/lalist";
 	}
-}	
+}
