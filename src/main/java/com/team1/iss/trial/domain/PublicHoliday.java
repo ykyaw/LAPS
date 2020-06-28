@@ -16,12 +16,17 @@ public class PublicHoliday implements Serializable{
 	private int uid;
 	@Column
 	private long day;
+	@Column
+	private String name;
 	
-	public PublicHoliday(int uid, long day) {
+	
+	public PublicHoliday(int uid, long day, String name) {
 		super();
 		this.uid = uid;
 		this.day = day;
+		this.name = name;
 	}
+	
 	public PublicHoliday() {
 		super();
 	}
@@ -37,6 +42,15 @@ public class PublicHoliday implements Serializable{
 	public void setDay(long day) {
 		this.day = day;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	
 	
 
