@@ -30,30 +30,29 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Autowired
 	UserRepository uRepo;
-	
+
 	@Autowired
 	ManagerRepository mRepo;
-	
+
 
 	@Override
 	public boolean updateUserType(String userType, int uid) {
 		uRepo.updateUserType(userType, uid);
 		return true;
 	}
-	
-	
+
 	@Override
 	public boolean updateUserManager(int managerId, int uid) {
 		uRepo.updateUserManager(managerId, uid); 
 		return true;
 	}
-	
+
 	@Override
 	public ArrayList<User> findAll() {
-	    ArrayList<User> list = (ArrayList<User>) uRepo.findAll();
+		ArrayList<User> list = (ArrayList<User>) uRepo.findAll();
 		return list;
 	}
-	
+
 	@Override
 	public FormEditUser editUser(int uid) {
 		User u1 = uRepo.findById(uid).get();
@@ -67,9 +66,9 @@ public class AdminServiceImpl implements IAdminService {
 		uf.setMedicalLeaveEntitlement(u1.getMedicalLeaveEntitlement());
 		return uf;
 	}
-	
+
 	@Override
-	public boolean convertuser(User user) {
+	public boolean saveNewUser(User user) {
 		if(user.getUserType().equals(CommConstants.UserType.AMDIN))
 		{
 			User a1 = new Admin();
@@ -80,6 +79,7 @@ public class AdminServiceImpl implements IAdminService {
 			a1.setPassword(user.getPassword());
 			a1.setEnabled(user.isEnabled());
 			uRepo.save(a1);
+
 		} else if (user.getUserType().equals(CommConstants.UserType.EMPLOYEE))
 		{
 			User a1 = new Employee();
@@ -102,26 +102,26 @@ public class AdminServiceImpl implements IAdminService {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean updateUser(FormEditUser fu) {
 		uRepo.updateUser(fu.getName(), fu.isEnabled(), fu.getUserType(), fu.getAnnualLeaveEntitlement(), fu.getMedicalLeaveEntitlement(), fu.getUid());
 		return false;
 	}
 
-	
-	 @Override
-	    public ArrayList<Manager> findAllManager() {
-	        ArrayList<Manager> list = (ArrayList<Manager>) mRepo.findAll();
-	        return list;
-	    }
-	 
-		@Override
-		public User findUserById(Integer id) {
-			return uRepo.findById(id).get();
-		}
-	
-	
+
+	@Override
+	public ArrayList<Manager> findAllManager() {
+		ArrayList<Manager> list = (ArrayList<Manager>) mRepo.findAll();
+		return list;
+	}
+
+	@Override
+	public User findUserById(Integer id) {
+		return uRepo.findById(id).get();
+	}
+
+
 
 	@Override
 	public boolean saveUser(User u) {
@@ -130,10 +130,39 @@ public class AdminServiceImpl implements IAdminService {
 		}
 		else return false;
 	}
-	
+
 	@Override
 	public String findUserManagerby(int uid) {
 		return uRepo.findUserManagerName(uid);
+	}
+
+	@Override
+	public User findUserByUsername(String username) {
+		return null;
+	}
+
+
+	@Override
+	public int findlatestUID() {
+		return uRepo.findlatestUID();
+	}
+
+	@Override
+	public boolean updateAllMedicalLeave(int medical_leave_entitlement) {
+		uRepo.updateAllMedicalLeave(medical_leave_entitlement);
+		return true;
+	}
+
+	@Override
+	public boolean updateProfAnnualLeave(int profAL) {
+		uRepo.updateProfAnnualLeave(profAL);
+		return true;
+	}
+
+	@Override
+	public boolean updateAdminAnnualLeave(int adminAL) {
+		uRepo.updateAdminAnnualLeave(adminAL);
+		return true;
 	}
 	
 
@@ -142,15 +171,6 @@ public class AdminServiceImpl implements IAdminService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-
-	@Override
-	public User findUserByUsername(String username) {
-//		ArrayList<User> list = (ArrayList<User>) uRepo.findByUsername(username);
-//		return list.get(0);
-		return null;
-	}
-
 
 }
 
