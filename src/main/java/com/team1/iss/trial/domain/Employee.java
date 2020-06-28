@@ -1,5 +1,6 @@
 package com.team1.iss.trial.domain;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,9 @@ import com.team1.iss.trial.common.CommConstants;
 @DiscriminatorValue(CommConstants.UserType.EMPLOYEE)
 public class Employee extends User{
 
+	@ManyToOne
+	@JoinColumn(name = "managerId",insertable = false, updatable = false)
+	private Manager manager;
 	@OneToMany(mappedBy = "owner",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<LA> laList;
 	
@@ -27,25 +31,37 @@ public class Employee extends User{
 	}
 	
 	
-	
-
 	public Employee(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
-			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList, Manager manager,List<LA> laList) {
+			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList, Manager manager) {
 		super(uid, userType, name, photo, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled, overtimeList,
 				manager);
-		this.laList = laList;
+		// TODO Auto-generated constructor stub
+		
 	}
-
 
 
 
 	public Employee(int uid, String userType, String name, byte[] photo, String password, String email,
 			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,
-			Manager manager,List<LA> laList) {
+			Manager manager) {
 		super(uid, userType, name, photo, password, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled,
 				overtimeList, manager);
-		this.laList = laList;
+		// TODO Auto-generated constructor stub
 	}
+
+
+
+
+
+
+	public Employee(int uid, String userType, String name, String password, String email, int annualLeaveEntitlement,
+			int medicalLeaveEntitlement, boolean enabled) {
+		super(uid, userType, name, password, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled);
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 
 
 
@@ -55,6 +71,14 @@ public class Employee extends User{
 	}
 
 
+	public Manager getManager() {
+		return manager;
+	}
+
+	public void setManager(Manager manager) {
+		this.manager = manager;
+	}
+
 	public List<LA> getLaList() {
 		return laList;
 	}
@@ -62,9 +86,7 @@ public class Employee extends User{
 	public void setLaList(List<LA> laList) {
 		this.laList = laList;
 	}
-	
-	
-	
+
 	
 
 }

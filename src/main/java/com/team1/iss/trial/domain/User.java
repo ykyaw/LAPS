@@ -102,6 +102,19 @@ public class User implements Serializable{
 		this.manager = manager;
 	}
 
+	public User(int uid, String userType, String name, String password, String email, int annualLeaveEntitlement,
+			int medicalLeaveEntitlement, boolean enabled) {
+		super();
+		this.uid = uid;
+		this.userType = userType;
+		this.name = name;
+		this.password = password;
+		this.email = email;
+		this.annualLeaveEntitlement = annualLeaveEntitlement;
+		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
+		this.enabled = enabled;
+	}
+
 	public String getUserType() {
 		return userType;
 	}
