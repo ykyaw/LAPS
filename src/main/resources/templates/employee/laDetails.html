@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Leave Application Details</title>
+    <th:block th:include = "common :: header"></th:block>
+    <th:block th:include = "common :: navbar"></th:block>
+    <div th:fragment="example">This is a thymeleaf fragment example</div>
+</head>
+<body>
+    <h1 th:utext="#{leave.application.title}">Leave Application Details</h1>
+    <form action="#" th:object="${LA}" th:action="@{/employee/las}" method="post">
+        <input type="hidden" th:field="*{uid}">
+        <fieldset>
+            contact: <input type="text" readonly class="form-control-plaintext" th:field="*{contact}">
+        </fieldset>
+        <fieldset>
+            fromTime: <input type="text" readonly class="form-control-plaintext" th:field="*{fromTime}" placeholder="dd-MM-yyyy"
+                                        th:text="${#dates.format(LA.fromTime, 'dd-MM-yyyy')}"/>
+        </fieldset>
+        <fieldset>
+            toTime: <input type="text" readonly class="form-control-plaintext" th:field="*{toTime}" placeholder="dd-MM-yyyy"
+                             th:text="${#dates.format(LA.toTime, 'dd-MM-yyyy')}"/>
+        </fieldset>
+        <fieldset>
+            type: <input type="text" readonly class="form-control-plaintext" th:field="*{type}">
+        </fieldset>
+        <fieldset>
+            status: <input type="text" readonly class="form-control-plaintext" th:field="*{status}">
+        </fieldset>
+        <fieldset>
+            resons: <input type="text" readonly class="form-control-plaintext" th:field="*{resons}">
+        </fieldset>
+        <fieldset>
+            rejectReason: <input type="text" readonly class="form-control-plaintext" th:field="*{rejectReason}">
+        </fieldset>
+        <fieldset>
+            dissemination: <input type="text" readonly class="form-control-plaintext" th:field="*{dissemination}">
+        </fieldset>
+        <fieldset>
+            owner: <input type="text" readonly class="form-control-plaintext" th:field="*{owner}">
+        </fieldset>
+        <fieldset>
+            <button type="submit">Edit</button>
+        </fieldset>
+        <fieldset>
+            <button type="submit">Delete</button>
+        </fieldset>
+</body>
+</html>
