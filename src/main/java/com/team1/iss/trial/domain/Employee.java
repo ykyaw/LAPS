@@ -1,5 +1,6 @@
 package com.team1.iss.trial.domain;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,25 +31,38 @@ public class Employee extends User{
 	}
 	
 	
-	
-
 	public Employee(int uid, String userType, String name, byte[] photo, String email, int annualLeaveEntitlement,
-			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,Manager manager,List<LA> laList) {
-		super(uid, userType, name, photo, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled, overtimeList);
-		this.manager = manager;
-		this.laList = laList;
+			int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList, Manager manager) {
+		super(uid, userType, name, photo, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled, overtimeList,
+				manager);
+		// TODO Auto-generated constructor stub
+		
 	}
-
 
 
 
 	public Employee(int uid, String userType, String name, byte[] photo, String password, String email,
-			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,Manager manager,List<LA> laList) {
+			int annualLeaveEntitlement, int medicalLeaveEntitlement, boolean enabled, List<OverTime> overtimeList,
+			Manager manager) {
 		super(uid, userType, name, photo, password, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled,
-				overtimeList);
-		this.manager = manager;
-		this.laList = laList;
+				overtimeList, manager);
+		// TODO Auto-generated constructor stub
 	}
+
+
+
+
+
+
+	public Employee(int uid, String userType, String name, String password, String email, int annualLeaveEntitlement,
+			int medicalLeaveEntitlement, boolean enabled) {
+		super(uid, userType, name, password, email, annualLeaveEntitlement, medicalLeaveEntitlement, enabled);
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+
 
 
 	public Employee(int uid) {
@@ -72,9 +86,7 @@ public class Employee extends User{
 	public void setLaList(List<LA> laList) {
 		this.laList = laList;
 	}
-	
-	
-	
+
 	
 
 }

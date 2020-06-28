@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "la")
-public class LA implements Serializable{
+public class LA implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,7 @@ public class LA implements Serializable{
 	private long fromTime;
 	private long toTime;
 	private String type;
+	private int duration;
 	private String status;
 	private String reasons;
 	private String rejectReason;
@@ -42,15 +43,14 @@ public class LA implements Serializable{
 		this.uid = uid;
 	}
 	
-	
-
-	public LA(int uid, long fromTime, long toTime, String type, String status, String reasons, Employee dissemination,
+	public LA(int uid, long fromTime, long toTime, String type, int duration, String status, String reasons, Employee dissemination,
 			String contact, Employee owner,String rejectReason) {
 		super();
 		this.uid = uid;
 		this.fromTime = fromTime;
 		this.toTime = toTime;
 		this.type = type;
+		this.duration = duration;
 		this.status = status;
 		this.reasons = reasons;
 		this.dissemination = dissemination;
@@ -76,8 +76,6 @@ public class LA implements Serializable{
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
-
-	
 
 	public long getFromTime() {
 		return fromTime;
@@ -141,6 +139,14 @@ public class LA implements Serializable{
 
 	public void setOwner(Employee owner) {
 		this.owner = owner;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 	
 	

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Personal Leave History</title>
+<!-- Bootstrap core CSS -->
+<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+<!-- jquery core js -->
+<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+<!-- Bootstrap core js -->
+<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<h2>View Leave History</h2>
+	<table class="table table-bordered table-hover">
+	  <thead>
+		<tr>
+			<th scope="col">Start Date</th>
+			<th scope="col">End Date</th>
+			<th scope="col">No. of Days</th>
+			<th scope="col">Leave Type</th>
+			<th scope="col">Status</th>
+		</tr>
+	</thead>		
+		<tbody>
+		<tr>
+			<tr th:each="la:${laList}">					  
+			<td th:utext="${#dates.format(la.fromTime, dd MMM yyyy')}"></td>
+			<td th:utext="${#dates.format(la.toTime, dd MMM, yyyy')}"></td>
+			<td th:text="${la.duration}"></td>
+			<td th:text="${employee.type}"></td>
+			<td th:text="${employee.status}"></td>
+		</tr>
+	</table>
+</body>
+</html>
