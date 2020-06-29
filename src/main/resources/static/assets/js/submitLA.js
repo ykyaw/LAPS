@@ -1,13 +1,13 @@
 $(document).ready(function() {
     var disabledDate = ['2020-7-1', '2020-7-2','2020-7-3'];
     $('#fromtime').datetimepicker({
-        format: 'L',
+        format: 'L',//date only
         format: 'YYYY-MM-DD',
         daysOfWeekDisabled: [0, 6],
         disabledDates: disabledDate
     })
     $('#totime').datetimepicker({
-        format: 'L',
+        format: 'LT',//time only
         format: 'YYYY-MM-DD',
         daysOfWeekDisabled: [0, 6]
     }).on('changeDate', function (ev) {

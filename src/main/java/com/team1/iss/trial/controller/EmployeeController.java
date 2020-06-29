@@ -46,7 +46,7 @@ public class EmployeeController {
 
     // Create a new LA with full LA details info in Body
     @RequestMapping(value = "/employee/la", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public @ResponseBody void saveLA(LA la) {
+    public @ResponseBody void saveLA( LA la) {
         System.out.println(la);
 //        laServiceImpl.saveLA(la);
     }
