@@ -21,19 +21,7 @@ public class HomeController {
 	IUserService userService;
 	
 	@RequestMapping("/")
-	public String home(HttpServletRequest request) {
-		
-		if(request.isUserInRole("MANAGER")){
-			return"manager/mHome";
-		}
-		
-		if(request.isUserInRole("ADMIN")){
-			return"admin/aHome";
-		}
-		
-		if(request.isUserInRole("EMPLOYEE")){
-			return"employee/eHome";
-		}
+	public String home() {
 		return"index";
 	}
 

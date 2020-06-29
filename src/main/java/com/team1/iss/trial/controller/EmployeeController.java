@@ -8,12 +8,14 @@ import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -47,7 +49,8 @@ public class EmployeeController {
 
     // Create a new LA with full LA details info in Body
     @RequestMapping(value = "/employee/la", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public @ResponseBody void saveLA(LA la) {
+    public @ResponseBody void saveLA(LA la, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
 		System.out.println(la);
         laService.saveLA(la);
     }
