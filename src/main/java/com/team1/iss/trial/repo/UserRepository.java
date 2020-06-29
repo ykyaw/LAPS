@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -81,6 +83,9 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Transactional
 	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALadmin where user_type LIKE 'ADMIN' ")
 	public void updateAdminAnnualLeave(@Param("ALadmin") int ALadmin);
+	
+	//Pagination
+	Page<User> findAll(Pageable pageable);
 	
 };
 

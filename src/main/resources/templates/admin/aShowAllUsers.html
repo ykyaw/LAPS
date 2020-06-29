@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
@@ -9,7 +9,7 @@
 <body>
 <h1>ISS User Listing</h1>
 
-<!-- Add Hyperlink -->
+Add Hyperlink
 	<h2 th:if="${not #lists.isEmpty(userlist)}">User List</h2>
 	<table class="w3-container" border="1" th:if="${not #lists.isEmpty(userlist)}">
 		<tr>
@@ -36,4 +36,81 @@
 	</table>
 	<th:block th:include = "common :: footer"></th:block>
 </body>
+</html> -->
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>User Pagination!</title>
+	<th:block th:include = "common :: navbar"></th:block>
+  </head>
+  <body>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  
+ 
+  <div class="row" th:if="${userList != null && !userList.isEmpty()}">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <table id="link-list" class="table" style="width:100%">
+                <thead>
+                <tr>
+					<th scope="col">Id</th>
+					<th scope="col">Name</th>
+					<th scope="col">Email</th>
+					<th scope="col">Role</th>
+					<th scope="col">Manager in Charge</th>
+                </tr>
+                </thead>
+                <tbody>
+					<tr th:each="user:${userList}">
+						<th scope="row" th:text=${user.uid}>Id</th>
+						<td th:text=${user.name}> Name</td>
+						<td th:text=${user.email}> Email</td>
+						<td th:text=${user.userType}>Role</td>
+						<td >
+							<span th:text="${user.manager.name}" th:if="${user.manager != null}" > Manager </span>
+							<span th:text="${user.manager}" th:if="${user.manager == null}"> Manager </span>
+						</td>
+						<td>
+						<a th:href="@{/admin/edit/}+${user.uid}" ><button>Edit User</button></a>
+						<a th:href="@{/admin/updatemg/}+${user.uid}" ><button>Update Manager</button></a>
+						</td>
+					</tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+ 
+
+ 
+ <div class="row" th:fragment="pagination">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" >
+                        <a class="page-link" th:href="@{/admin/list/}+${pageNumber}" th:text=${pageNumber}>1</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+  
+  
+  	<th:block th:include = "common :: footer"></th:block>
+  </body>
 </html>

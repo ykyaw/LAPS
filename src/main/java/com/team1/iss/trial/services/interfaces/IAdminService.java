@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,6 +39,7 @@ public interface IAdminService {
 	public boolean updateAllMedicalLeave(int medical_leave_entitlement);
 	public boolean updateProfAnnualLeave(int profAL);
 	public boolean updateAdminAnnualLeave(int adminAL);
+	Page<User> getPaginatedUsers(Pageable pageable);
 	
 }
 
