@@ -27,7 +27,7 @@ public class LA implements Serializable {
 	private String rejectReason;
 	@ManyToOne
 	@JoinColumn(name = "disseminationId")
-	private Employee dissemination;
+	private Employee dissemination=null;
 	private String contact;
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
 	@JoinColumn(name = "ownerId")
@@ -138,5 +138,20 @@ public class LA implements Serializable {
 	public void setOwner(Employee owner) {
 		this.owner = owner;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "LA{" +
+				"uid=" + uid +
+				", fromTime=" + fromTime +
+				", toTime=" + toTime +
+				", type='" + type + '\'' +
+				", status='" + status + '\'' +
+				", reasons='" + reasons + '\'' +
+				", rejectReason='" + rejectReason + '\'' +
+				", dissemination=" + dissemination +
+				", contact='" + contact + '\'' +
+				", owner=" + owner +
+				'}';
+	}
 }

@@ -1,11 +1,13 @@
 package com.team1.iss.trial.controller;
 
 import com.team1.iss.trial.common.CommConstants;
+import com.team1.iss.trial.domain.Employee;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +31,27 @@ public class EmployeeController {
 		return ("employee/eHome");
 	}
 
+
+	@RequestMapping("/employee/apply")
+	public String addLeave(Model model) {
+		List<String> applicationType = new ArrayList();
+		applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
+		applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
+		applicationType.add(CommConstants.LeaveType.COMPENSATION_LEAVE);
+		model.addAttribute("types", applicationType);
+		List<User> users = eService.findAllUsers();
+		model.addAttribute("employees",users);
+		return "employee/leave-form";
+	}
+
+    // Create a new LA with full LA details info in Body
+    @RequestMapping(value = "/employee/la", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public @ResponseBody void saveLA(LA la) {
+        System.out.println(la);
+//        laServiceImpl.saveLA(la);
+    }
+
+	
 	// Get All LAs
 	@RequestMapping(value = "/employee/las", method = RequestMethod.GET)
 	public String listAllLAs(Model model) {
@@ -50,11 +73,7 @@ public class EmployeeController {
 		return "laDetails";
 	}
 
-	// Create a new LA with full LA details info in Body
-	@RequestMapping(value = "/employee/la", method = RequestMethod.POST)
-	public void saveLA(@RequestBody LA la) {
-		laServiceImpl.saveLA(la);
-	}
+
 
 	// Update an existing LA with udpated Body, not sure how to input uid
 	@RequestMapping(value = "/employee/la/{uid}", method = RequestMethod.PUT)
@@ -74,15 +93,6 @@ public class EmployeeController {
 		return ("employee/lalist");
 	}
 
-	@RequestMapping("/employee/apply")
-	public String addLeave(Model model) {
-		List<String> applicationType = new ArrayList();
-		applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
-		applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
-		applicationType.add(CommConstants.LeaveType.COMPENSATION_LEAVE);
-		model.addAttribute("types", applicationType);
-		return "employee/leave-form";
-	}
 //		/* Testing using simpler Code to create Leave Application */
 //		@RequestMapping("/employee/apply")
 //		public String createLA(Model model) {
