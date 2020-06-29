@@ -1,6 +1,7 @@
 package com.team1.iss.trial.services.impl;
 
 import java.util.ArrayList;
+
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -179,5 +180,11 @@ public class AdminServiceImpl implements IAdminService {
 		return null;
 	}
 
+	@Override
+	public ArrayList<User> getAllUsers(String word) {
+		return uRepo.findByName(word);
+	}
+
+	
 }
 

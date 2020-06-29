@@ -35,11 +35,12 @@ public interface IAdminService {
 	public ArrayList<Manager> findAllManager();
 	public int findlatestUID();
 
-
 	public boolean updateAllMedicalLeave(int medical_leave_entitlement);
 	public boolean updateProfAnnualLeave(int profAL);
 	public boolean updateAdminAnnualLeave(int adminAL);
 	Page<User> getPaginatedUsers(Pageable pageable);
+	
+	public ArrayList<User> getAllUsers(String word);
 	
 }
 

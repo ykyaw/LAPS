@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team1.iss.trial.common.CommConstants;
 
@@ -85,6 +87,8 @@ public class AdminController {
 	}
 	
 	
+	
+	
 	@RequestMapping("/updatemg/{uid}")
 	public String updateManager(@PathVariable("uid")int uid, Model model) {
 		User u1 = aservice.findUserById(uid);
@@ -132,7 +136,7 @@ public class AdminController {
 		aservice.saveNewUser(user);
 		int newlyaddedUID = aservice.findlatestUID();
 		aservice.updateUserManager(user.getManager().getUid(), newlyaddedUID);	
-		return "admin/aShowAllUsers";
+		return "forward:/admin/list";
 	}
 	
 	@RequestMapping("/massEditLeave")
@@ -150,7 +154,15 @@ public class AdminController {
 		aservice.updateProfAnnualLeave(MLForm.getAnnualLeaveEntitlementProf());
 		aservice.updateAdminAnnualLeave(MLForm.getAnnualLeaveEntitlementAdmin());
 		
-		return "admin/aShowAllUsers";
+		return "forward:/admin/list";
+	}
+	
+	@RequestMapping(value = "search", method = RequestMethod.GET)
+	public String getUser(@RequestParam (value = "word", required = false) String word, Model model) {
+		
+		List<User> users= aservice.getAllUsers(word); //check to name and email
+	    model.addAttribute("users", users);
+	    return "admin/aSearchedResults";
 	}
 
 }
