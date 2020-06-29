@@ -1,60 +1,57 @@
 package com.team1.iss.trial.config;
 
-import javax.sql.DataSource;
-
+import com.team1.iss.trial.filter.JWTAuthenticationFilter;
+import com.team1.iss.trial.filter.JWTLoginFilter;
+import com.team1.iss.trial.services.impl.CustomAuthenticationProvider;
+import com.team1.iss.trial.services.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.team1.iss.trial.common.CommConstants;
-
+/**
+ * @author itguang
+ * @create 2018-01-02 10:32
+ **/
+@Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
 	@Autowired
-	DataSource dataSource;
-	
-	@Bean
-	GrantedAuthorityDefaults grantedAuthorityDefaults() {
-	    return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
-	}
-	
-	
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	private UserDetailsServiceImpl userDetailsService;
+
+
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.jdbcAuthentication().dataSource(dataSource)
-		.usersByUsernameQuery("select name, password, enabled from user where name = ?")
-		.authoritiesByUsernameQuery("select name, user_type from user where name = ?");
-	}
-	
-	@Override
-	protected void configure (HttpSecurity http) throws Exception{
-		http.csrf().disable()
-		.authorizeRequests() //This means we need to authorise all requests
-		.antMatchers("/manager/**").hasAuthority(CommConstants.UserType.MANAGER) //This means for the manager API, allow only those with manager role. ** means anything after /manager/ also controlled
-		.antMatchers("/admin/**").hasAuthority(CommConstants.UserType.AMDIN) //This means for the admin API, allow only those with ADMIN role. ** means anything after /admin/ also controlled
-		.antMatchers("/employee/**").hasAnyAuthority(CommConstants.UserType.AMDIN,CommConstants.UserType.EMPLOYEE,CommConstants.UserType.MANAGER) // This means for users API, allow anyone with either ADMIN or USER role
-		.antMatchers("/").permitAll() //This is the root, means at root level, permit everyone
-		.and().formLogin().loginPage("/login")
-		.and()
-		.exceptionHandling().accessDeniedPage("/accessDenied")
-		.and()
-		.logout().invalidateHttpSession(true)
-		.clearAuthentication(true)
-		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-		.logoutSuccessUrl("/logout-success").permitAll();
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+		// auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+		// 使用自定义身份验证组件
+		auth.authenticationProvider(new CustomAuthenticationProvider(userDetailsService, bCryptPasswordEncoder));
 	}
 
-	  
-	@Bean
-	public PasswordEncoder getPasswordEncoder() { return NoOpPasswordEncoder.getInstance();}
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		//禁用 csrf
+		http.cors().and().csrf().disable().authorizeRequests()
+				//允许以下请求
+				.antMatchers("/hello").permitAll()
+				// 所有请求需要身份认证
+				.anyRequest().authenticated()
+				.and()
+				//验证登陆
+				.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+				//验证token
+				.addFilterBefore(new JWTAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+	}
+
+
 }
-
-

@@ -18,7 +18,6 @@ import com.team1.iss.trial.domain.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
 
-	List<User> findByName(String s);
 	
 //	@Query("Select u.username from User u")
 //	ArrayList<String> findAllUsernames();
@@ -81,7 +80,8 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Transactional
 	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALadmin where user_type LIKE 'ADMIN' ")
 	public void updateAdminAnnualLeave(@Param("ALadmin") int ALadmin);
-	
+
+    User findByUsername(String username);
 };
 
 
