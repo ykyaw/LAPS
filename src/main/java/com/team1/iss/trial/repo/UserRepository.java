@@ -81,7 +81,10 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALadmin where user_type LIKE 'ADMIN' ")
 	public void updateAdminAnnualLeave(@Param("ALadmin") int ALadmin);
 
-    User findByUsername(String username);
+	@Query("select u from User u where u.email=:email and u.password=:password")
+	User login(@Param("email") String email,@Param("password") String password);
+
+//    User findByUsername(String username);
 };
 
 

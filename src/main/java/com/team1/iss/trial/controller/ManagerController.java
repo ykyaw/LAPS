@@ -23,7 +23,7 @@ public class ManagerController {
 		this.mservice = mServiceImpl;
 	}
 	
-	@RequestMapping("")
+	@RequestMapping("/manager/,Home")
 	public String managerHome() {
 		return ("manager/mHome");
 	}

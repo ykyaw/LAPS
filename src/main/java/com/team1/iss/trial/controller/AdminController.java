@@ -51,7 +51,7 @@ public class AdminController {
 		this.aservice = aservicesimpl; //assigning the services to this instance of service
 	}
 	
-	@RequestMapping("")
+	@RequestMapping("/admin/aHome")
 	public String adminHome() {
 		return ("admin/aHome");
 	}

@@ -9,8 +9,6 @@ import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +27,7 @@ public class EmployeeController {
 	@Autowired
 	private IEmployeeService eService;
 
-	@RequestMapping("/employee")
+	@RequestMapping("/employee/eHome")
 	public String user() {
 		return ("employee/eHome");
 	}
@@ -50,8 +48,6 @@ public class EmployeeController {
     // Create a new LA with full LA details info in Body
     @RequestMapping(value = "/employee/la", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody void saveLA(LA la) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Object details = authentication.getDetails();
 		System.out.println(la);
         laService.saveLA(la);
     }
