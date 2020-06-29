@@ -3,6 +3,9 @@ package com.team1.iss.trial.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.team1.iss.trial.domain.User;
+import com.team1.iss.trial.repo.UserRepository;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	
 	 @Autowired
 	 LARepository laRepo;
+
+	 @Autowired
+	 UserRepository userRepository;
+
 	 
 	 
 	 @Override
@@ -52,10 +59,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	 
 	 @Autowired
 	 EmployeeRepository eRepo;
-	 
+
 	 @Override
-	 public List<Employee> findAllEmployees() {
-		return null;
+	 public List<User> findAllUsers() {
+		 List<User> users = userRepository.findAll();
+		 return users;
 	 }
 
 }

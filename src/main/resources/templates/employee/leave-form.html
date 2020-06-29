@@ -7,7 +7,7 @@
 	th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}"
 	rel="stylesheet">
 <!-- jquery core js -->
-<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+<script th:src="@{/assets/js/jquery.min.js}"></script>
 <!-- if you want to use datetime picker need to import  -->
 <script th:src="@{/assets/js/moment-with-locales.min.js}"></script>
 <script th:src="@{/assets/js/transition.js}"></script>
@@ -21,11 +21,13 @@
 <body>
 	<h2>Application for Leave</h2>
 	<main class="row">
-		<form th:action="@{/employee/la}" method="post"
+		<form th:action="@{/employee/la}" method="post" id="form" onsubmit="return check()"
 			class="col-md-6 offset-md-3">
 			<input type="hidden" name="_method" value="put" th:if="${la!=null}" />
 			<input type="hidden" name="uid" th:if="${la!=null}"
 				th:value="${la.uid}">
+			<input type="hidden" name="fromTime"/>
+			<input type="hidden" name="toTime"/>
 			<div class="form-group row">
 				<label for="leavecategory" class="col-sm-2 col-form-label">leave
 					category</label>
@@ -43,7 +45,7 @@
 				<div class="col-sm-10">
 					<input name="reasons" type="text" class="form-control"
 						placeholder="please input leave reason"
-						th:value="${la!=null}?${la.reasons}">
+						th:value="${la!=null}?${la.reasons}:''">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -51,20 +53,20 @@
 				<div class="col-sm-10">
 					<input name="contact" type="text" class="form-control"
 						placeholder="please input contact if on an overseas trip"
-						th:value="${la!=null}?${la.contact}">
+						th:value="${la!=null}?${la.contact}:''">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">duration</label>
 				<div class="row col-sm-10">
-					<div class='col-sm-6 input-group date' id='fromtime'>
-						<input type='text' class="form-control" name="fromTime" /> <span
+					<div class='col-sm-5 input-group date'>
+						<input type='text' class="form-control"  id='fromtime' /> <span
 							class="input-group-addon"> <span
 							class="glyphicon glyphicon-calendar"></span>
 						</span>
 					</div>
-					<div class='col-sm-6 input-group date' id='totime'>
-						<input type='text' class="form-control" name="toTime" /> <span
+					<div class='col-sm-5 input-group date' >
+						<input type='text' class="form-control"id='totime'/> <span
 							class="input-group-addon"> <span
 							class="glyphicon glyphicon-calendar"></span>
 						</span>
@@ -73,10 +75,11 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<labe class="col-sm-2 col-form-label">dissemination</label>
+				<label class="col-sm-2 col-form-label">dissemination</label>
 				<div class="col-sm-10">
 					<select class="form-control" name="dissemination"
-						th:value="${la!=null}?${la.dissemination.uid}">
+						th:value="${la!=null}?${la.dissemination.uid}:null">
+						<option th:value="null"></option>
 						<option th:each="employee:${employees}"
 							th:selected="${la!=null}?${la.dissemination.uid == employee.uid}" th:value="${employee.uid}"
 							th:text="${employee.name}">1</option>
@@ -84,19 +87,12 @@
 				</div>
 			</div>
 			<button type="submit" class="btn btn-primary btn-lg btn-block"
-				th:text="${la!=null}?'update':'submit'">submit</button>
+				th:text="${la!=null}?'update':'submit'" id="submit">submit</button>
 		</form>
 	</main>
 
-	<script type="text/javascript">
-		$(function() {
-			$('#fromtime').datetimepicker({
-                format: 'L'//L date only; LT time only
-            });
-			$('#totime').datetimepicker({
-                format: 'L'
-            });
-		});
+	<script type="text/javascript" th:src="@{/assets/js/submitLA.js}">
+
 	</script>
 </body>
 </html>

@@ -7,6 +7,7 @@ import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,13 +39,18 @@ public class EmployeeController {
 		applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
 		applicationType.add(CommConstants.LeaveType.COMPENSATION_LEAVE);
 		model.addAttribute("types", applicationType);
-		List<Employee> employees = eService.findAllEmployees();
-		if(employees==null) {
-			employees=new ArrayList<>();
-		}
-		model.addAttribute("employees",employees);
+		List<User> users = eService.findAllUsers();
+		model.addAttribute("employees",users);
 		return "employee/leave-form";
 	}
+
+    // Create a new LA with full LA details info in Body
+    @RequestMapping(value = "/employee/la", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public @ResponseBody void saveLA(LA la) {
+        System.out.println(la);
+//        laServiceImpl.saveLA(la);
+    }
+
 	
 	// Get All LAs
 	@RequestMapping(value = "/employee/las", method = RequestMethod.GET)
@@ -67,11 +73,7 @@ public class EmployeeController {
 		return "laDetails";
 	}
 
-	// Create a new LA with full LA details info in Body
-	@RequestMapping(value = "/employee/la", method = RequestMethod.POST)
-	public void saveLA(@RequestBody LA la) {
-		laServiceImpl.saveLA(la);
-	}
+
 
 	// Update an existing LA with udpated Body, not sure how to input uid
 	@RequestMapping(value = "/employee/la/{uid}", method = RequestMethod.PUT)
