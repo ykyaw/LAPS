@@ -11,7 +11,7 @@
 <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
-	<h2>View Leave History</h2>
+	<h2>Personal Leave History</h2>
 	<table class="table table-bordered table-hover">
 	  <thead>
 		<tr>
@@ -20,16 +20,19 @@
 			<th scope="col">No. of Days</th>
 			<th scope="col">Leave Type</th>
 			<th scope="col">Status</th>
+			<th scope="col"></th>
 		</tr>
 	</thead>		
 		<tbody>
 		<tr>
 			<tr th:each="la:${laList}">					  
-			<td th:utext="${#dates.format(la.fromTime, dd MMM yyyy')}"></td>
-			<td th:utext="${#dates.format(la.toTime, dd MMM, yyyy')}"></td>
-			<td th:text="${la.duration}"></td>
-			<td th:text="${employee.type}"></td>
-			<td th:text="${employee.status}"></td>
+			<td th:utext="${#dates.format(la.fromTime * 1000, 'dd MMM yyyy')}"></td>
+			<td th:utext="${#dates.format(la.toTime * 1000, 'dd MMM yyyy')}"></td>
+			<td>Calculation of Duration</td>
+			<td th:text="${la.type}"></td>
+			<td th:text="${la.status}"></td>
+			<td><a href="laDetails.html"
+				th:href="@{/employee/laDetails/}+${la.uid}">View Details</a></td>
 		</tr>
 	</table>
 </body>
