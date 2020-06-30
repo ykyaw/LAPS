@@ -49,7 +49,7 @@
 		</fieldset>
 		<fieldset>
 			Email: <input type="text" th:field="*{email}" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-			<!--<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>  -->
+			<p th:if="${errormsg != null}" th:utext="${errormsg}" style="color: red" ></p>
 		</fieldset>
 		
 		<!-- <fieldset>

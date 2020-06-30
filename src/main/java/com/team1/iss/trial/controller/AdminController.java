@@ -61,10 +61,6 @@ import com.team1.iss.trial.services.interfaces.IAdminService;
 @RequestMapping("/admin")
 public class AdminController {
 	
-//	@InitBinder
-//	protected void InitBinder(WebDataBinder binder) {
-//		binder.addValidators(new AdminValidator());
-//	}
 	@Autowired
 	private IAdminService aservice; // Remember to create the service INTERFACE, not the service class
 	
@@ -149,6 +145,14 @@ public class AdminController {
 	
 	@RequestMapping("/save")
 	public String saveUser(@ModelAttribute("usertohtml") User user, Model model) {
+		User u = user;
+		if (aservice.isEmailAlreadyInUse(u.getEmail())) {
+			String errormsg= "User already exist. Please re-enter the email address." ;
+			List<Manager> m1 = aservice.findAllManager(); 
+			model.addAttribute("managertohtml",m1);
+			model.addAttribute("errormsg", errormsg);
+			return "admin/acreateuser";
+		}
 		aservice.saveNewUser(user);
 		int newlyaddedUID = aservice.findlatestUID();
 		aservice.updateUserManager(user.getManager().getUid(), newlyaddedUID);	

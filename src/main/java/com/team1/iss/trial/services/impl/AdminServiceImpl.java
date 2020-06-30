@@ -235,10 +235,15 @@ public class AdminServiceImpl implements IAdminService {
 	}
 	
 	@Override
-    public String checkForDuplicate(User user) {
-       
-        return uRepo.findEmail(user.getEmail());
-    }
+	public boolean isEmailAlreadyInUse (String email) {
+		boolean inUse= false;
+		if (uRepo.findEmail(email)!= null) {
+			inUse = true;
+		}
+		return inUse;
+	}
+
+	
 
 }
 
