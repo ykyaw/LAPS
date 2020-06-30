@@ -1,11 +1,17 @@
 package com.team1.iss.trial.services.impl;
 
+import com.team1.iss.trial.common.utils.TimeUtil;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.repo.LARepository;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,5 +66,11 @@ public class LaServiceImpl implements ILaService {
     //Remove the LA
     public void deleteLA(int id) {
         larepo.delete(larepo.findById(id).get());
+    }
+
+    @Override
+    public List<LA> findLaByOwnerId(int uid) {
+        List<LA> las = larepo.findAllLeaveByOwnerId(uid, TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
+        return las;
     }
 }

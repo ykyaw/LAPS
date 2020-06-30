@@ -4,10 +4,13 @@ import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.Employee;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.User;
+import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +28,9 @@ public class EmployeeController {
 
 	@Autowired
 	private IEmployeeService eService;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@RequestMapping("/employee")
 	public String user() {
@@ -50,7 +56,11 @@ public class EmployeeController {
         System.out.println(la);
 //        laServiceImpl.saveLA(la);
     }
-
+	@RequestMapping(value = "/employee/la", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public @ResponseBody void updateLA( LA la) {
+		System.out.println(la);
+//        laServiceImpl.saveLA(la);
+	}
 	
 	// Get All LAs
 	@RequestMapping(value = "/employee/las", method = RequestMethod.GET)
@@ -87,9 +97,13 @@ public class EmployeeController {
 		laServiceImpl.deleteLA(uid);
 	}
 
-	@RequestMapping("/employee/lalist")
+	@RequestMapping("/employee/las")
 	public String la(Model model) {
-		model.addAttribute("laList", eService.findAllLeave());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		int uid=userRepository.findUserUidByEmail(email);
+		List<LA> las=laServiceImpl.findLaByOwnerId(uid);
+		model.addAttribute("laList", las);
 		return ("employee/lalist");
 	}
 

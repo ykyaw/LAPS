@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.User;
-
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 public interface UserRepository extends JpaRepository<User, Integer>{
@@ -40,6 +40,9 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 //			+ "where uid=:#{#user.uid}")
 //	public void updateUserType(@Param("user") User user);
 	
+
+	@Query(value = "select uid from user where email=:email",nativeQuery = true)
+	int findUserUidByEmail(@Param("email") String email);
 
 	@Modifying
 	@Transactional
