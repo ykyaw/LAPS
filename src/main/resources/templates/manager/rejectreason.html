@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Reject Reason</title>
+</head>
+<body>
+<h1> Reject Reason</h1>
+
+	<form th:action="@{/manager/rejectapplication}" th:object="${rejectreason}"
+		method="get">
+		<textarea th:text="${rejectreason}" name="rejectreason"
+			placeholder="Please enter your reject reason" required></textarea>
+		<br />
+		
+			<button type="submit" th:object="${rejectreason}">Submit</button>
+	</form>
+
+</body>
+</html>
