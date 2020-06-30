@@ -23,6 +23,10 @@ public class ManagerController {
 		this.mservice = mServiceImpl;
 	}
 	
+	public void tksourcetreetest() {
+		
+	}
+	
 	@RequestMapping("")
 	public String managerHome() {
 		return ("manager/mHome");
