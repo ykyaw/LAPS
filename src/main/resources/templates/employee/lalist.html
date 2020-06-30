@@ -26,8 +26,8 @@
 		<tbody>
 		<tr>
 			<tr th:each="la:${laList}">					  
-			<td th:utext="${#dates.format(la.fromTime * 1000, 'dd MMM yyyy')}"></td>
-			<td th:utext="${#dates.format(la.toTime * 1000, 'dd MMM yyyy')}"></td>
+			<td th:utext="${#dates.format(la.fromTime, 'yyyy-MM-dd HH:mm')}"></td>
+			<td th:utext="${#dates.format(la.toTime, 'yyyy-MM-dd HH:mm')}"></td>
 			<td>Calculation of Duration</td>
 			<td th:text="${la.type}"></td>
 			<td th:text="${la.status}"></td>
