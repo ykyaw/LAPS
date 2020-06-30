@@ -62,16 +62,22 @@ public class EmployeeController {
 	}
 
 	/**
-	 * submit leave application
+	 * ubmit leave application
 	 * @param la
+	 * @param model
+	 * @return
 	 */
 	@PostMapping("/employee/la")
-    public String saveLA( LA la) {
+    public String saveLA( LA la,Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		int uid=userRepository.findUserUidByEmail(email);
 		la.setOwner(new Employee(uid));
 		la.setStatus(CommConstants.ApplicationStatus.APPLIED);
+		if(la.getToTime()-la.getFromTime()<=0){
+			model.addAttribute("msg","the to time can not less than from time");
+			return "/employee/apply";
+		}
         System.out.println(la);
 		laService.saveLA(la);
 		return "redirect:/employee/las";
