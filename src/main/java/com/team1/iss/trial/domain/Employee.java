@@ -87,6 +87,4 @@ public class Employee extends User{
 		this.laList = laList;
 	}
 
-	
-
 }

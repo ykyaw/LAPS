@@ -23,8 +23,8 @@
     <tbody>
     <tr>
     <tr th:each="ot:${ots}">
-        <td th:utext="${#dates.format(ot.startTime * 1000, 'dd MMM yyyy')}"></td>
-        <td th:utext="${#dates.format(ot.endTime * 1000, 'dd MMM yyyy')}"></td>
+        <td th:utext="${#dates.format(ot.startTime, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:utext="${#dates.format(ot.endTime, 'yyyy-MM-dd HH:mm')}"></td>
         <td th:text="${ot.status}"></td>
     </tr>
 </table>

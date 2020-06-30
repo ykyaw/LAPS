@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.impl.ManagerServiceImpl;
 import com.team1.iss.trial.services.interfaces.ILaService;
@@ -34,6 +35,14 @@ public class ManagerController {
 	public void setLaservice(LaServiceImpl laserviceimpl) {
 		this.laservice = laserviceimpl;
 	}
+	
+//	@Autowired
+//	private IOverTimeService otservice;
+//	
+//	@Autowired
+//	public void setOtservice(OverTimeServiceImpl otserviceimpl) {
+//		this.otserivce = otserviceimpl;
+//	}
 	
 	
 	@RequestMapping("")
@@ -87,6 +96,32 @@ public class ManagerController {
 		return "/manager/rejectreason";
 	}
 	
+	//Compensation Claims
+	@RequestMapping("/compensationclaims")
+	public String compensationclaims(Model model) {
+		model.addAttribute("compensationclaims",mservice.findClaims());
+		return "/manager/compensationclaims";	
+	}
+	
+//	//Approve Claim
+//	@RequestMapping("/approveclaim/{uid}")
+//	public String approveClaim(@PathVariable("uid") int uid, Model model) {
+//		OverTime ot=otservice.getOverTimeById(uid);
+//		ot.setStatus(CommConstants.ClaimStatus.APPROVED);
+//		mservice.saveOverTime(ot);
+//		model.addAttribute("ot", ot);
+//		return "/manager/compensationclaims";
+//	}
+//		
+//	//Reject Claim
+//	@RequestMapping("/rejectclaim/{uid}")
+//	public String rejectClaim(@PathVariable("uid") int uid, Model model) {
+//		LA la=laservice.getLaById(uid);
+//		la.setStatus(CommConstants.ClaimStatus.REJECTED);
+//		mservice.saveOverTime(ot);
+//		model.addAttribute("ot", ot);
+//		return "/manager/compensationclaims";
+//	}
 }
 
 

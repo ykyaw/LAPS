@@ -62,6 +62,9 @@ public interface LARepository extends JpaRepository<LA, Integer>, JpaSpecificati
 	@Query(value = "SELECT * FROM la  where status="+CommConstants.ApplicationStatus.APPROVED ,nativeQuery = true)
 	public List<LA> getApprovedLA();
 
-	@Query(nativeQuery = true, value = "select * from la where status in ('APPLIED','UPDATED')")
-	public ArrayList<LA> getPendingLA();
+	@Query(value = "SELECT a FROM LA a where a.status in ('APPLIED','UPDATED') order by a.owner.uid")
+	public List<LA> getPendingLA();
+	
+	@Query(value = "SELECT a from LA a where owner_id=?1 order by uid desc")
+	public ArrayList<LA> findLAByOwnerId(int uid);
 }

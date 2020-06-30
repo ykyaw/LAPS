@@ -3,6 +3,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Confirmation</title>
+	<th:block th:include = "common :: header"></th:block>
+	<th:block th:include = "common :: navbar"></th:block>
+	<!-- Bootstrap core CSS -->
+	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+	<!-- jquery core js -->
+	<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+	<!-- Bootstrap core js -->
+	<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
 <h1>Confirmation</h1>
@@ -10,7 +18,6 @@
 <h2>  you have <span th:text="${la.status}"> made a decision on </span> this application.</h2>
 	<table class="w3-container" width="100%">
 		<tr>
-
 			<td th:text="${la.uid}">ID</td>
 			<td th:text="${la.owner.uid}">User ID</td>
 			<td th:text="${la.owner.name}">Applicant ID</td>
@@ -23,15 +30,9 @@
 			<td th:text="${la.contact}">Contact</td> 
 		</tr>	
 	</table>
-
 	<div>
-		<a th:href="@{/manager/listforapproval}">Back to
-			View Applications pending approval</a>
-
+		<a th:href="@{/manager/listforapproval}">Back to View Applications pending approval</a>
 	</div>
-
-
-
-
+	<th:block th:include = "common :: footer"></th:block>
 </body>
 </html>

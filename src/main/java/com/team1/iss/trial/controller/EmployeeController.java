@@ -9,6 +9,7 @@ import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import com.team1.iss.trial.services.interfaces.ILaService;
+import com.team1.iss.trial.services.interfaces.IOverTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -33,6 +34,9 @@ public class EmployeeController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private IOverTimeService overTimeService;
 
 	@RequestMapping("/employee")
 	public String user() {
@@ -133,24 +137,42 @@ public class EmployeeController {
 		return ("employee/lalist");
 	}
 
+	/**
+	 * show the claim compensation page
+	 * @return
+	 */
 	@GetMapping("/employee/ot")
 	public String otPage(){
 		return "employee/ot";
 	}
 
 	/**
-	 * show the claim compensation page
+	 * claim an overtime
 	 * @param ot
 	 * @return
 	 */
 	@PostMapping("/employee/ot")
 	public String submitOT(OverTime ot){
-		return "/employee/ots";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		int uid=userRepository.findUserUidByEmail(email);
+		ot.setOwner(new Employee(uid));
+		ot.setStatus(CommConstants.ClaimStatus.APPLIED);
+		overTimeService.saveOt(ot);
+		return "redirect:/employee/ots";
 	}
 
+	/**
+	 * show the overtime list page
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/employee/ots")
 	public String otsPage(Model model){
-		List<OverTime> ots=new ArrayList<>();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		int uid=userRepository.findUserUidByEmail(email);
+		List<OverTime> ots=overTimeService.findOtByOwnerId(uid);
 		model.addAttribute("ots",ots);
 		return "employee/otList";
 	}

@@ -24,5 +24,10 @@ public class CommConstants {
 		public static final String REJECTED="REJECTED";
 		public static final String APPROVED="APPROVED";
 	}
-
+	
+	public static class ClaimStatus{
+		public static final String APPLIED="APPLIED";
+		public static final String REJECTED="REJECTED";
+		public static final String APPROVED="APPROVED";
+	}
 }

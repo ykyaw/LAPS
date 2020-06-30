@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="ISO-8859-1">
-	<title>Manager Home Page</title>
+<meta charset="ISO-8859-1">
+<title>Manager Home Page</title>
 	<th:block th:include = "common :: header"></th:block>
 	<th:block th:include = "common :: navbar"></th:block>
+	<!-- Bootstrap core CSS -->
+	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+	<!-- jquery core js -->
+	<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+	<!-- Bootstrap core js -->
+	<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
 	<h1>welcome Manager!</h1>
 	<h2>This is the main page for managers. He access his services from here, or click on "Manage Personal Leave" to be directed to employee homepage for leave booking</h2>
 	<a href="/employee"><button> Manage Personal Leave</button></a>
 	<br>
-	<a href ="/manager/listforapproval"> <button>View Applications for Approval</button></a>
-	<a href ="/"> <button>View Employee Leave History</button></a>
-	<a href ="/"> <button>Approve/reject Leave</button></a>
-	 <a href ="/"> <button>Approve/Reject Compensation Claim</button></a>
+	<a href ="/manager/listforapproval"><button>View Applications for Approval</button></a>
+	<a href ="/manager/compensationclaims"><button>Compensation Claims</button></a>
 	<th:block th:include = "common :: footer"></th:block>
 </body>
 </html>

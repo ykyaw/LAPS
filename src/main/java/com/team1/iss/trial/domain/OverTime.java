@@ -1,12 +1,6 @@
 package com.team1.iss.trial.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class OverTime {
@@ -18,8 +12,8 @@ public class OverTime {
 	private long startTime;
 	@Column
 	private long endTime;
-	@ManyToOne
-	@JoinColumn(name = "ownerId",insertable = false, updatable = false)
+	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
+	@JoinColumn(name = "ownerId")
 	private Employee owner;
 	@Column
 	private String status;
@@ -47,7 +41,7 @@ public class OverTime {
 		return status;
 	}
 
-	public void setStatu(String status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

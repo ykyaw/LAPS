@@ -3,12 +3,18 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Individual Application Details</title>
+	<th:block th:include = "common :: header"></th:block>
+	<th:block th:include = "common :: navbar"></th:block>
+	<!-- Bootstrap core CSS -->
+	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+	<!-- jquery core js -->
+	<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+	<!-- Bootstrap core js -->
+	<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
 
-<h1>Individual Application Details</h1>
-
-	<h1>Individual Application Details</h1>
+<h1>Individual Application Details</h1>7
 
 	<table style="width: 100%" class="w3-container">
 		<!-- 			<tr>
@@ -40,6 +46,6 @@
 
 		<a class="button" th:href="@{/manager/rejectreasonkeyin/}+${la.uid}">Reject</a>
 	</div>
-
+	<th:block th:include = "common :: footer"></th:block>
 </body>
 </html>

@@ -3,24 +3,40 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Leave Application for Approval</title>
+	<th:block th:include = "common :: header"></th:block>
+	<th:block th:include = "common :: navbar"></th:block>
+	<!-- Bootstrap core CSS -->
+	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+	<!-- jquery core js -->
+	<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+	<!-- Bootstrap core js -->
+	<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<h1>Leave Application for Approval</h1>
-	<h2 th:if="${not #lists.isEmpty(listforapproval)}">Leave Application for Approval</h2>
-	<table class="w3-container" th:if="${not #lists.isEmpty(listforapproval)}">
-		<tr th:each="la:${listforapproval}">
-			<td th:text=${la.uid}>ID</td>
-			<td th:text=${la.owner.uid}>Applicant ID</td>
-			<td th:text=${la.owner.name}>Applicant Name</td>
-			<td th:text=${la.fromTime}>Leave Period From </td>
-			<td th:text=${la.toTime}>Leave Period To</td>
-<!-- 			<td th:text=${la.type}>Leave Type</td>
-			<td th:text=${la.reason}>Reason for Leave</td>
-			<td th:text=${la.disseminationId}>Dissemination</td>
-			<td th:text=${la.rcontact}>Contact</td> -->
-			<td><a href="individualapplication.html"
-				th:href="@{/manager/individual/}+${la.uid}" >View Details</a></td>
-		</tr>
+	<h1 th:if="${not #lists.isEmpty(listforapproval)}">Leave Application for Approval</h1>
+	<table class="table table-bordered table-hover" th:if="${not #lists.isEmpty(listforapproval)}">
+		<thead>
+			<tr>
+				<th scope="col">Employee ID</th>
+				<th scope="col">Name</th>
+				<th scope="col">Start Date</th>
+				<th scope="col">End Date</th>
+				<th scope="col">Leave History</th>
+				<th scope="col">View Details</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="la:${listforapproval}">
+				<td th:text=${la.owner.uid}></td>
+				<td th:text=${la.owner.name}></td>
+				<td th:utext="${#dates.format(la.fromTime, 'dd MMM yyyy')}"></td>
+				<td th:utext="${#dates.format(la.toTime, 'dd MMM yyyy')}"></td>
+				<td><a href="i#"
+					th:href="@{/employee/lalist/}+${la.owner.uid}">Leave History</a></td>
+				<td><a href="individualapplication.html"
+					th:href="@{/manager/individual/}+${la.uid}">View Details</a></td>
+			</tr>
 	</table>
+	<th:block th:include = "common :: footer"></th:block>
 </body>
 </html>
