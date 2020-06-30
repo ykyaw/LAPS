@@ -1,6 +1,7 @@
 package com.team1.iss.trial.services.interfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -11,8 +12,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.team1.iss.trial.domain.Manager;
+import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.domain.FormEditUser;
+import com.team1.iss.trial.domain.FormPh;
 
 
 
@@ -40,6 +43,8 @@ public interface IAdminService {
 	public boolean updateProfAnnualLeave(int profAL);
 	public boolean updateAdminAnnualLeave(int adminAL);
 	Page<User> getPaginatedUsers(Pageable pageable);
+	public List<PublicHoliday> getAllPH();
+	boolean savePh(FormPh phform);
 	
 }
 
