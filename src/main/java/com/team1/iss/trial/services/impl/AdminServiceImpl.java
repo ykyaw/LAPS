@@ -144,24 +144,23 @@ public class AdminServiceImpl implements IAdminService {
 
 
 
-	@Override
-	public boolean saveUser(User u) {
-		if(uRepo.save(u)!=null) {
-			return true;
-		}
-		else return false;
-	}
+//	@Override
+//	public boolean saveUser(User u) {
+//		if(uRepo.save(u)!=null) {
+//			return true;
+//		}
+//		else return false;
+//	}
 
 	@Override
 	public String findUserManagerby(int uid) {
 		return uRepo.findUserManagerName(uid);
 	}
 
-	@Override
-	public User findUserByUsername(String username) {
-		return null;
-	}
-
+//	@Override
+//	public User findUserByUsername(String username) {
+//		return null;
+//	}
 
 	@Override
 	public int findlatestUID() {
@@ -181,6 +180,29 @@ public class AdminServiceImpl implements IAdminService {
 	}
 	
 	@Override
+	public boolean updateAdminAnnualLeave(int adminAL) {
+		uRepo.updateAdminAnnualLeave(adminAL);
+		return true;
+	}
+	
+
+//	@Override
+//	public ArrayList<String> findAllUsernames() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+	@Override
+	public ArrayList<User> getAllUsers(String word) {
+		return uRepo.findByName(word);
+	}
+
+	@Override
+	public PublicHoliday getPh(int uid) {
+		return pRepo.findById(uid).get();
+	}
+	
+	@Override
 	public List<PublicHoliday> getAllPH() {
 		return pRepo.findAll();
 	}
@@ -194,27 +216,34 @@ public class AdminServiceImpl implements IAdminService {
 		ph.setDay(millisecondsSinceEpoch);
 		ph.setName(phform.getName());
 		pRepo.save(ph);
-		return true;
-		
+		return true;		
 	}
-
+	
 	@Override
-	public boolean updateAdminAnnualLeave(int adminAL) {
-		uRepo.updateAdminAnnualLeave(adminAL);
+	public boolean updatePh(FormPh phform) {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String stringDate = phform.getDay();
+		long millisecondsSinceEpoch = LocalDate.parse(stringDate, dateFormatter).atStartOfDay(ZoneId.of("Asia/Singapore")).toInstant().toEpochMilli();
+		pRepo.updatePH(phform.getUid(),millisecondsSinceEpoch,phform.getName());
+		return false;
+	}
+	
+	@Override
+	public boolean deletePh(int uid) {
+		pRepo.deleteById(uid);
 		return true;
 	}
 	
-
 	@Override
-	public ArrayList<String> findAllUsernames() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean isEmailAlreadyInUse (String email) {
+		boolean inUse= false;
+		if (uRepo.findEmail(email)!= null) {
+			inUse = true;
+		}
+		return inUse;
 	}
 
-	@Override
-	public ArrayList<User> getAllUsers(String word) {
-		return uRepo.findByName(word);
-	}
+	
 
 }
 

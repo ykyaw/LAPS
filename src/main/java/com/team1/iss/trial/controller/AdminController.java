@@ -1,7 +1,6 @@
 package com.team1.iss.trial.controller;
 
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -20,21 +19,24 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+
+
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -50,14 +52,7 @@ import com.team1.iss.trial.domain.MassLeaveForm;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.domain.FormEditUser;
 import com.team1.iss.trial.domain.FormPh;
-import com.team1.iss.trial.domain.LA;
-import com.team1.iss.trial.repo.ManagerRepository;
 
-import com.team1.iss.trial.domain.Admin;
-import com.team1.iss.trial.domain.Employee;
-import com.team1.iss.trial.domain.Manager;
-import com.team1.iss.trial.domain.User;
-import com.team1.iss.trial.repo.UserRepository;
 
 import com.team1.iss.trial.services.impl.AdminServiceImpl;
 import com.team1.iss.trial.services.interfaces.IAdminService;
@@ -99,11 +94,11 @@ public class AdminController {
             List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-		model.addAttribute("userList", userpage.getContent());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("currentuseremail", auth.getName());
+        model.addAttribute("userList", userpage.getContent());
 		return "admin/aShowAllUsers";
 	}
-	
-	
 	
 	
 	@RequestMapping("/updatemg/{uid}")
@@ -150,6 +145,14 @@ public class AdminController {
 	
 	@RequestMapping("/save")
 	public String saveUser(@ModelAttribute("usertohtml") User user, Model model) {
+		User u = user;
+		if (aservice.isEmailAlreadyInUse(u.getEmail())) {
+			String errormsg= "User already exist. Please re-enter the email address." ;
+			List<Manager> m1 = aservice.findAllManager(); 
+			model.addAttribute("managertohtml",m1);
+			model.addAttribute("errormsg", errormsg);
+			return "admin/acreateuser";
+		}
 		aservice.saveNewUser(user);
 		int newlyaddedUID = aservice.findlatestUID();
 		aservice.updateUserManager(user.getManager().getUid(), newlyaddedUID);	
@@ -176,10 +179,12 @@ public class AdminController {
 	
 	@RequestMapping(value = "search", method = RequestMethod.GET)
 	public String getUser(@RequestParam (value = "word", required = false) String word, Model model) {
-		
+		if (word.isEmpty()) {
+			return "forward:/admin/list";
+		}
 		List<User> users= aservice.getAllUsers(word); //check to name and email
 	    model.addAttribute("users", users);
-	    return "admin/aSearchedResults";
+	    return "forward:/admin/list";
 	}
 	
 	@RequestMapping("/ph")
@@ -198,9 +203,33 @@ public class AdminController {
 		return "admin/aFormPubholiday";
 	}
 	
-	@RequestMapping("/saveph")
+	//Create public holiday
+	@RequestMapping(value = "/saveph", method = RequestMethod.POST)
 	public String savePh(@ModelAttribute("phform") FormPh phform) {
 		aservice.savePh(phform);
+		return "forward:/admin/ph";
+	}
+	
+	//Retrieve public holiday for editing
+	@RequestMapping(value= "/editph/{uid}", method = RequestMethod.GET) 
+	public String editPh(Model model, @PathVariable int uid) {
+		PublicHoliday ph = aservice.getPh(uid);
+		FormPh phf = new FormPh(ph.getUid(), TimeUtil.convertTimestampToyyyMMdd(ph.getDay()), ph.getName());	
+		model.addAttribute("phf", phf);
+		return "/admin/aEditPubholiday";
+	}
+	
+	//Update public holiday
+	@RequestMapping(value = "/updateph", method = RequestMethod.POST)
+	public String updatePh(@ModelAttribute("phform") FormPh phform) {	
+		aservice.updatePh(phform);
+		return "forward:/admin/ph";
+	}
+	
+	//Delete
+	@RequestMapping(value = "/delph/{uid}", method = RequestMethod.GET) 
+	public String deletePh(@PathVariable int uid) {
+		aservice.deletePh(uid);
 		return "forward:/admin/ph";
 	}
 

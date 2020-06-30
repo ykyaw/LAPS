@@ -7,34 +7,31 @@
 <body>
 <h1>Confirmation</h1>
 
- <form action="#" th:object="${la}" method="get">
- 	
-		<fieldset>
-			<table class="w3-container">
-				<h2>  you have <span th:text=${la.status}> made a desicion on </span> this aaplication</h2>
-				<tr >
-					<td th:text=${la.uid}>ID</td>
-					<td th:text=${la.owner}>Applicant ID</td>
-					<td th:text=${la.fromTime}>Leave Period From</td>
-					<td th:text=${la.toTime}>Leave Period To</td>
-					<td th:text=${la.type}>Leave Type</td>
-					<td th:text=${la.reason}>Reason for Leave</td>
-					<td th:text=${la.disseminationId}>Dissemination</td>
-					<td th:text=${la.rcontact}>Contact</td>
-					
-				</tr>
-			</table>
-		</fieldset>
-			<fieldset>
-			<button type="submit" th:formaction="@{/manager/listforapproval}">Back to View Applications pending approval</button>
-	
-		</fieldset>
-		
-		
-				
+<h2>  you have <span th:text="${la.status}"> made a decision on </span> this application.</h2>
+	<table class="w3-container" width="100%">
+		<tr>
+
+			<td th:text="${la.uid}">ID</td>
+			<td th:text="${la.owner.uid}">User ID</td>
+			<td th:text="${la.owner.name}">Applicant ID</td>
+			<td th:text="${la.fromTime}">Leave Period From</td>
+			<td th:text="${la.toTime}">Leave Period To</td>
+			<td th:text="${la.type}">Leave Type</td>
+			<td th:text="${la.reasons}">Reason for Leave</td>
+			<td th:text="${la.rejectReason}" th:if="${la.rejectReason!=null}">Reject Reason</td>
+			<td th:text="${la.dissemination.uid}" th:if="${la.dissemination!=null}">Dissemination</td>
+			<td th:text="${la.contact}">Contact</td> 
+		</tr>	
+	</table>
+
+	<div>
+		<a th:href="@{/manager/listforapproval}">Back to
+			View Applications pending approval</a>
+
+	</div>
 
 
-	</form> 
+
 
 </body>
 </html>

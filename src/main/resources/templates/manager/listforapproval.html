@@ -10,7 +10,8 @@
 	<table class="w3-container" th:if="${not #lists.isEmpty(listforapproval)}">
 		<tr th:each="la:${listforapproval}">
 			<td th:text=${la.uid}>ID</td>
-			<td th:text=${la.owner}>Applicant ID</td>
+			<td th:text=${la.owner.uid}>Applicant ID</td>
+			<td th:text=${la.owner.name}>Applicant Name</td>
 			<td th:text=${la.fromTime}>Leave Period From </td>
 			<td th:text=${la.toTime}>Leave Period To</td>
 <!-- 			<td th:text=${la.type}>Leave Type</td>

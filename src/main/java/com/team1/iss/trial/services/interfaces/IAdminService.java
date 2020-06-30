@@ -30,9 +30,8 @@ public interface IAdminService {
 	public boolean saveNewUser(User user);
 	
 	public ArrayList<User> findAll();
-	public boolean saveUser(User u);
-	public ArrayList<String> findAllUsernames();
-	public User findUserByUsername(String username);
+
+
 	public User findUserById(Integer id);
 
 	public ArrayList<Manager> findAllManager();
@@ -44,9 +43,17 @@ public interface IAdminService {
 	Page<User> getPaginatedUsers(Pageable pageable);
 	public List<PublicHoliday> getAllPH();
 	boolean savePh(FormPh phform);
+	boolean updatePh(FormPh phform);
 	
 	public ArrayList<User> getAllUsers(String word);
+	public PublicHoliday getPh(int uid);
+	public boolean deletePh(int uid);
 	
+//	public boolean saveUser(User u);
+//	public User findUserByUsername(String username);
+//	public ArrayList<String> findAllUsernames();
+	
+	public boolean isEmailAlreadyInUse (String email);
 }
 
 	

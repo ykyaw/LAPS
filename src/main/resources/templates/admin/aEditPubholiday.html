@@ -21,11 +21,11 @@
 <body>
 
 
-	<h2> Public Holiday</h2>
+	<h2>Edit Public Holiday</h2>
 	<a class="nav-item nav-link active" href ="/"> <Button>Admin Home</Button> <span class="sr-only"></span></a>
 
 
-	<div class="row" th:if="${phform != null && !phform.isEmpty()}">
+<!-- 	<div class="row" th:if="${phform != null && !phform.isEmpty()}">
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
 			<table id="link-list" class="table" style="width: 100%">
@@ -41,21 +41,30 @@
 						<th scope="row" th:text=${ph.uid}>Id</th>
 						<td th:text=${ph.day}>Date</td>
 						<td th:text=${ph.name}>Reason</td>
-												<td>
-						<a th:href="@{/admin/editph/}+${ph.uid}" ><button>Edit</button></a>
-						<a th:href="@{/admin/delph/}+${ph.uid}"  ><button>Delete</button></a>
-						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="col-md-2"></div>
 	</div>
+ -->
 
-	<h2> Add New Public Holiday</h2>
 	<main class="row">
-		<form action="#" th:object="${phform2}" th:action="@{/admin/saveph}"
-			method="post" class="col-md-6 offset-md-3">
+		<form action="#" th:object="${phf}" th:action="@{/admin/updateph}"
+			method="post" class="col-md-6 offset-md-3" >
+
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Entry: </label>
+				<div class="col-sm-10">
+					<input name="reasons" type="text" class="form-control"
+						placeholder="Public Holiday, Off-in-lieu etc..."
+						th:field="*{uid}" readonly>
+				</div>
+			</div>
+
+
+
 
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Date</label>
