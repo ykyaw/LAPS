@@ -20,7 +20,7 @@ import com.team1.iss.trial.domain.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
 
-	List<User> findByName(String s);
+//	List<User> findByName(String s);
 	
 //	@Query("Select u.username from User u")
 //	ArrayList<String> findAllUsernames();
@@ -87,6 +87,12 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	//Pagination
 	Page<User> findAll(Pageable pageable);
 	
+
+//	@Query("select u from User u where name like '%word%' ")
+//	public List<User> findByName(@Param("word") String word);
+	
+	@Query("select u from User u where u.name like %?1% OR email like %?1% ") 
+	public ArrayList<User> findByName(@Param("word") String word);
 };
 
 
