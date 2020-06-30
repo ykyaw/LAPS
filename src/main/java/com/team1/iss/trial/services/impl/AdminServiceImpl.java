@@ -1,11 +1,14 @@
 package com.team1.iss.trial.services.impl;
 
 import java.util.ArrayList;
+
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -51,6 +54,11 @@ public class AdminServiceImpl implements IAdminService {
 	public ArrayList<User> findAll() {
 		ArrayList<User> list = (ArrayList<User>) uRepo.findAll();
 		return list;
+	}
+	
+	@Override
+	public Page<User> getPaginatedUsers(Pageable pageable){
+		return uRepo.findAll(pageable);		
 	}
 
 	@Override
@@ -172,5 +180,11 @@ public class AdminServiceImpl implements IAdminService {
 		return null;
 	}
 
+	@Override
+	public ArrayList<User> getAllUsers(String word) {
+		return uRepo.findByName(word);
+	}
+
+	
 }
 

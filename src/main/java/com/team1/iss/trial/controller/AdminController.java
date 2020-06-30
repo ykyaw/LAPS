@@ -4,11 +4,15 @@ package com.team1.iss.trial.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.validation.Valid;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team1.iss.trial.common.CommConstants;
 
@@ -56,15 +62,32 @@ public class AdminController {
 		return ("admin/aHome");
 	}
 	
+	/*
+	 * @RequestMapping("/list") public String list(Model model) { List<User> u1 =
+	 * aservice.findAll(); for(User u:u1) { u.setPassword(""); //so as not to send
+	 * password over } model.addAttribute("userlist", u1); return
+	 * "admin/aShowAllUsers"; }
+	 */
+	
 	@RequestMapping("/list")
-	public String list(Model model) {
-		List<User> u1 = aservice.findAll();
-		for(User u:u1) {
-			u.setPassword(""); //so as not to send password over
-		}
-		model.addAttribute("userlist", u1);
+	public String list() {
+		return "forward:/admin/list/1";
+	}	
+	@RequestMapping("/list/{page}")
+	public String listByPagination(@PathVariable("page") int page, Model model) {
+		PageRequest pageable = PageRequest.of(page-1, 3);
+		Page<User> userpage = aservice.getPaginatedUsers(pageable);
+        int totalPages = userpage.getTotalPages();
+        if(totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+		model.addAttribute("userList", userpage.getContent());
 		return "admin/aShowAllUsers";
 	}
+	
+	
+	
 	
 	@RequestMapping("/updatemg/{uid}")
 	public String updateManager(@PathVariable("uid")int uid, Model model) {
@@ -113,7 +136,7 @@ public class AdminController {
 		aservice.saveNewUser(user);
 		int newlyaddedUID = aservice.findlatestUID();
 		aservice.updateUserManager(user.getManager().getUid(), newlyaddedUID);	
-		return "admin/aShowAllUsers";
+		return "forward:/admin/list";
 	}
 	
 	@RequestMapping("/massEditLeave")
@@ -131,7 +154,15 @@ public class AdminController {
 		aservice.updateProfAnnualLeave(MLForm.getAnnualLeaveEntitlementProf());
 		aservice.updateAdminAnnualLeave(MLForm.getAnnualLeaveEntitlementAdmin());
 		
-		return "admin/aShowAllUsers";
+		return "forward:/admin/list";
+	}
+	
+	@RequestMapping(value = "search", method = RequestMethod.GET)
+	public String getUser(@RequestParam (value = "word", required = false) String word, Model model) {
+		
+		List<User> users= aservice.getAllUsers(word); //check to name and email
+	    model.addAttribute("users", users);
+	    return "admin/aSearchedResults";
 	}
 
 }

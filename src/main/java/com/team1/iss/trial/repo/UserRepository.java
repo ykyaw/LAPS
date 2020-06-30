@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +20,7 @@ import com.team1.iss.trial.domain.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
 
-	List<User> findByName(String s);
+//	List<User> findByName(String s);
 	
 //	@Query("Select u.username from User u")
 //	ArrayList<String> findAllUsernames();
@@ -82,6 +84,15 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALadmin where user_type LIKE 'ADMIN' ")
 	public void updateAdminAnnualLeave(@Param("ALadmin") int ALadmin);
 	
+	//Pagination
+	Page<User> findAll(Pageable pageable);
+	
+
+//	@Query("select u from User u where name like '%word%' ")
+//	public List<User> findByName(@Param("word") String word);
+	
+	@Query("select u from User u where u.name like %?1% OR email like %?1% ") 
+	public ArrayList<User> findByName(@Param("word") String word);
 };
 
 
