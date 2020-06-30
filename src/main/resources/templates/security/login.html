@@ -19,8 +19,8 @@
 			<span style="color: red" th:if="${session[SPRING_SECURITY_LAST_EXCEPTION] != null and session[SPRING_SECURITY_LAST_EXCEPTION].message != null}" th:utext="${session[SPRING_SECURITY_LAST_EXCEPTION].message}">Invalid credentials</span>
 			<!--judge if the msg is empty-->
 			<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
-			<label class="sr-only" th:text="username">Username</label>
-			<input type="text"  name="username" class="form-control" placeholder="Username" th:placeholder="username" required="" autofocus="">
+			<label class="sr-only" th:text="username">Email</label>
+			<input type="text"  name="username" class="form-control" placeholder="Email" th:placeholder="Email" required="" autofocus="">
 			<label class="sr-only" th:text="password">Password</label>
 			<input type="password" name="password" class="form-control" placeholder="Password" th:placeholder="password" required="">
 			<div class="checkbox mb-3">

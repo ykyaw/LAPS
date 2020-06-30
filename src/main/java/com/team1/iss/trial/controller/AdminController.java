@@ -2,7 +2,14 @@ package com.team1.iss.trial.controller;
 
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,6 +20,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,12 +29,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.team1.iss.trial.common.CommConstants;
 
+import com.team1.iss.trial.common.CommConstants;
+import com.team1.iss.trial.common.utils.TimeUtil;
 import com.team1.iss.trial.domain.Manager;
 
 import com.team1.iss.trial.domain.PublicHoliday;
@@ -34,6 +49,8 @@ import com.team1.iss.trial.domain.MassLeaveForm;
 
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.domain.FormEditUser;
+import com.team1.iss.trial.domain.FormPh;
+import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.repo.ManagerRepository;
 
 import com.team1.iss.trial.domain.Admin;
@@ -164,8 +181,38 @@ public class AdminController {
 	    model.addAttribute("users", users);
 	    return "admin/aSearchedResults";
 	}
+	
+	@RequestMapping("/ph")
+	public String addPh(Model model) {
+		List<PublicHoliday> phlist = aservice.getAllPH();
+		List<FormPh>phform = new ArrayList();
+		for(PublicHoliday p: phlist) {
+			FormPh h = new FormPh();
+			h.setUid(p.getUid());
+			h.setDay(TimeUtil.convertTimestampToyyyMMdd(p.getDay()));
+			h.setName(p.getName());
+			phform.add(h);
+		}	
+		model.addAttribute("phform", phform);
+		model.addAttribute("phform2", new FormPh());
+		return "admin/aFormPubholiday";
+	}
+	
+	@RequestMapping("/saveph")
+	public String savePh(@ModelAttribute("phform") FormPh phform) {
+		aservice.savePh(phform);
+		return "forward:/admin/ph";
+	}
 
 }
+
+
+//// Create a new LA with full LA details info in Body
+//@RequestMapping(value = "/employee/la", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+//public @ResponseBody void saveLA(LA la) {
+//    System.out.println(la);
+////    laServiceImpl.saveLA(la);
+//}
 
 //@RequestMapping("/save")
 //public String saveUser(@ModelAttribute("user")User user, Model model) {

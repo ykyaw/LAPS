@@ -1,6 +1,13 @@
 package com.team1.iss.trial.services.impl;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import java.util.List;
+
+
 
 import java.util.Optional;
 
@@ -19,9 +26,12 @@ import com.team1.iss.trial.domain.Admin;
 import com.team1.iss.trial.domain.Employee;
 
 import com.team1.iss.trial.domain.Manager;
+import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.domain.FormEditUser;
+import com.team1.iss.trial.domain.FormPh;
 import com.team1.iss.trial.repo.ManagerRepository;
+import com.team1.iss.trial.repo.PublicHolidayRepository;
 import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.interfaces.IAdminService;
 
@@ -36,6 +46,9 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Autowired
 	ManagerRepository mRepo;
+	
+	@Autowired
+	PublicHolidayRepository pRepo;
 
 
 	@Override
@@ -166,6 +179,24 @@ public class AdminServiceImpl implements IAdminService {
 		uRepo.updateProfAnnualLeave(profAL);
 		return true;
 	}
+	
+	@Override
+	public List<PublicHoliday> getAllPH() {
+		return pRepo.findAll();
+	}
+	
+	@Override
+	public boolean savePh(FormPh phform) {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String stringDate = phform.getDay();
+		long millisecondsSinceEpoch = LocalDate.parse(stringDate, dateFormatter).atStartOfDay(ZoneId.of("Asia/Singapore")).toInstant().toEpochMilli();
+		PublicHoliday ph = new PublicHoliday();
+		ph.setDay(millisecondsSinceEpoch);
+		ph.setName(phform.getName());
+		pRepo.save(ph);
+		return true;
+		
+	}
 
 	@Override
 	public boolean updateAdminAnnualLeave(int adminAL) {
@@ -185,6 +216,5 @@ public class AdminServiceImpl implements IAdminService {
 		return uRepo.findByName(word);
 	}
 
-	
 }
 

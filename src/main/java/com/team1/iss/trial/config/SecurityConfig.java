@@ -30,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.jdbcAuthentication().dataSource(dataSource)
-		.usersByUsernameQuery("select name, password, enabled from user where name = ?")
-		.authoritiesByUsernameQuery("select name, user_type from user where name = ?");
+		.usersByUsernameQuery("select email, password, enabled from user where email = ?")
+		.authoritiesByUsernameQuery("select email, user_type from user where email = ?");
 	}
 	
 	@Override
