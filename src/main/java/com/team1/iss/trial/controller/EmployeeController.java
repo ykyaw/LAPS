@@ -63,12 +63,12 @@ public class EmployeeController {
 	}
 	
 	// Get All LAs
-	@RequestMapping(value = "/employee/las", method = RequestMethod.GET)
-	public String listAllLAs(Model model) {
-		model.addAttribute("LA", laServiceImpl.findAll());
-		return "las";
-
-	}
+//	@RequestMapping(value = "/employee/las", method = RequestMethod.GET)
+//	public String listAllLAs(Model model) {
+//		model.addAttribute("LA", laServiceImpl.findAll());
+//		return "las";
+//
+//	}
 
 	// Get single LA details by provide id
 	@RequestMapping(value= "/employee/la/{uid}", method = RequestMethod.GET)
@@ -97,7 +97,7 @@ public class EmployeeController {
 		laServiceImpl.deleteLA(uid);
 	}
 
-	@RequestMapping("/employee/las") 
+	@RequestMapping("/employee/las")
 	public String la(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
