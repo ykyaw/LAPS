@@ -47,7 +47,7 @@ public class OverTime {
 		return status;
 	}
 
-	public void setStatu(String status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

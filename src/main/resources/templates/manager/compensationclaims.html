@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Compensation CLaims</title>
+	<th:block th:include = "common :: header"></th:block>
+	<th:block th:include = "common :: navbar"></th:block>
+<!-- Bootstrap core CSS -->
+<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+<!-- jquery core js -->
+<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+<!-- Bootstrap core js -->
+<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<h2 th:if="${not #lists.isEmpty(compensationclaims)}">Compensation CLaims</h2>
+	<table class="table table-bordered table-hover" th:if="${not #lists.isEmpty(compensationclaims)}">
+		<thead>
+			<tr>
+				<th scope="col">Claim ID</th>
+				<th scope="col">Employee ID</th>
+				<th scope="col">Start Time</th>
+				<th scope="col">End Time</th>
+				<th scope="col">Status</th>
+				<th scope="col">Approve</th>
+				<th scope="col">Reject</th>
+			</tr>
+		</thead>
+  		<tbody>
+			<tr th:each="ot:${compensationclaims}">
+				<td th:text=${ot.uid}></td>
+				<td th:text=${ot.owner.name}></td>
+				<td th:utext="${#dates.format(ot.startTime, 'dd MMM yyyy')}"></td>
+				<td th:utext="${#dates.format(ot.endTime, 'dd MMM yyyy')}"></td>
+				<td th:text=${ot.status}></td>
+				<td><a class="button" th:href="@{/manager/approveClaim/}+${ot.uid}">Approve</a></td>
+				<td><a class="button" th:href="@{/manager/approveReject/}+${ot.uid}">Reject</a></td>
+				<!-- <td><a href="individualapplication.html"
+					th:href="@{/manager/individual/}+${la.uid}" >Approve</a></td>
+				<td><a href="individualapplication.html"
+					th:href="@{/manager/individual/}+${la.uid}" >Reject</a></td>-->
+			</tr>
+		</tbody>
+	</table>
+	<th:block th:include = "common :: footer"></th:block>
+</body>
+</html>

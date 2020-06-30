@@ -3,6 +3,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Reject Reason</title>
+	<th:block th:include = "common :: header"></th:block>
+	<th:block th:include = "common :: navbar"></th:block>
+	<!-- Bootstrap core CSS -->
+	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+	<!-- jquery core js -->
+	<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+	<!-- Bootstrap core js -->
+	<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
 <h1> Reject Reason</h1>
@@ -15,6 +23,6 @@
 		
 			<button type="submit" th:object="${rejectreason}">Submit</button>
 	</form>
-
+	<th:block th:include = "common :: footer"></th:block>
 </body>
 </html>
