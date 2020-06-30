@@ -97,7 +97,7 @@ public class EmployeeController {
 		laServiceImpl.deleteLA(uid);
 	}
 
-	@RequestMapping("/employee/las")
+	@RequestMapping("/employee/las") 
 	public String la(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
