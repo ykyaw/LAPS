@@ -23,10 +23,10 @@
 	<main class="row">
 		<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
 		<form th:action="@{/employee/la}" method="post" id="form" onsubmit="return check()"
-			class="col-md-6 offset-md-3">
-			<input type="hidden" name="_method" value="put"  />
+			  class="col-md-6 offset-md-3" >
+			<input type="hidden" name="_method" value="put" th:if="${la!=null}" />
 			<input type="hidden" name="uid" th:if="${la!=null}"
-				th:value="${la.uid}">
+				   th:value="${la.uid}">
 			<input type="hidden" name="fromTime"/>
 			<input type="hidden" name="toTime"/>
 			<div class="form-group row">
@@ -34,10 +34,10 @@
 					category</label>
 				<div class="col-sm-10">
 					<select class="form-control" id="leavecategory" name="type" onchange="onLeaveTypeChange()"
-						th:value="${la!=null}?${la.type}">
+							th:value="${la!=null}?${la.type}">
 						<option th:each="type:${types}"
-							th:selected="${la!=null}?${la.type == type}" th:value="${type}"
-							th:text="${type}">1</option>
+								th:selected="${la!=null}?${la.type == type}" th:value="${type}"
+								th:text="${type}">1</option>
 					</select>
 				</div>
 			</div>
@@ -45,16 +45,16 @@
 				<label class="col-sm-2 col-form-label">reason</label>
 				<div class="col-sm-10">
 					<input name="reasons" type="text" class="form-control"
-						placeholder="please input leave reason"
-						th:value="${la!=null}?${la.reasons}:''">
+						   placeholder="please input leave reason"
+						   th:value="${la!=null}?${la.reasons}:''">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">contact</label>
 				<div class="col-sm-10">
 					<input name="contact" type="text" class="form-control"
-						placeholder="please input contact if on an overseas trip"
-						th:value="${la!=null}?${la.contact}:''">
+						   placeholder="please input contact if on an overseas trip"
+						   th:value="${la!=null}?${la.contact}:''">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -97,16 +97,16 @@
 				<label class="col-sm-2 col-form-label">dissemination</label>
 				<div class="col-sm-10">
 					<select class="form-control" name="dissemination"
-						th:value="${la!=null}?${la.dissemination.uid}:null">
+							th:value="${la!=null}?(${la.dissemination!=null}?${la.dissemination.uid}:null):null">
 						<option th:value="null"></option>
 						<option th:each="employee:${employees}"
-							th:selected="${la!=null}?${la.dissemination.uid == employee.uid}" th:value="${employee.uid}"
-							th:text="${employee.name}">1</option>
+								th:selected="${la!=null}?(${la.dissemination!=null}?${la.dissemination.uid == employee.uid}:null):null" th:value="${employee.uid}"
+								th:text="${employee.name}">1</option>
 					</select>
 				</div>
 			</div>
 			<button type="submit" class="btn btn-primary btn-lg btn-block"
-				th:text="${la!=null}?'update':'submit'" id="submit">submit</button>
+					th:text="${la!=null}?'update':'submit'" id="submit">submit</button>
 		</form>
 	</main>
 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Leave Application</title>
+    <link href="assets/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}"
+          rel="stylesheet">
+    <!-- jquery core js -->
+    <!-- if you want to use datetime picker need to import  -->
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/js/moment-with-locales.min.js}"></script>
+    <script th:src="@{/assets/js/transition.js}"></script>
+    <script th:src="@{/assets/js/collapse.js}"></script>
+    <script th:src="@{/assets/js/bootstrap-datetimepicker.min.js}"></script>
+    <link th:href="@{/assets/css/bootstrap-datetimepicker.min.css}"
+          rel="stylesheet">
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+    <link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet">
+</head>
+<body>
+<h2>claim overtime</h2>
+<main class="row">
+    <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+    <form th:action="@{/employee/ot}" method="post" id="form" onsubmit="return check()"
+          class="col-md-6 offset-md-3" >
+        <input type="hidden" name="startTime"/>
+        <input type="hidden" name="enTime"/>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">start time</label>
+            <div class="row col-sm-10">
+                <div class='col-sm-5 input-group date'>
+                    <input type='text' class="form-control"  id='starttime' /> <span
+                        class="input-group-addon"> <span
+                        class="glyphicon glyphicon-calendar"></span>
+						</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">end time</label>
+            <div class="row col-sm-10">
+                <div class='col-sm-5 input-group date'>
+                    <input type='text' class="form-control"  id='endtime' /> <span
+                        class="input-group-addon"> <span
+                        class="glyphicon glyphicon-calendar"></span>
+						</span>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block"
+                th:text="submit" id="submit">submit</button>
+    </form>
+</main>
+
+<script type="text/javascript" th:src="@{/assets/js/submitOT.js}">
+
+</script>
+</body>
+</html>

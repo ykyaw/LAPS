@@ -1,26 +1,36 @@
 $(document).ready(function() {
-    $(".compensation").hide();
+    if($("#leavecategory").val()!="COMPENSATION_LEAVE"){
+        $(".compensation").hide();
+    }
 
-    // var disabledDate = ['2020-7-1', '2020-7-2','2020-7-3'];
+
+    console.log($("#fromtime").val());
+    console.log(timeStampConvertToyyyMMdd(parseInt($("input[name='fromTime']").val())));
+    console.log(timeStampConvertToyyyMMdd(parseInt($("input[name='toTime']").val())));
     $('#fromtime').datetimepicker({
-        format: 'L',//date only
+        // format: 'L',//date only
+        useCurrent : false,
         format: 'YYYY-MM-DD',
+        defaultDate:timeStampConvertToyyyMMdd(parseInt($("input[name='fromTime']").val())),
         daysOfWeekDisabled: [0, 6],
-        // disabledDates: disabledDate
     })
+    $('#fromtime').data("DateTimePicker").options({defaultDate:new Date()});
     $('#totime').datetimepicker({
-        format: 'L',//date only
+        // format: 'L',//date only
+        useCurrent : false,
         format: 'YYYY-MM-DD',
+        defaultDate:timeStampConvertToyyyMMdd(parseInt($("input[name='toTime']").val()))+"",
         daysOfWeekDisabled: [0, 6],
-        // disabledDates: disabledDate
     })
+    // $('#totime').data("DateTimePicker").options({defaultDate:timeStampConvertToyyyMMdd(parseInt($("#totime").val()))+""});
+
     $('#fromGranularity').datetimepicker({
-        format: 'LT',//time only
+        // format: 'LT',//time only
         format: 'HH',
         enabledHours: [9, 12,18]
     })
     $('#toGranularity').datetimepicker({
-        format: 'LT',//time only
+        // format: 'LT',//time only
         format: 'HH',
         enabledHours: [9, 12,18]
     })
@@ -73,4 +83,13 @@ function check(){
     $("input[name='toTime']").val(totime);
     // return false;
     return true;
+}
+
+
+function timeStampConvertToyyyMMdd (timeStamp) {
+    let date = new Date(timeStamp);
+    let Y = date.getFullYear() + '-';
+    let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+    let D = date.getDate()<10?'0'+date.getDate():date.getDate();
+    return Y + M + D ;
 }
