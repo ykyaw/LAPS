@@ -7,8 +7,8 @@
 	th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}"
 	rel="stylesheet">
 <!-- jquery core js -->
-<script th:src="@{/assets/js/jquery.min.js}"></script>
 <!-- if you want to use datetime picker need to import  -->
+	<script th:src="@{/assets/js/jquery.min.js}"></script>
 <script th:src="@{/assets/js/moment-with-locales.min.js}"></script>
 <script th:src="@{/assets/js/transition.js}"></script>
 <script th:src="@{/assets/js/collapse.js}"></script>
@@ -21,9 +21,10 @@
 <body>
 	<h2>Application for Leave</h2>
 	<main class="row">
+		<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
 		<form th:action="@{/employee/la}" method="post" id="form" onsubmit="return check()"
 			class="col-md-6 offset-md-3">
-			<input type="hidden" name="_method" value="put" th:if="${la!=null}" />
+			<input type="hidden" name="_method" value="put"  />
 			<input type="hidden" name="uid" th:if="${la!=null}"
 				th:value="${la.uid}">
 			<input type="hidden" name="fromTime"/>
@@ -32,7 +33,7 @@
 				<label for="leavecategory" class="col-sm-2 col-form-label">leave
 					category</label>
 				<div class="col-sm-10">
-					<select class="form-control" id="leavecategory" name="type"
+					<select class="form-control" id="leavecategory" name="type" onchange="onLeaveTypeChange()"
 						th:value="${la!=null}?${la.type}">
 						<option th:each="type:${types}"
 							th:selected="${la!=null}?${la.type == type}" th:value="${type}"
@@ -57,7 +58,7 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">duration</label>
+				<label class="col-sm-2 col-form-label">from time</label>
 				<div class="row col-sm-10">
 					<div class='col-sm-5 input-group date'>
 						<input type='text' class="form-control"  id='fromtime' /> <span
@@ -65,8 +66,26 @@
 							class="glyphicon glyphicon-calendar"></span>
 						</span>
 					</div>
-					<div class='col-sm-5 input-group date' >
-						<input type='text' class="form-control"id='totime'/> <span
+					<div class='col-sm-5 input-group date compensation' >
+						<input type='text' class="form-control"id='fromGranularity'/> <span
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">to time</label>
+				<div class="row col-sm-10">
+					<div class='col-sm-5 input-group date'>
+						<input type='text' class="form-control"  id='totime' /> <span
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+					<div class='col-sm-5 input-group date compensation'>
+						<input type='text' class="form-control"id='toGranularity'/> <span
 							class="input-group-addon"> <span
 							class="glyphicon glyphicon-calendar"></span>
 						</span>

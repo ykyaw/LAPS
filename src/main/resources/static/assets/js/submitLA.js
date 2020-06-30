@@ -1,21 +1,30 @@
 $(document).ready(function() {
-    var disabledDate = ['2020-7-1', '2020-7-2','2020-7-3'];
+    $(".compensation").hide();
+    // var disabledDate = ['2020-7-1', '2020-7-2','2020-7-3'];
     $('#fromtime').datetimepicker({
-        format: 'L',
+        format: 'L',//date only
         format: 'YYYY-MM-DD',
         daysOfWeekDisabled: [0, 6],
-        disabledDates: disabledDate
+        // disabledDates: disabledDate
     })
     $('#totime').datetimepicker({
-        format: 'L',
+        format: 'L',//date only
         format: 'YYYY-MM-DD',
-        daysOfWeekDisabled: [0, 6]
-    }).on('changeDate', function (ev) {
-        console.log("change to time", ev)
-        if (ev.date.valueOf() < date - start - display.valueOf()) {
-
-        }
-    });
+        daysOfWeekDisabled: [0, 6],
+        // disabledDates: disabledDate
+    })
+    $('#fromGranularity').datetimepicker({
+        format: 'LT',//time only
+        format: 'hh',
+        // daysOfWeekDisabled: [0, 6],
+        enabledHours: [9, 12,18]
+    })
+    $('#toGranularity').datetimepicker({
+        format: 'LT',//time only
+        format: 'hh',
+        // daysOfWeekDisabled: [0, 6],
+        enabledHours: [9, 12,18]
+    })
     //set the min date of calendar
     let date = new Date();
     let Y = date.getFullYear() + '-';
@@ -26,6 +35,14 @@ $(document).ready(function() {
 
 });
 
+function onLeaveTypeChange() {
+    console.log("onLeaveTypeChange",$("#leavecategory").val());
+    if($("#leavecategory").val()=="COMPENSATION_LEAVE"){
+        $(".compensation").fadeIn();
+    }else{
+        $(".compensation").fadeOut();
+    }
+}
 
 function check(){
     console.log("on submit")
