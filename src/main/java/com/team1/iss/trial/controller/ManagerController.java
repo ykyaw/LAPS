@@ -1,14 +1,19 @@
 package com.team1.iss.trial.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.impl.ManagerServiceImpl;
+import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IManagerService;
 
 @Controller
@@ -22,6 +27,14 @@ public class ManagerController {
 	public void setMservice(ManagerServiceImpl mServiceImpl) {
 		this.mservice = mServiceImpl;
 	}
+	@Autowired
+	private ILaService laservice;
+	
+	@Autowired
+	public void setLaservice(LaServiceImpl laserviceimpl) {
+		this.laservice = laserviceimpl;
+	}
+	
 	
 	@RequestMapping("")
 	public String managerHome() {
@@ -40,24 +53,44 @@ public class ManagerController {
 		model.addAttribute("la", mservice.findLAByID(uid));
 		return "/manager/individualapplication";
 	}
+
 	
 	//approve leave, in detailed leave application html after clicking into certain application
-	@RequestMapping("/approveleave")
-	public String approveApplication(@ModelAttribute("la")  LA la, Model model) {
-		la.setStatus("APPROVED");
+	@RequestMapping("/approveapplication/{uid}")
+	public String approveApplication(@PathVariable("uid") int uid, Model model) {
+		LA la=laservice.getLaById(uid);
+		la.setStatus(CommConstants.ApplicationStatus.APPROVED);
 		mservice.saveLA(la);
 		model.addAttribute("la", la);
 		return "/manager/confirmation";
 	}
 	
+
 	//reject leave 
-	@RequestMapping("/rejectleave")
-	public String rejectApplication(@ModelAttribute LA la, Model model) {
-		//if reject reason is not null
-		la.setStatus("REJECTED");
-		mservice.saveLA(la);
+	@RequestMapping(value="/rejectapplication",method = RequestMethod.GET)
+	public String rejectApplication(String rejectreason,HttpSession session,Model model) {
+		LA la=(LA)session.getAttribute("la");
+		la.setStatus(CommConstants.ApplicationStatus.REJECTED);
+		la.setRejectReason(rejectreason);
+		laservice.saveLA(la);
 		model.addAttribute("la", la);
+		session.removeAttribute("la");
 		return "/manager/confirmation";
 	}
-
+	
+	//key in reject reason
+	@RequestMapping("/rejectreasonkeyin/{uid}")
+	public String keyInRejectReason(@PathVariable("uid") int uid,Model model,HttpSession session) {
+		LA la=laservice.getLaById(uid);
+		model.addAttribute("rejectreason", la.getRejectReason());
+		session.setAttribute("la", la);
+		return "/manager/rejectreason";
+	}
+	
 }
+
+
+
+
+
+

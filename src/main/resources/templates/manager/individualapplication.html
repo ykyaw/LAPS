@@ -8,30 +8,38 @@
 
 <h1>Individual Application Details</h1>
 
- <form action="#" th:object="${la}" th:action="@{/manager/listforapproval}"method="post">
-		<fieldset>
-			<table class="w3-container">
-				<tr th:text="${la}">
-					<td th:text=${la.uid}>ID</td>
-					<td th:text=${la.owner}>Applicant ID</td>
-					<td th:text=${la.fromTime}>Leave Period From</td>
-					<td th:text=${la.toTime}>Leave Period To</td>
-					<td th:text=${la.type}>Leave Type</td>
-					<td th:text=${la.reason}>Reason for Leave</td>
-					<td th:text=${la.disseminationId}>Dissemination</td>
-					<td th:text=${la.contact}>Contact</td>
-				</tr>
-			</table>
-		</fieldset>
-		<fieldset>
-			Reject Reason: <input type="text" th:text="${la.rejectreason}" th:value="${la.rejectreason}">
-		</fieldset>
-			<fieldset>
-			<button type="submit" th:formaction="@{/manager/approveapplication}">Approve</button>
-			<button  type="submit" th:formaction="@{/manager/rejectapplication}">Reject</button>
-		</fieldset>
+	<h1>Individual Application Details</h1>
 
-	</form> 
+	<table style="width: 100%" class="w3-container">
+		<!-- 			<tr>
+				<th>ID</th>
+				<th>User ID</th>
+				<th>>Applicant ID</th>
+				<th>>Leave Period From</th>
+				<th>>Leave Period To</th>
+				<th>>Reason for Leave</th>
+				<th>>Dissemination</th>
+				<th>>Contact</th>
+			</tr> -->
+		<tr>
+			<td th:text="${la.uid}">ID</td>
+			<td th:text="${la.owner.uid}">User ID</td>
+			<td th:text="${la.owner.name}">Applicant ID</td>
+			<td th:text="${la.fromTime}">Leave Period From</td>
+			<td th:text="${la.toTime}">Leave Period To</td>
+			<td th:text="${la.type}">Leave Type</td>
+			<td th:text="${la.reasons}">Reason for Leave</td>
+			<td th:text="${la.dissemination.uid}" th:if="${la.dissemination!=null}">Dissemination</td>
+			<td th:text="${la.contact}">Contact</td>
+		</tr>
+
+	</table>
+
+	<div>
+		<a class="button" th:href="@{/manager/approveapplication/}+${la.uid}">Approve</a>
+
+		<a class="button" th:href="@{/manager/rejectreasonkeyin/}+${la.uid}">Reject</a>
+	</div>
 
 </body>
 </html>
