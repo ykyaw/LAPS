@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Personal Leave History</title>
+    <!-- Bootstrap core CSS -->
+    <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+    <!-- jquery core js -->
+    <script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+    <!-- Bootstrap core js -->
+    <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<h2>Personal Leave History</h2>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Start Time</th>
+        <th scope="col">End Time</th>
+        <th scope="col">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <tr th:each="ot:${ots}">
+        <td th:utext="${#dates.format(ot.startTime * 1000, 'dd MMM yyyy')}"></td>
+        <td th:utext="${#dates.format(ot.endTime * 1000, 'dd MMM yyyy')}"></td>
+        <td th:text="${ot.status}"></td>
+    </tr>
+</table>
+</body>
+</html>

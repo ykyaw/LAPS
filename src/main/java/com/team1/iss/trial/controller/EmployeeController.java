@@ -138,9 +138,21 @@ public class EmployeeController {
 		return "employee/ot";
 	}
 
+	/**
+	 * show the claim compensation page
+	 * @param ot
+	 * @return
+	 */
 	@PostMapping("/employee/ot")
 	public String submitOT(OverTime ot){
+		return "/employee/ots";
+	}
 
+	@GetMapping("/employee/ots")
+	public String otsPage(Model model){
+		List<OverTime> ots=new ArrayList<>();
+		model.addAttribute("ots",ots);
+		return "employee/otList";
 	}
 
 }
