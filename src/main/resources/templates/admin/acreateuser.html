@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<th:block th:include = "common :: navbar"></th:block>
+<script>
+function populateAdminleave(){
+ 	document.getElementById("altextbox").value = Number(14);
+	document.getElementById("mltextbox").value = Number(60); 
+}
+function populateProfleave(){
+ 	document.getElementById("altextbox").value = Number(18);
+	document.getElementById("mltextbox").value = Number(60); 
+}
+</script>
+
 <meta charset="ISO-8859-1">
 <title>Add User Page</title>
 </head>
@@ -28,15 +40,15 @@
 			<p>Select a user Type:</p>
 				<div>
 				  <input type="radio" th:field="*{userType}" id="#{CommConstants.UserType.EMPLOYEE}" name="emptype" value="EMPLOYEE"
-				         checked>
+				         checked onclick="populateProfleave()">
 				  <label for="EMPLOYEE">Employee</label>
 				</div>
 				<div>
-				  <input type="radio" th:field="*{userType}" id="#{CommConstants.UserType.AMDIN}" name="emptype" value="ADMIN">
+				  <input type="radio" th:field="*{userType}" id="#{CommConstants.UserType.AMDIN}" name="emptype" value="ADMIN" onclick="populateAdminleave()">
 				  <label for="ADMIN">Administrator</label>
 				</div>
 				<div>
-				  <input type="radio" th:field="*{userType}" id="{CommConstants.UserType.MANAGER}" name="emptype" value="MANAGER">
+				  <input type="radio" th:field="*{userType}" id="{CommConstants.UserType.MANAGER}" name="emptype" value="MANAGER" onclick="populateProfleave()">
 				  <label for="MANAGER">Manager</label>
 				</div>
 			
@@ -79,10 +91,10 @@
 		</fieldset>
 		 -->
 		<fieldset>
-			Annual leave entitled per year: <input type="number" th:field="*{annualLeaveEntitlement}">
+			Annual leave entitled per year: <input type="number" th:field="*{annualLeaveEntitlement}" id="altextbox">
 		</fieldset>
 		<fieldset>
-			Medical leave entitled per year: <input type="number" max="60" th:field="*{medicalLeaveEntitlement}">
+			Medical leave entitled per year: <input type="number" max="60" th:field="*{medicalLeaveEntitlement}" id="mltextbox">
 		</fieldset>	
 		<fieldset>
 			<button type="submit" >Submit</button>
