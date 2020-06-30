@@ -98,7 +98,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	public ArrayList<User> findByName(@Param("word") String word);
 	
 	@Query(value = "select email from User where email= :email LIMIT 1", nativeQuery=true)
-    public String findEmail(@Param("email") String email); //copy pate from sein
+    public String findEmail(@Param("email") String email); //copy paste from sein
 };
 
 
