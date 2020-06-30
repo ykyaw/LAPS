@@ -1,6 +1,12 @@
 package com.team1.iss.trial.controller;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +24,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+
+
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +61,10 @@ import com.team1.iss.trial.services.interfaces.IAdminService;
 @RequestMapping("/admin")
 public class AdminController {
 	
+//	@InitBinder
+//	protected void InitBinder(WebDataBinder binder) {
+//		binder.addValidators(new AdminValidator());
+//	}
 	@Autowired
 	private IAdminService aservice; // Remember to create the service INTERFACE, not the service class
 	
@@ -86,8 +103,6 @@ public class AdminController {
         model.addAttribute("userList", userpage.getContent());
 		return "admin/aShowAllUsers";
 	}
-	
-	
 	
 	
 	@RequestMapping("/updatemg/{uid}")
@@ -160,10 +175,12 @@ public class AdminController {
 	
 	@RequestMapping(value = "search", method = RequestMethod.GET)
 	public String getUser(@RequestParam (value = "word", required = false) String word, Model model) {
-		
+		if (word.isEmpty()) {
+			return "forward:/admin/list";
+		}
 		List<User> users= aservice.getAllUsers(word); //check to name and email
 	    model.addAttribute("users", users);
-	    return "admin/aSearchedResults";
+	    return "forward:/admin/list";
 	}
 	
 	@RequestMapping("/ph")

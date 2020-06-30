@@ -53,6 +53,8 @@ public interface IAdminService {
 //	public User findUserByUsername(String username);
 //	public ArrayList<String> findAllUsernames();
 	
+	public String checkForDuplicate(User user); //frm sein
+	
 }
 
 	

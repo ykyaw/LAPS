@@ -233,6 +233,12 @@ public class AdminServiceImpl implements IAdminService {
 		pRepo.deleteById(uid);
 		return true;
 	}
+	
+	@Override
+    public String checkForDuplicate(User user) {
+       
+        return uRepo.findEmail(user.getEmail());
+    }
 
 }
 
