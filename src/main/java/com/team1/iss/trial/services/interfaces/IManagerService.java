@@ -13,5 +13,6 @@ public interface IManagerService {
 	public void saveLA(LA la);
 	public void saveOverTime(OverTime ot);
 	public ArrayList<OverTime> findClaims();
+	public int getCurrentUid();
 //	public ArrayList<LA> findEmployeeLeaveByEmployeeId(int uid);
 }

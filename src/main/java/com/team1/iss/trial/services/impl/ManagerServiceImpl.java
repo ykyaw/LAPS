@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.team1.iss.trial.domain.LA;
@@ -11,6 +13,7 @@ import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.repo.LARepository;
 import com.team1.iss.trial.repo.ManagerRepository;
 import com.team1.iss.trial.repo.OverTimeRepository;
+import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.interfaces.IManagerService;
 
 @Service
@@ -25,6 +28,9 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 
 	@Autowired
 	OverTimeRepository otRepo;
+	
+	@Autowired
+	UserRepository uRepo;
 	
 	@Override
 	public ArrayList<LA> findPendingApplications() {
@@ -57,6 +63,13 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 	public ArrayList<OverTime> findClaims() {
 		ArrayList<OverTime> listofallclaims=(ArrayList<OverTime>)otRepo.findAllClaims();
 		return listofallclaims;
+	}
+	
+	@Override
+	public int getCurrentUid() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		return uRepo.findUserUidByEmail(email);
 	}
 	
 //	@Override
