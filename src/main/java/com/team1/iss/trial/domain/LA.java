@@ -27,7 +27,7 @@ public class LA implements Serializable {
 	private String rejectReason;
 	@ManyToOne
 	@JoinColumn(name = "disseminationId")
-	private Employee dissemination=null;
+	private Employee dissemination;
 	private String contact;
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
 	@JoinColumn(name = "ownerId")

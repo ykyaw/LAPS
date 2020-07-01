@@ -34,13 +34,6 @@ $(document).ready(function() {
         format: 'HH',
         enabledHours: [9, 12,18]
     })
-    //set the min date of calendar
-    let date = new Date();
-    let Y = date.getFullYear() + '-';
-    let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    let D = date.getDate() + ' ';
-    $("#fromtime").data("DateTimePicker").minDate(new Date(Y+M+D));
-    $("#totime").data("DateTimePicker").minDate(new Date(Y+M+D));
 
 });
 

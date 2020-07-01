@@ -1,6 +1,7 @@
 package com.team1.iss.trial.controller;
 
 import com.team1.iss.trial.common.CommConstants;
+import com.team1.iss.trial.component.RequestXuner;
 import com.team1.iss.trial.domain.Employee;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.OverTime;
@@ -68,7 +69,7 @@ public class EmployeeController {
 	 * @return
 	 */
 	@PostMapping("/employee/la")
-    public String saveLA( LA la,Model model) {
+    public String saveLA(@RequestXuner LA la, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		int uid=userRepository.findUserUidByEmail(email);

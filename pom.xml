@@ -82,7 +82,7 @@
 		    <artifactId>bootstrap</artifactId>
 		    <version>4.5.0</version>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

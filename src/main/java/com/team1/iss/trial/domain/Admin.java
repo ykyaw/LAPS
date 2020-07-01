@@ -9,7 +9,7 @@ import com.team1.iss.trial.common.CommConstants;
 
 @Entity
 @DiscriminatorValue(CommConstants.UserType.AMDIN)
-public class Admin extends User{
+public class Admin extends Employee{
 
 	public Admin() {
 		super();
