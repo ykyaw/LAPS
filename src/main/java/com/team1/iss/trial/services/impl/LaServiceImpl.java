@@ -1,5 +1,14 @@
 package com.team1.iss.trial.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.common.utils.TimeUtil;
 import com.team1.iss.trial.domain.LA;
@@ -7,18 +16,6 @@ import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.repo.LARepository;
 import com.team1.iss.trial.repo.PublicHolidayRepository;
 import com.team1.iss.trial.services.interfaces.ILaService;
-import net.bytebuddy.asm.Advice;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /*
  * Author: YC
@@ -79,6 +76,12 @@ public class LaServiceImpl implements ILaService {
     @Override
     public List<LA> findLaByOwnerId(int uid) {
         List<LA> las = larepo.findAllLeaveByOwnerId(uid, TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
+        return las;
+    }
+    
+    @Override
+    public Page<LA> findLaByOwnerIdPageable(Pageable pageable, int uid) {
+    	Page<LA> las = larepo.findAllLeaveByOwnerId(pageable, uid,TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()) );    	
         return las;
     }
 

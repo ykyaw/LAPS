@@ -1,28 +1,38 @@
 package com.team1.iss.trial.controller;
 
-import com.team1.iss.trial.common.CommConstants;
-import com.team1.iss.trial.component.RequestLA;
-import com.team1.iss.trial.domain.*;
-import com.team1.iss.trial.repo.UserRepository;
-import com.team1.iss.trial.services.impl.LaServiceImpl;
-import com.team1.iss.trial.services.interfaces.IEmployeeService;
-import com.team1.iss.trial.services.interfaces.ILaService;
-import com.team1.iss.trial.services.interfaces.IOverTimeService;
-import com.team1.iss.trial.services.interfaces.IPublicHolidayService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.team1.iss.trial.common.CommConstants;
+import com.team1.iss.trial.component.RequestLA;
+import com.team1.iss.trial.domain.Employee;
+import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.domain.OverTime;
+import com.team1.iss.trial.domain.PublicHoliday;
+import com.team1.iss.trial.domain.User;
+import com.team1.iss.trial.repo.UserRepository;
+import com.team1.iss.trial.services.interfaces.IEmployeeService;
+import com.team1.iss.trial.services.interfaces.ILaService;
+import com.team1.iss.trial.services.interfaces.IOverTimeService;
+import com.team1.iss.trial.services.interfaces.IPublicHolidayService;
 
 @Controller
 public class EmployeeController {
@@ -184,15 +194,30 @@ public class EmployeeController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/employee/las")
-	public String la(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-		int uid=userRepository.findUserUidByEmail(email);
-		List<LA> las=laService.findLaByOwnerId(uid);
-		model.addAttribute("laList", las);
-		return ("employee/lalist");
-	}
+	
+	// View employee view history with pagination
+		@RequestMapping("/employee/las")
+		public String list() {
+			return "forward:/employee/las/1";
+		}	
+		
+		@GetMapping("/employee/las/{page}")
+		public String la(@PathVariable("page") int page, Model model) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String email = auth.getName();
+			int uid=userRepository.findUserUidByEmail(email);
+			PageRequest pageable = PageRequest.of(page-1,3);
+			Page<LA> lapages = laService.findLaByOwnerIdPageable(pageable, uid);
+			model.addAttribute("laList", lapages.getContent());
+			
+			int totalPages = lapages.getTotalPages();
+			if(totalPages > 0) {
+				List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
+				model.addAttribute("pageNumbers", pageNumbers);
+			}
+			return ("employee/lalist");
+		}
+
 
 	/**
 	 * show the claim compensation page

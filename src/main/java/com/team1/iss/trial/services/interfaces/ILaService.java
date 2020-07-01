@@ -1,10 +1,12 @@
 package com.team1.iss.trial.services.interfaces;
 
-import com.team1.iss.trial.domain.LA;
-import com.team1.iss.trial.domain.User;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.team1.iss.trial.domain.LA;
 
 /*
 * Author: YC
@@ -24,4 +26,6 @@ public interface ILaService {
     List<LA> findLaByOwnerId(int uid);
 
     void calculateApplicationDuration(LA la);
+    
+    Page<LA> findLaByOwnerIdPageable(Pageable pageable, int uid);
 }

@@ -3,14 +3,15 @@ package com.team1.iss.trial.repo;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.team1.iss.trial.common.utils.TimeUtil;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 /*
  * Author: YC
@@ -67,6 +68,11 @@ public interface LARepository extends JpaRepository<LA, Integer>, JpaSpecificati
 	
 	@Query(value = "SELECT a from LA a where owner_id=?1 order by uid desc")
 	public ArrayList<LA> findLAByOwnerId(int uid);
+	
+	@Query(value = "SELECT * FROM la WHERE from_time>=:currentYear and owner_id=:owner_id",
+		    countQuery = "SELECT count(*) FROM la WHERE from_time>=:currentYear and owner_id=:owner_id",
+		    nativeQuery = true)
+	Page<LA> findAllLeaveByOwnerId(Pageable pageable, @Param("owner_id") int ownerid, @Param("currentYear") Long currentYear);
 
 	@Query(value = "SELECT a FROM LA a where a.fromTime>=:currentYear and a.owner.uid=:ownerId and a.status='APPROVED' and a.type='ANNUAL_LEAVE'")
 	List<LA> findAllApprovedAnnualLeaveByOwnerId(@Param("ownerId") int ownerId, @Param("currentYear") Long currentYear);

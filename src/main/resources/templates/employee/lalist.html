@@ -36,6 +36,22 @@
 		</tr>
 	</table>
 	
+	 <div class="row" th:fragment="pagination" th:if="${la == null OR la.isEmpty()}">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" >
+                        <a class="page-link" th:href="@{/employee/las/}+${pageNumber}" th:text=${pageNumber}>1</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+	
+	
+	
 	  	<th:block th:include = "common :: footer"></th:block>
 </body>
 </html>
