@@ -67,4 +67,13 @@ public interface LARepository extends JpaRepository<LA, Integer>, JpaSpecificati
 	
 	@Query(value = "SELECT a from LA a where owner_id=?1 order by uid desc")
 	public ArrayList<LA> findLAByOwnerId(int uid);
+
+	@Query(value = "SELECT a FROM LA a where a.fromTime>=:currentYear and a.owner.uid=:ownerId and a.status='APPROVED' and a.type='ANNUAL_LEAVE'")
+	List<LA> findAllApprovedAnnualLeaveByOwnerId(@Param("ownerId") int ownerId, @Param("currentYear") Long currentYear);
+
+	@Query(value = "SELECT a FROM LA a where a.fromTime>=:currentYear and a.owner.uid=:ownerId and a.status='APPROVED' and a.type='MEDICAL_LEAVE'")
+	List<LA> findAllApprovedMedicalLeaveByOwnerId(@Param("ownerId") int ownerId, @Param("currentYear") Long currentYear);
+
+	@Query(value = "SELECT a FROM LA a where a.fromTime>=:currentYear and a.owner.uid=:ownerId and a.status='APPROVED' and a.type='COMPENSATION_LEAVE'")
+	List<LA> findAllApprovedCompensationLeaveByOwnerId(@Param("ownerId") int ownerId, @Param("currentYear") Long currentYear);
 }

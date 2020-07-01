@@ -2,15 +2,7 @@ package com.team1.iss.trial.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "la")
@@ -32,6 +24,8 @@ public class LA implements Serializable {
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
 	@JoinColumn(name = "ownerId")
 	private Employee owner;
+	@Transient
+	private float duration;
 	
 	public LA() {
 		super();
@@ -41,9 +35,22 @@ public class LA implements Serializable {
 		super();
 		this.uid = uid;
 	}
-	
+
+	public LA(long fromTime, long toTime, String type, String status, String reasons, String rejectReason, Employee dissemination, String contact, Employee owner, float duration) {
+		this.fromTime = fromTime;
+		this.toTime = toTime;
+		this.type = type;
+		this.status = status;
+		this.reasons = reasons;
+		this.rejectReason = rejectReason;
+		this.dissemination = dissemination;
+		this.contact = contact;
+		this.owner = owner;
+		this.duration = duration;
+	}
+
 	public LA(int uid, long fromTime, long toTime, String type, String status, String reasons, Employee dissemination,
-			String contact, Employee owner,String rejectReason) {
+			  String contact, Employee owner, String rejectReason) {
 		super();
 		this.uid = uid;
 		this.fromTime = fromTime;
@@ -56,8 +63,14 @@ public class LA implements Serializable {
 		this.owner = owner;
 		this.rejectReason=rejectReason;
 	}
-	
-	
+
+	public float getDuration() {
+		return duration;
+	}
+
+	public void setDuration(float duration) {
+		this.duration = duration;
+	}
 
 	public String getRejectReason() {
 		return rejectReason;
@@ -139,6 +152,7 @@ public class LA implements Serializable {
 		this.owner = owner;
 	}
 
+
 	@Override
 	public String toString() {
 		return "LA{" +
@@ -152,6 +166,7 @@ public class LA implements Serializable {
 				", dissemination=" + dissemination +
 				", contact='" + contact + '\'' +
 				", owner=" + owner +
+				", duration=" + duration +
 				'}';
 	}
 }

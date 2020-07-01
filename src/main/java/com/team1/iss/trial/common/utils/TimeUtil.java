@@ -137,4 +137,40 @@ public class TimeUtil {
         String tsStr = sdf.format(ts);
         return tsStr;
     }
+
+    /**
+     * get the week day by timestamp
+     * @param timeStamp
+     * @return
+     */
+    public static String getWeek(long timeStamp) {
+        String week = "";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeStamp);
+        int i = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (i) {
+            case 1:
+                week += "Sunday";
+                break;
+            case 2:
+                week += "Monday";
+                break;
+            case 3:
+                week += "Tuesday";
+                break;
+            case 4:
+                week += "Wednesday";
+                break;
+            case 5:
+                week += "Thursday";
+                break;
+            case 6:
+                week += "Friday";
+                break;
+            case 7:
+                week += "Saturday";
+                break;
+        }
+        return week;
+    }
 }

@@ -78,11 +78,46 @@ public class EmployeeController {
 		int uid=userRepository.findUserUidByEmail(email);
 		la.setOwner(new Employee(uid));
 		la.setStatus(CommConstants.ApplicationStatus.APPLIED);
+		boolean isLAValidate=true;
 		if(la.getToTime()-la.getFromTime()<=0){
 			model.addAttribute("msg","the to time can not less than from time");
-			return "/employee/apply";
+			isLAValidate=false;
+		}
+		//TODO check for balance
+		//calculate annual application leave duration
+		laService.calculateApplicationDuration(la);
+		if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)){
+			float balance = eService.getAnnualApplicationBalance(la);
+			if(balance<la.getDuration()){
+				model.addAttribute("msg","your annual leave balance is insufficient, only "+balance+" left");
+				isLAValidate=false;
+			}
+		}else if(la.getType().equals(CommConstants.LeaveType.MEDICAL_LEAVE)){
+			float balance=eService.getMedicalApplicationBalance(la);
+			if(balance<la.getDuration()){
+				model.addAttribute("msg","your medical leave balance is insufficient, only "+balance+" left");
+				isLAValidate=false;
+			}
+		}else{
+			float balance=eService.getCompensationApplicationBalance(la);
+			if(balance<la.getDuration()){
+				model.addAttribute("msg","your compensation leave balance is insufficient, only "+balance+" left");
+				isLAValidate=false;
+			}
 		}
         System.out.println(la);
+		if(!isLAValidate){
+			List<String> applicationType = new ArrayList();
+			applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
+			applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
+			applicationType.add(CommConstants.LeaveType.COMPENSATION_LEAVE);
+			model.addAttribute("types", applicationType);
+			List<User> users = eService.findAllUsers();
+			List<User> collect = users.stream().filter(user -> !user.getUserType().equals(CommConstants.UserType.AMDIN))
+					.collect(Collectors.toList());
+			model.addAttribute("employees",collect);
+			return "employee/leave-form";
+		}
 		laService.saveLA(la);
 		return "redirect:/employee/las";
     }

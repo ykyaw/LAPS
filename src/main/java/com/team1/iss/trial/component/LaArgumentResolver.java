@@ -32,6 +32,7 @@ public class LaArgumentResolver implements HandlerMethodArgumentResolver {
         while((rd = reader.read(buf)) != -1){
             sb.append(buf, 0, rd);
         }
+        System.out.println(sb.toString());
         //fromTime=1593561600000&toTime=1595376000000&dissemination=&type=ANNUAL_LEAVE&reasons=this+is+a+reason&contact=
         String[] params = sb.toString().split("&");
         LA la = new LA();
@@ -64,7 +65,6 @@ public class LaArgumentResolver implements HandlerMethodArgumentResolver {
             }
         }
 
-        System.out.println(sb.toString());
         return la;
 
     }

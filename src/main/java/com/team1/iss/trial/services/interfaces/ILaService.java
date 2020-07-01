@@ -11,10 +11,17 @@ import java.util.List;
 * */
 public interface ILaService {
 
-    public ArrayList<LA> findAll();
-    public LA getLaById(int id);
-    public void saveLA(LA la);
-    public void updateLA(LA la);
-    public void deleteLA(int id);
+     ArrayList<LA> findAll();
+
+     LA getLaById(int id);
+
+     void saveLA(LA la);
+
+     void updateLA(LA la);
+
+     void deleteLA(int id);
+
     List<LA> findLaByOwnerId(int uid);
+
+    void calculateApplicationDuration(LA la);
 }

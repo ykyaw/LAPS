@@ -17,6 +17,8 @@ public class OverTime {
 	private Employee owner;
 	@Column
 	private String status;
+	@Transient
+	private int hours;
 
 	public OverTime(int uid, long startTime, long endTime, Employee owner, String status) {
 		super();
@@ -25,6 +27,22 @@ public class OverTime {
 		this.endTime = endTime;
 		this.owner = owner;
 		this.status = status;
+	}
+
+	public OverTime(long startTime, long endTime, Employee owner, String status, int hours) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.owner = owner;
+		this.status = status;
+		this.hours = hours;
+	}
+
+	public int getHours() {
+		return hours;
+	}
+
+	public void setHours(int hours) {
+		this.hours = hours;
 	}
 
 	public OverTime() {

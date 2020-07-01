@@ -1,5 +1,6 @@
 package com.team1.iss.trial.services.impl;
 
+import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.common.utils.TimeUtil;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.repo.LARepository;
@@ -72,5 +73,23 @@ public class LaServiceImpl implements ILaService {
     public List<LA> findLaByOwnerId(int uid) {
         List<LA> las = larepo.findAllLeaveByOwnerId(uid, TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
         return las;
+    }
+
+
+    @Override
+    public void calculateApplicationDuration(LA la) {
+        long fromTime = la.getFromTime();
+        long toTime = la.getToTime();
+        float duration = (float) ((toTime - fromTime) / (1000 * 60 * 60 * 24));
+        if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)) {
+            if (duration <= 14) {
+                for (long i = fromTime; i <= toTime; i += 1000 * 60 * 60 * 24) {
+                    if (TimeUtil.getWeek(i).equals("Saturday") || TimeUtil.getWeek(i).equals("Sunday")) {
+                        duration--;
+                    }
+                }
+            }
+        }
+        la.setDuration(duration);
     }
 }
