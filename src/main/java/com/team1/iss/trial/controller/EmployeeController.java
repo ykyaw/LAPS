@@ -1,7 +1,7 @@
 package com.team1.iss.trial.controller;
 
 import com.team1.iss.trial.common.CommConstants;
-import com.team1.iss.trial.component.RequestXuner;
+import com.team1.iss.trial.component.RequestLA;
 import com.team1.iss.trial.domain.Employee;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.OverTime;
@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class EmployeeController {
@@ -58,7 +59,9 @@ public class EmployeeController {
 		applicationType.add(CommConstants.LeaveType.COMPENSATION_LEAVE);
 		model.addAttribute("types", applicationType);
 		List<User> users = eService.findAllUsers();
-		model.addAttribute("employees",users);
+		List<User> collect = users.stream().filter(user -> !user.getUserType().equals(CommConstants.UserType.AMDIN))
+				.collect(Collectors.toList());
+		model.addAttribute("employees",collect);
 		return "employee/leave-form";
 	}
 
@@ -69,7 +72,7 @@ public class EmployeeController {
 	 * @return
 	 */
 	@PostMapping("/employee/la")
-    public String saveLA(@RequestXuner LA la, Model model) {
+    public String saveLA(@RequestLA LA la, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		int uid=userRepository.findUserUidByEmail(email);

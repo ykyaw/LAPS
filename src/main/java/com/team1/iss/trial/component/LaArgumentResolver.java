@@ -15,7 +15,7 @@ import java.io.BufferedReader;
 public class LaArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(RequestXuner.class);
+        return parameter.hasParameterAnnotation(RequestLA.class);
     }
 
     @Override
