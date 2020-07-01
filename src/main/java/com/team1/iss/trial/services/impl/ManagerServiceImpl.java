@@ -86,6 +86,12 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 		return uRepo.findByName(word);
 	}
 	
+	@Override
+	public ArrayList<User> getEmolyeeList(int managerid) {
+		ArrayList<User> employeeList=(ArrayList<User>)uRepo.getEmployeelistByManagerId(managerid);
+		return employeeList;
+	}
+	
 //	@Override
 //	public ArrayList<LA> findEmployeeLeaveByEmployeeId(int uid) {
 //		ArrayList<LA> list=(ArrayList<LA>)laRepo.findLAByOwnerId(uid);

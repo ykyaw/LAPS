@@ -41,6 +41,9 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 //	public void updateUserType(@Param("user") User user);
 	
 
+	@Query(value="select * from user where enabled=1 AND manager_id=:managerid",nativeQuery=true)
+	public List<User> getEmployeelistByManagerId(@Param("managerid") int managerid);
+	
 	@Query(value = "select uid from user where email=:email",nativeQuery = true)
 	int findUserUidByEmail(@Param("email") String email);
 

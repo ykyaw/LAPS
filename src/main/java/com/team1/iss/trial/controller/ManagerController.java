@@ -3,6 +3,7 @@ package com.team1.iss.trial.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
@@ -172,6 +173,39 @@ public class ManagerController {
 	    model.addAttribute("users", users);
 	    return "forward:/manager/list";
 	}
+	
+	//retrieve employees under logged-in manager 
+	@RequestMapping("/employeelist")
+	public String getEmployeeListUnderManager(Model model) {
+		
+		int managerid=mservice.getCurrentUid();
+		//find employee under this manager
+		ArrayList<User> employeeList= mservice.getEmolyeeList(managerid);
+		model.addAttribute("employeelist", employeeList);
+		return "/manager/employeelistundermanager";
+	}
+	
+
+	
+//	//Approve Claim
+//	@RequestMapping("/approveclaim/{uid}")
+//	public String approveClaim(@PathVariable("uid") int uid, Model model) {
+//		OverTime ot=otservice.getOverTimeById(uid);
+//		ot.setStatus(CommConstants.ClaimStatus.APPROVED);
+//		mservice.saveOverTime(ot);
+//		model.addAttribute("ot", ot);
+//		return "/manager/compensationclaims";
+//	}
+//		
+//	//Reject Claim
+//	@RequestMapping("/rejectclaim/{uid}")
+//	public String rejectClaim(@PathVariable("uid") int uid, Model model) {
+//		LA la=laservice.getLaById(uid);
+//		la.setStatus(CommConstants.ClaimStatus.REJECTED);
+//		mservice.saveOverTime(ot);
+//		model.addAttribute("ot", ot);
+//		return "/manager/compensationclaims";
+//	}
 }
 
 

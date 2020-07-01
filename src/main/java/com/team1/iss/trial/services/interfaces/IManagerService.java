@@ -19,6 +19,7 @@ public interface IManagerService {
 	public void saveOverTime(OverTime ot);
 	public ArrayList<OverTime> findClaims();
 	public int getCurrentUid();
+	public ArrayList<User> getEmolyeeList(int managerid);
 //	public ArrayList<LA> findEmployeeLeaveByEmployeeId(int uid);
 	public Page<User> getPaginatedEmployees(PageRequest pageable);
 	public ArrayList<User> getAllEmployees(String word);

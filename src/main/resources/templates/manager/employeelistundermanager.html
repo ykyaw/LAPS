@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Employee List</title>
+<!-- Bootstrap core CSS -->
+<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+<!-- jquery core js -->
+<script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
+<!-- Bootstrap core js -->
+<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<h2>Employee List</h2>
+	<table class="table table-bordered table-hover">
+	  <thead>
+		<tr>
+			<th scope="col">Employee ID</th>
+			<th scope="col">Employee Name</th>
+			<th scope="col">Employee Email</th>
+			<th scope="col">Employee Type</th>
+	<!-- 		<th scope="col">Status</th> -->
+			<th scope="col"></th>
+		</tr>
+	</thead>		
+		<tbody>
+		<tr>
+			<tr th:each="emp:${employeelist}">					  
+			<td th:text="${emp.uid}"></td>
+			<td th:text="${emp.name}"></td>
+			<td th:text="${emp.email}"></td>
+			<td th:text="${emp.userType}"></td>
+<!-- 			<td th:text="${la.status}"></td>
+			<td><a href="laDetails.html"
+				th:href="@{/employee/la/}+${la.uid}">View Details</a></td> -->
+		</tr>
+	</table>
+</body>
+</html>
