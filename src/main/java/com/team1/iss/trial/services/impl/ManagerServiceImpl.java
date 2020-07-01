@@ -38,7 +38,8 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 	
 	@Override
 	public ArrayList<LA> findPendingApplications() {
-		ArrayList<LA> applicationlistForApproval= (ArrayList<LA>)laRepo.getPendingLA();
+		int managerid=getCurrentUid();
+		ArrayList<LA> applicationlistForApproval= (ArrayList<LA>)laRepo.getPendingLA(managerid);
 		return applicationlistForApproval;
 	}
 
