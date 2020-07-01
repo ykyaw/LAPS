@@ -83,7 +83,6 @@ public class EmployeeController {
 			model.addAttribute("msg","the to time can not less than from time");
 			isLAValidate=false;
 		}
-		//TODO check for balance
 		//calculate annual application leave duration
 		laService.calculateApplicationDuration(la);
 		if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)){

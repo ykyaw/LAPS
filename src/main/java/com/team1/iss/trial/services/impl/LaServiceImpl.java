@@ -80,8 +80,9 @@ public class LaServiceImpl implements ILaService {
     public void calculateApplicationDuration(LA la) {
         long fromTime = la.getFromTime();
         long toTime = la.getToTime();
-        float duration = (float) ((toTime - fromTime) / (1000 * 60 * 60 * 24));
-        if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)) {
+        float l = (toTime - fromTime) / (long)(1000 * 60 * 60 * 24);
+        float duration =  ((toTime - fromTime) / (long) (1000 * 60 * 60 * 12))/2.0f;
+        if (la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)) {
             if (duration <= 14) {
                 for (long i = fromTime; i <= toTime; i += 1000 * 60 * 60 * 24) {
                     if (TimeUtil.getWeek(i).equals("Saturday") || TimeUtil.getWeek(i).equals("Sunday")) {

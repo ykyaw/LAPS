@@ -124,6 +124,19 @@ public class TimeUtil {
         String tsStr = sdf.format(ts);
         return tsStr;
     }
+
+    /**
+     * convert timestamp to HH format
+     * @param timestamp
+     * @return
+     */
+    public static String convertTimestampToHH(long timestamp){
+        Timestamp ts = new Timestamp(timestamp);
+        DateFormat sdf = new SimpleDateFormat("HH");
+
+        String tsStr = sdf.format(ts);
+        return tsStr;
+    }
     
     /**
      * convert timestamp to yyyy-MM-dd format

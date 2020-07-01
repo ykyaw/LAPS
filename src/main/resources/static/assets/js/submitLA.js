@@ -41,17 +41,29 @@ function check(){
     console.log("on submit")
     let fromtime=new Date(new Date($("#fromtime").val()).setHours(0,0,0,0)).getTime();
     let totime=new Date(new Date($("#totime").val()).setHours(24,0,0,0)).getTime();
-    console.log("fromtime",fromtime);
-    console.log("totime",totime);
     let reasons=$("input[name='reasons']").val();
     let type=$("#leavecategory").val();
 
     if(type=="COMPENSATION_LEAVE"){
-        fromtime=new Date($("#fromtime").val()+" "+$("#fromGranularity").val()+":00").getTime();
-        totime=new Date($("#totime").val()+" "+$("#toGranularity").val()+":00").getTime();
+        if($("#fromGranularity").val()=="09"){
+            fromtime=new Date(new Date($("#fromtime").val()).setHours(0,0,0,0)).getTime();
+        }else if($("#fromGranularity").val()=="12"){
+            fromtime=new Date(new Date($("#fromtime").val()).setHours(12,0,0,0)).getTime();
+        }else{
+            fromtime=new Date(new Date($("#fromtime").val()).setHours(24,0,0,0)).getTime();
+        }
+        if($("#toGranularity").val()=="09"){
+            totime=new Date(new Date($("#totime").val()).setHours(0,0,0,0)).getTime();
+        }else if($("#toGranularity").val()=="12"){
+            totime=new Date(new Date($("#totime").val()).setHours(12,0,0,0)).getTime();
+        }else{
+            totime=new Date(new Date($("#totime").val()).setHours(24,0,0,0)).getTime();
+        }
     }
 
 
+    console.log("fromtime",fromtime);
+    console.log("totime",totime);
 
     if(reasons==""){
         alert("reason can not be empty");
