@@ -50,9 +50,10 @@ function showDays() {
     if(totime<=fromtime){
         return;
     }
-    $("#showDays").text("asf")
-    console.log(fromtime);
-    console.log(totime);
+    // let days=(totime-fromtime)/(1000*60*60*24);
+    // $("#showDays").text(days+" days selectd")
+    // console.log(fromtime);
+    // console.log(totime);
 }
 
 function check(){

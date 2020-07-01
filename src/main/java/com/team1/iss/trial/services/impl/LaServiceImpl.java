@@ -3,8 +3,11 @@ package com.team1.iss.trial.services.impl;
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.common.utils.TimeUtil;
 import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.repo.LARepository;
+import com.team1.iss.trial.repo.PublicHolidayRepository;
 import com.team1.iss.trial.services.interfaces.ILaService;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * Author: YC
@@ -24,6 +28,9 @@ public class LaServiceImpl implements ILaService {
 
     @Autowired
     LARepository larepo;
+
+    @Autowired
+    PublicHolidayRepository publicHolidayRepository;
 
     //Return all the LAs
     @Override
@@ -84,10 +91,23 @@ public class LaServiceImpl implements ILaService {
         float duration =  ((toTime - fromTime) / (long) (1000 * 60 * 60 * 12))/2.0f;
         if (la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)) {
             if (duration <= 14) {
+                List<PublicHoliday> holidays =
+                        publicHolidayRepository.findCurrentYearPublicHolidays(TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()))
+                        .stream()
+                        .filter(holiday->{
+                            return !TimeUtil.getWeek(holiday.getDay()).equals("Saturday")&&!TimeUtil.getWeek(holiday.getDay()).equals("Sunday");
+                        })
+                        .collect(Collectors.toList());
                 for (long i = fromTime; i <= toTime; i += 1000 * 60 * 60 * 24) {
                     if (TimeUtil.getWeek(i).equals("Saturday") || TimeUtil.getWeek(i).equals("Sunday")) {
                         duration--;
                     }
+                    for (PublicHoliday holiday : holidays) {
+                        if(holiday.getDay()==fromTime){
+                            duration--;
+                        }
+                    }
+
                 }
             }
         }

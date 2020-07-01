@@ -2,15 +2,13 @@ package com.team1.iss.trial.controller;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.component.RequestLA;
-import com.team1.iss.trial.domain.Employee;
-import com.team1.iss.trial.domain.LA;
-import com.team1.iss.trial.domain.OverTime;
-import com.team1.iss.trial.domain.User;
+import com.team1.iss.trial.domain.*;
 import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IOverTimeService;
+import com.team1.iss.trial.services.interfaces.IPublicHolidayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -39,6 +37,9 @@ public class EmployeeController {
 
 	@Autowired
 	private IOverTimeService overTimeService;
+
+	@Autowired
+	private IPublicHolidayService publicHolidayService;
 
 	@RequestMapping("/employee")
 	public String user() {
@@ -83,6 +84,18 @@ public class EmployeeController {
 			model.addAttribute("msg","the to time can not less than from time");
 			isLAValidate=false;
 		}
+		//check if fromtime is a public holiday
+		List<PublicHoliday> holidays = publicHolidayService.getCurrentYearPublicHoliday()
+				.stream()
+				.filter(holiday -> {
+					return holiday.getDay() == la.getFromTime();
+				})
+				.collect(Collectors.toList());
+		if(holidays.size()>0){
+			model.addAttribute("msg","the from time can not be a public holiday");
+			isLAValidate=false;
+		}
+		//balance check
 		//calculate annual application leave duration
 		laService.calculateApplicationDuration(la);
 		if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)){
@@ -104,7 +117,7 @@ public class EmployeeController {
 				isLAValidate=false;
 			}
 		}
-        System.out.println(la);
+		//TODO overlap check
 		if(!isLAValidate){
 			List<String> applicationType = new ArrayList();
 			applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
