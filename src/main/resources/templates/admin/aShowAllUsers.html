@@ -58,16 +58,19 @@ Add Hyperlink
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   
+  &nbsp;
  <!-- search function -->
-<div class="col-md-2"></div>
-<form  th:action="@{/admin/search}" class="form-inline" method="get">
+ <div class="container">
+	<form  th:action="@{/admin/search}" class="form-inline" method="get">
 			<p>
             Search for Users:
             <input id="word" type="text" th:value="${word}" name="word" class="form-control input-sm w-auto inline m-r"/>
-            <button class="md-btn md-fab m-b-sm indigo">Search</button>
+            <button class="btn btn-primary">Search</button>
             </p>
 </form>
-
+</div>
+&nbsp;
+&nbsp;
  
   <div class="row" th:if="${users != null && !users.isEmpty()}">
         <div class="col-md-2"></div>
@@ -80,6 +83,7 @@ Add Hyperlink
 					<th scope="col">Email</th>
 					<th scope="col">Role</th>
 					<th scope="col">Manager in Charge</th>
+					<th scope="col">Account Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -92,9 +96,11 @@ Add Hyperlink
 							<span th:text="${user.manager.name}" th:if="${user.manager != null}" > Manager </span>
 							<span th:text="${user.manager}" th:if="${user.manager == null}"> Manager </span>
 						</td>
+						<td th:text="Enabled" th:if="${user.enabled == true}" >Account Status</td>
+						<td th:text="Disabled" th:if="${user.enabled == false}" >Account Status</td>
 						<td>
-						<a th:href="@{/admin/edit/}+${user.uid}" ><button>Edit User</button></a>
-						<a th:href="@{/admin/updatemg/}+${user.uid}" ><button>Update Manager</button></a>
+						<a th:href="@{/admin/edit/}+${user.uid}" ><button class="btn btn-primary">Edit User</button></a>
+						<a th:href="@{/admin/updatemg/}+${user.uid}" ><button class="btn btn-primary">Update Manager</button></a>
 						</td>
 					</tr>
                 </tbody>
@@ -114,6 +120,7 @@ Add Hyperlink
 					<th scope="col">Email</th>
 					<th scope="col">Role</th>
 					<th scope="col">Manager in Charge</th>
+					<th scope="col">Account Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -126,9 +133,11 @@ Add Hyperlink
 							<span th:text="${user.manager.name}" th:if="${user.manager != null}" > Manager </span>
 							<span th:text="${user.manager}" th:if="${user.manager == null}"> Manager </span>
 						</td>
+						<td th:text="Enabled" th:if="${user.enabled == true}" >Account Status</td>
+						<td th:text="Disabled" th:if="${user.enabled == false}" >Account Status</td>
 						<td>
-						<a th:href="@{/admin/edit/}+${user.uid}" th:if="${#strings.equals(user.email, currentuseremail) == false}" ><button>Edit User</button></a>
-						<a th:href="@{/admin/updatemg/}+${user.uid}" th:if="${#strings.equals(user.email, currentuseremail) == false}"><button>Update Manager</button></a>
+						<a th:href="@{/admin/edit/}+${user.uid}" th:if="${#strings.equals(user.email, currentuseremail) == false}" ><button class="btn btn-primary">Edit User</button></a>
+						<a th:href="@{/admin/updatemg/}+${user.uid}" th:if="${#strings.equals(user.email, currentuseremail) == false}"><button class="btn btn-primary">Update Manager</button></a>
 						</td>
 					</tr>
                 </tbody>

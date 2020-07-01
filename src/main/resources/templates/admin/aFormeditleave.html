@@ -6,24 +6,44 @@
 	<th:block th:include = "common :: navbar"></th:block>
 </head>
 <body>
-<h1>Manage types and quantity of leave allocation</h1>
 
+<div class="container">
+<h1>Manage leave Entitlement</h1>
+&nbsp;
+	
 	<form action="#" th:object="${mldays}" th:action="@{/admin/massSaveLeave}" method="post" >
+	    <div class="form-group">
 		<fieldset>
-			Medical Leave: <input type="text" th:field="*{medicalLeaveEntitlement}">
+		<label for="inputsm"> Medical Leave: </label>
+		<input class="form-control" type="text" th:field="*{medicalLeaveEntitlement}">
 		</fieldset>
+		&nbsp;		
+		
 		<fieldset>
-			Annual leave for Administrative Staff: <input type="text" th:field="*{annualLeaveEntitlementAdmin}">
+			<label for="inputsm">Annual leave for Administrative Staff: </label>
+			<input class="form-control" type="text" th:field="*{annualLeaveEntitlementAdmin}">
 		</fieldset>
+		&nbsp;
+		
 		<fieldset>
-			Annual Leave for Professional Employees: <input type="text" th:field="*{annualLeaveEntitlementProf}">
+			<label for="inputsm"> Annual Leave for Professional Employees: </label>
+			 <input class="form-control" th:field="*{annualLeaveEntitlementProf}">
 		</fieldset>
+		&nbsp;
+
 		<fieldset>
-			<button type="submit" >Save</button>
-			<button type="reset">Reset</button>
+		<span class="help-block"><small>Note: This will reset medical leave to what is stated in the field above, and add the annual leave stated to the balance of each employees. </small></span>
+		 </fieldset>
+		 </div>
+		
+		<fieldset>
+			<button class="btn btn-primary" type="submit" >Save</button>
+			&nbsp;	
+			<button class="btn btn-primary" type="reset">Reset</button>
 		</fieldset>
 	</form>
-	
-<p>Note: This will reset medical leave to what is stated in the field above, and add the annual leave stated to the balance of each employees.</p>	
+
+
+</div>
 </body>
 </html>
