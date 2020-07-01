@@ -28,6 +28,7 @@
 				<th scope="col">Reason</th>
 				<th scope="col" th:if="${la.dissemination!=null}">Dissemination</th>
 				<th scope="col">Contact</th>
+				<th scope="col">Status</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,6 +42,7 @@
 				<td th:text="${la.reasons}"></td>
 				<td th:text="${la.dissemination.uid}" th:if="${la.dissemination!=null}"></td>
 				<td th:text="${la.contact}"></td>
+				<td th:text="${la.status}"></td>
 			</tr>
 		</tbody>
 	</table>

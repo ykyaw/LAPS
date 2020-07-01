@@ -21,8 +21,10 @@
 				<th scope="col">Name</th>
 				<th scope="col">Start Date</th>
 				<th scope="col">End Date</th>
+				<th scope="col">Status</th>
 				<th scope="col">Leave History</th>
 				<th scope="col">View Details</th>
+				
 			</tr>
 		</thead>
 		<tbody>
@@ -31,6 +33,7 @@
 				<td th:text=${la.owner.name}></td>
 				<td th:utext="${#dates.format(la.fromTime, 'yyyy-MM-dd')}"></td>
 				<td th:utext="${#dates.format(la.toTime, 'yyyy-MM-dd')}"></td>
+				<td th:text=${la.status}></td>
 				<td><a href="lalist.html"
 					th:href="@{/manager/las/}+${la.owner.uid}">Leave History</a></td>
 				<td><a href="individualapplication.html"
