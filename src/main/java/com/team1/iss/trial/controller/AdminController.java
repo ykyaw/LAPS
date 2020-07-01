@@ -83,7 +83,7 @@ public class AdminController {
 	
 	@RequestMapping("/list")
 	public String list() {
-		return "forward:/admin/list/1";
+		return "redirect:/admin/list/1";
 	}	
 	@RequestMapping("/list/{page}")
 	public String listByPagination(@PathVariable("page") int page, Model model) {
@@ -112,7 +112,7 @@ public class AdminController {
 	@RequestMapping("/updatemg")
 	public String saveupdatedManager(@ModelAttribute("usertohtml") User user,  Model model) {
 		aservice.updateUserManager(user.getManager().getUid(), user.getUid());
-		return "forward:/admin/list";
+		return "redirect:/admin/list";
 	}
 	
 	@RequestMapping("/edit/{uid}")
@@ -130,7 +130,7 @@ public class AdminController {
 	@RequestMapping("/save_edit")
 	public String saveEditedUser(@ModelAttribute("edituserform") FormEditUser userform,  Model model) {
 		aservice.updateUser(userform);	
-		return "forward:/admin/list";
+		return "redirect:/admin/list";
 	}
 	
 	
@@ -155,8 +155,10 @@ public class AdminController {
 		}
 		aservice.saveNewUser(user);
 		int newlyaddedUID = aservice.findlatestUID();
-		aservice.updateUserManager(user.getManager().getUid(), newlyaddedUID);	
-		return "forward:/admin/list";
+		if (user.getManager() != null) {
+			aservice.updateUserManager(user.getManager().getUid(), newlyaddedUID);	
+		}
+		return "redirect:/admin/list";
 	}
 	
 	@RequestMapping("/massEditLeave")
@@ -174,17 +176,17 @@ public class AdminController {
 		aservice.updateProfAnnualLeave(MLForm.getAnnualLeaveEntitlementProf());
 		aservice.updateAdminAnnualLeave(MLForm.getAnnualLeaveEntitlementAdmin());
 		
-		return "forward:/admin/list";
+		return "redirect:/admin/list";
 	}
 	
 	@RequestMapping(value = "search", method = RequestMethod.GET)
 	public String getUser(@RequestParam (value = "word", required = false) String word, Model model) {
 		if (word.isEmpty()) {
-			return "forward:/admin/list";
+			return "redirect:/admin/list";
 		}
 		List<User> users= aservice.getAllUsers(word); //check to name and email
 	    model.addAttribute("users", users);
-	    return "forward:/admin/list";
+	    return "redirect:/admin/list";
 	}
 	
 	@RequestMapping("/ph")
@@ -207,7 +209,7 @@ public class AdminController {
 	@RequestMapping(value = "/saveph", method = RequestMethod.POST)
 	public String savePh(@ModelAttribute("phform") FormPh phform) {
 		aservice.savePh(phform);
-		return "forward:/admin/ph";
+		return "redirect:/admin/ph";
 	}
 	
 	//Retrieve public holiday for editing
@@ -223,14 +225,14 @@ public class AdminController {
 	@RequestMapping(value = "/updateph", method = RequestMethod.POST)
 	public String updatePh(@ModelAttribute("phform") FormPh phform) {	
 		aservice.updatePh(phform);
-		return "forward:/admin/ph";
+		return "redirect:/admin/ph";
 	}
 	
 	//Delete
 	@RequestMapping(value = "/delph/{uid}", method = RequestMethod.GET) 
 	public String deletePh(@PathVariable int uid) {
 		aservice.deletePh(uid);
-		return "forward:/admin/ph";
+		return "redirect:/admin/ph";
 	}
 
 }
