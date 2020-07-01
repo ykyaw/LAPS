@@ -6,24 +6,31 @@ $(document).ready(function() {
     $('#fromtime').datetimepicker({
         format: 'L',//date only
         format: 'YYYY-MM-DD',
-        daysOfWeekDisabled: [0, 6],
-        // disabledDates: disabledDate
+        daysOfWeekDisabled: [0, 6]
+    }).on('dp.change',function(e){
+        showDays()
     })
     $('#totime').datetimepicker({
         format: 'L',//date only
         format: 'YYYY-MM-DD',
         daysOfWeekDisabled: [0, 6],
-        // disabledDates: disabledDate
+    }).on('dp.change',function(e){
+        showDays()
     })
+
     $('#fromGranularity').datetimepicker({
         format: 'LT',//time only
         format: 'HH',
         enabledHours: [9, 12,18]
+    }).on('dp.change',function(e){
+        showDays()
     })
     $('#toGranularity').datetimepicker({
         format: 'LT',//time only
         format: 'HH',
         enabledHours: [9, 12,18]
+    }).on('dp.change',function(e){
+        showDays()
     })
 
 });
@@ -37,8 +44,18 @@ function onLeaveTypeChange() {
     }
 }
 
+function showDays() {
+    let fromtime=new Date(new Date($("#fromtime").val()).setHours(0,0,0,0)).getTime();
+    let totime=new Date(new Date($("#totime").val()).setHours(24,0,0,0)).getTime();
+    if(totime<=fromtime){
+        return;
+    }
+    $("#showDays").text("asf")
+    console.log(fromtime);
+    console.log(totime);
+}
+
 function check(){
-    console.log("on submit")
     let fromtime=new Date(new Date($("#fromtime").val()).setHours(0,0,0,0)).getTime();
     let totime=new Date(new Date($("#totime").val()).setHours(24,0,0,0)).getTime();
     let reasons=$("input[name='reasons']").val();
