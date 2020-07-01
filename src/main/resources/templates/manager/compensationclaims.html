@@ -13,12 +13,12 @@
 <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<h2 th:if="${not #lists.isEmpty(compensationclaims)}">Compensation CLaims</h2>
+<h2 th:if="${not #lists.isEmpty(compensationclaims)}">Compensation Claims</h2>
 	<table class="table table-bordered table-hover" th:if="${not #lists.isEmpty(compensationclaims)}">
 		<thead>
 			<tr>
 				<th scope="col">Claim ID</th>
-				<th scope="col">Employee ID</th>
+				<th scope="col">Employee Name</th>
 				<th scope="col">Start Time</th>
 				<th scope="col">End Time</th>
 				<th scope="col">Status</th>
@@ -30,11 +30,11 @@
 			<tr th:each="ot:${compensationclaims}">
 				<td th:text=${ot.uid}></td>
 				<td th:text=${ot.owner.name}></td>
-				<td th:utext="${#dates.format(ot.startTime, 'dd MMM yyyy')}"></td>
-				<td th:utext="${#dates.format(ot.endTime, 'dd MMM yyyy')}"></td>
+				<td th:utext="${#dates.format(ot.startTime, 'yyyy-MM-dd HH:mm')}"></td>
+				<td th:utext="${#dates.format(ot.endTime, 'yyyy-MM-dd HH:mm')}"></td>
 				<td th:text=${ot.status}></td>
 				<td><a class="button" th:href="@{/manager/approveClaim/}+${ot.uid}">Approve</a></td>
-				<td><a class="button" th:href="@{/manager/approveReject/}+${ot.uid}">Reject</a></td>
+				<td><a class="button" th:href="@{/manager/rejectClaim/}+${ot.uid}">Reject</a></td>
 				<!-- <td><a href="individualapplication.html"
 					th:href="@{/manager/individual/}+${la.uid}" >Approve</a></td>
 				<td><a href="individualapplication.html"

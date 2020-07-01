@@ -29,10 +29,10 @@
 			<tr th:each="la:${listforapproval}">
 				<td th:text=${la.owner.uid}></td>
 				<td th:text=${la.owner.name}></td>
-				<td th:utext="${#dates.format(la.fromTime, 'dd MMM yyyy')}"></td>
-				<td th:utext="${#dates.format(la.toTime, 'dd MMM yyyy')}"></td>
-				<td><a href="i#"
-					th:href="@{/employee/lalist/}+${la.owner.uid}">Leave History</a></td>
+				<td th:utext="${#dates.format(la.fromTime, 'yyyy-MM-dd')}"></td>
+				<td th:utext="${#dates.format(la.toTime, 'yyyy-MM-dd')}"></td>
+				<td><a href="lalist.html"
+					th:href="@{/manager/las/}+${la.owner.uid}">Leave History</a></td>
 				<td><a href="individualapplication.html"
 					th:href="@{/manager/individual/}+${la.uid}">View Details</a></td>
 			</tr>

@@ -3,17 +3,20 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Admin Home Page</title>
-	<th:block th:include = "common :: header"></th:block>
 	<th:block th:include = "common :: navbar"></th:block>
 </head>
 <body>
 	<h1>Admin Home Page</h1>
 	<h2>This is the main page for admin. He access his services from here, or click on "Manage Personal Leave" to be directed to employee homepage for leave booking</h2>
-	<a href="/admin/list"><button> Manage Staff</button></a>
-	<a href="/employee"><button> Manage Personal Leave</button></a>
-	<a href="/admin/create"><button> Create new staff</button></a>
-	<a href="/admin/massEditLeave"><button> Manage leave entitled (mass)</button></a>
-		<a href="/admin/ph"><button> Manage Public Holiday</button></a>
-	<th:block th:include = "common :: footer"></th:block>
+	<a href="/admin/list"><button class="btn btn-primary"> Manage Staff</button></a>
+	<a href="/employee"><button class="btn btn-primary"> Manage Personal Leave</button></a>
+	<a href="/admin/create"><button class="btn btn-primary"> Create new staff</button></a>
+	<a href="/admin/massEditLeave"><button class="btn btn-primary"> Manage Medical/Annual Leave</button></a>
+	<a href="/admin/ph"><button class="btn btn-primary"> Manage Public Holiday</button></a>
+
+&nbsp;
+<div class="panel-footer">
+<th:block th:include = "common :: footer"></th:block>
+</div>
 </body>
 </html>

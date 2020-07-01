@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.Employee;
+import com.team1.iss.trial.domain.LA;
 
 
 
@@ -17,5 +18,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>{
 	@Query("select u from User u where u.userType="+CommConstants.UserType.EMPLOYEE)
 	public List<Employee> findAllEmployees();
 
-	
+	@Query("select u from User u where u.userType='EMPLOYEE' AND manager_id=?1")
+	public List<Employee> findAllSubordinates(int uid);
 }

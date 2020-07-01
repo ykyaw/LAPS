@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
+	<th:block th:include = "common :: navbar"></th:block>
 <title>Leave Application</title>
 <link href="assets/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}"
@@ -13,12 +14,12 @@
 <script th:src="@{/assets/js/transition.js}"></script>
 <script th:src="@{/assets/js/collapse.js}"></script>
 <script th:src="@{/assets/js/bootstrap-datetimepicker.min.js}"></script>
-<link th:href="@{/assets/css/bootstrap-datetimepicker.min.css}"
-	rel="stylesheet">
+<link th:href="@{/assets/css/bootstrap-datetimepicker.min.css}"rel="stylesheet">
 <script th:src="@{/assets/js/bootstrap.min.js}"></script>
 <link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet">
 </head>
 <body>
+
 
 
 	<h2>Edit Public Holiday</h2>
@@ -94,7 +95,7 @@
 		</form>
 	</main>
 
-
+	<a class="nav-item nav-link active" href ="/admin/ph"> <Button>Back to List of Public Holidays</Button> <span class="sr-only"></span></a>
 	<script type="text/javascript" th:src="@{/assets/js/submitPH.js}">
 	</script>
 	<th:block th:include="common :: footer"></th:block>

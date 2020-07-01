@@ -22,16 +22,21 @@ import java.util.List;
  * */
 @Service
 public class OverTimeServiceImpl implements IOverTimeService {
-
+	
+	@Autowired
+    OverTimeRepository otrepo;
+	
 	@Override
 	public ArrayList<OverTime> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<OverTime> list = (ArrayList<OverTime>) otrepo.findAll();
+		return list;
+	}
+	   
+	@Override
+	public OverTime getOtById(int id) {
+		return otrepo.findById(id).get();
 	}
 	
-    @Autowired
-    OverTimeRepository otrepo;
-    
     //Save the OverTime
 	@Override
 	public void saveOt(OverTime ot) {

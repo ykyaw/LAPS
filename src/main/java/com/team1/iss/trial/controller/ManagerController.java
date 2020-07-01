@@ -1,21 +1,34 @@
 package com.team1.iss.trial.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.OverTime;
+import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.impl.ManagerServiceImpl;
+import com.team1.iss.trial.services.impl.OverTimeServiceImpl;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IManagerService;
+import com.team1.iss.trial.services.interfaces.IOverTimeService;
 
 @Controller
 @RequestMapping("/manager")
@@ -36,13 +49,13 @@ public class ManagerController {
 		this.laservice = laserviceimpl;
 	}
 	
-//	@Autowired
-//	private IOverTimeService otservice;
-//	
-//	@Autowired
-//	public void setOtservice(OverTimeServiceImpl otserviceimpl) {
-//		this.otserivce = otserviceimpl;
-//	}
+	@Autowired
+	private IOverTimeService otservice;
+	
+	@Autowired
+	public void setOtservice(OverTimeServiceImpl otserviceimpl) {
+		this.otservice = otserviceimpl;
+	}
 	
 	
 	@RequestMapping("")
@@ -103,25 +116,62 @@ public class ManagerController {
 		return "/manager/compensationclaims";	
 	}
 	
-//	//Approve Claim
-//	@RequestMapping("/approveclaim/{uid}")
-//	public String approveClaim(@PathVariable("uid") int uid, Model model) {
-//		OverTime ot=otservice.getOverTimeById(uid);
-//		ot.setStatus(CommConstants.ClaimStatus.APPROVED);
-//		mservice.saveOverTime(ot);
-//		model.addAttribute("ot", ot);
-//		return "/manager/compensationclaims";
-//	}
-//		
-//	//Reject Claim
-//	@RequestMapping("/rejectclaim/{uid}")
-//	public String rejectClaim(@PathVariable("uid") int uid, Model model) {
-//		LA la=laservice.getLaById(uid);
-//		la.setStatus(CommConstants.ClaimStatus.REJECTED);
-//		mservice.saveOverTime(ot);
-//		model.addAttribute("ot", ot);
-//		return "/manager/compensationclaims";
-//	}
+	//Approve Claim
+	@RequestMapping("/approveClaim/{uid}")
+	public String approveClaim(@PathVariable("uid") int uid, Model model) {
+		OverTime ot=otservice.getOtById(uid);
+		ot.setStatus(CommConstants.ClaimStatus.APPROVED);
+		mservice.saveOverTime(ot);
+		model.addAttribute("ot", ot);
+		return "/manager/claimConfirmation";
+	}
+		
+	//Reject Claim
+	@RequestMapping("/rejectClaim/{uid}")
+	public String rejectClaim(@PathVariable("uid") int uid, Model model) {
+		OverTime ot=otservice.getOtById(uid);
+		ot.setStatus(CommConstants.ClaimStatus.REJECTED);
+		mservice.saveOverTime(ot);
+		model.addAttribute("ot", ot);
+		return "/manager/claimConfirmation";
+	}
+	
+	//Employee Leave History
+	@RequestMapping("/las/{uid}")
+	public String la(@PathVariable("uid") Integer uid, Model model) {
+		List<LA> las = laservice.findLaByOwnerId(uid);
+		model.addAttribute("lalist", las);
+		return "/manager/lalist";
+	}
+	
+	@RequestMapping("/list")
+	public String list() {
+		return "forward:/manager/list/1";
+	}	
+	@RequestMapping("/list/{page}")
+	public String listByPagination(@PathVariable("page") int page, Model model) {
+		PageRequest pageable = PageRequest.of(page-1, 3);
+		Page<User> userpage = mservice.getPaginatedEmployees(pageable);
+        int totalPages = userpage.getTotalPages();
+        if(totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("currentuseremail", auth.getName());
+        model.addAttribute("userList", userpage.getContent());
+		return "manager/subordinates";
+	}
+	
+	@RequestMapping(value = "search", method = RequestMethod.GET)
+	public String getUser(@RequestParam (value = "word", required = false) String word, Model model) {
+		if (word.isEmpty()) {
+			return "forward:/manager/list";
+		}
+		List<User> users= mservice.getAllEmployees(word); //check to name and email
+	    model.addAttribute("users", users);
+	    return "forward:/manager/list";
+	}
 }
 
 
