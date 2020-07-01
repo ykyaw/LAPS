@@ -14,37 +14,41 @@
 </head>
 <body>
 
-<h1>Individual Application Details</h1>7
+<h1>Individual Application Details</h1>
 
-	<table style="width: 100%" class="w3-container">
-		<!-- 			<tr>
-				<th>ID</th>
-				<th>User ID</th>
-				<th>>Applicant ID</th>
-				<th>>Leave Period From</th>
-				<th>>Leave Period To</th>
-				<th>>Reason for Leave</th>
-				<th>>Dissemination</th>
-				<th>>Contact</th>
-			</tr> -->
-		<tr>
-			<td th:text="${la.uid}">ID</td>
-			<td th:text="${la.owner.uid}">User ID</td>
-			<td th:text="${la.owner.name}">Applicant ID</td>
-			<td th:text="${la.fromTime}">Leave Period From</td>
-			<td th:text="${la.toTime}">Leave Period To</td>
-			<td th:text="${la.type}">Leave Type</td>
-			<td th:text="${la.reasons}">Reason for Leave</td>
-			<td th:text="${la.dissemination.uid}" th:if="${la.dissemination!=null}">Dissemination</td>
-			<td th:text="${la.contact}">Contact</td>
-		</tr>
-
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th scope="col">Application ID</th>
+				<th scope="col">Employee ID</th>
+				<th scope="col">Name</th>
+				<th scope="col">Start Date</th>
+				<th scope="col">End Date</th>
+				<th scope="col">Leave Type</th>
+				<th scope="col">Reason</th>
+				<th scope="col" th:if="${la.dissemination!=null}">Dissemination</th>
+				<th scope="col">Contact</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${la.uid}"></td>
+				<td th:text="${la.owner.uid}"></td>
+				<td th:text="${la.owner.name}"></td>
+				<td th:utext="${#dates.format(la.fromTime, 'yyyy-MM-dd')}"></td>
+				<td th:utext="${#dates.format(la.toTime, 'yyyy-MM-dd')}"></td>
+				<td th:text="${la.type}"></td>
+				<td th:text="${la.reasons}"></td>
+				<td th:text="${la.dissemination.uid}" th:if="${la.dissemination!=null}"></td>
+				<td th:text="${la.contact}"></td>
+			</tr>
+		</tbody>
 	</table>
 
 	<div>
-		<a class="button" th:href="@{/manager/approveapplication/}+${la.uid}">Approve</a>
+		<a th:href="@{/manager/approveapplication/}+${la.uid}"><button>Approve</button></a>
 
-		<a class="button" th:href="@{/manager/rejectreasonkeyin/}+${la.uid}">Reject</a>
+		<a th:href="@{/manager/rejectreasonkeyin/}+${la.uid}"><button>Reject</button></a>
 	</div>
 	<th:block th:include = "common :: footer"></th:block>
 </body>
