@@ -94,7 +94,7 @@ public class LaServiceImpl implements ILaService {
         long fromTime = la.getFromTime();
         long toTime = la.getToTime();
         float l = (toTime - fromTime) / (long)(1000 * 60 * 60 * 24);
-        float duration =  ((toTime - fromTime) / (long) (1000 * 60 * 60 * 12))/2.0f;
+        float duration =  ((toTime - fromTime) / (long) (1000 * 60 * 60 * 12-1000))/2.0f;
         if (la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)) {
             if (duration <= 14) {
                 List<PublicHoliday> holidays =

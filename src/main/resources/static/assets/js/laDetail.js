@@ -50,7 +50,7 @@ function onLeaveTypeChange() {
 
 function showDays() {
     let fromtime=new Date(new Date($("#fromtime").val()).setHours(0,0,0,0)).getTime();
-    let totime=new Date(new Date($("#totime").val()).setHours(24,0,0,0)).getTime();
+    let totime=new Date(new Date($("#totime").val()).setHours(23,59,59,0)).getTime();
     if(totime<=fromtime){
         return;
     }
@@ -62,7 +62,7 @@ function showDays() {
 
 function check(){
     let fromtime=new Date(new Date($("#fromtime").val()).setHours(0,0,0,0)).getTime();
-    let totime=new Date(new Date($("#totime").val()).setHours(24,0,0,0)).getTime();
+    let totime=new Date(new Date($("#totime").val()).setHours(23,59,59,0)).getTime();
     let reasons=$("input[name='reasons']").val();
     let type=$("#leavecategory").val();
 
@@ -72,14 +72,14 @@ function check(){
         }else if($("#fromGranularity").val()=="12"){
             fromtime=new Date(new Date($("#fromtime").val()).setHours(12,0,0,0)).getTime();
         }else{
-            fromtime=new Date(new Date($("#fromtime").val()).setHours(24,0,0,0)).getTime();
+            fromtime=new Date(new Date($("#fromtime").val()).setHours(23,59,59,0)).getTime();
         }
         if($("#toGranularity").val()=="09"){
             totime=new Date(new Date($("#totime").val()).setHours(0,0,0,0)).getTime();
         }else if($("#toGranularity").val()=="12"){
             totime=new Date(new Date($("#totime").val()).setHours(12,0,0,0)).getTime();
         }else{
-            totime=new Date(new Date($("#totime").val()).setHours(24,0,0,0)).getTime();
+            totime=new Date(new Date($("#totime").val()).setHours(23,59,59,0)).getTime();
         }
     }
 
