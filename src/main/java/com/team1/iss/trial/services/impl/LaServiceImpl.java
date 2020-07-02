@@ -85,7 +85,10 @@ public class LaServiceImpl implements ILaService {
     
     @Override
     public Page<LA> findLaByOwnerIdPageable(Pageable pageable, int uid) {
-    	Page<LA> las = larepo.findAllLeaveByOwnerId(pageable, uid,TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()) );    	
+    	Page<LA> las = larepo.findAllLeaveByOwnerId(pageable, uid,TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()) );
+        for (LA la : las) {
+            calculateApplicationDuration(la);
+        }
         return las;
     }
 
