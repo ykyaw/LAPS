@@ -1,5 +1,9 @@
 package com.team1.iss.trial.services.impl;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +19,9 @@ import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
+import com.team1.iss.trial.domain.OverTimeToCSV;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.repo.LARepository;
-import com.team1.iss.trial.repo.ManagerRepository;
 import com.team1.iss.trial.repo.OverTimeRepository;
 import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.interfaces.IManagerService;
@@ -98,6 +102,26 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 		ArrayList<User> employeeList=(ArrayList<User>)uRepo.getEmployeelistByManagerId(managerid);
 		return employeeList;
 	}
+
+	@Override
+	public List<OverTimeToCSV> convertOverTimetoCSV(ArrayList<OverTime> compensationlist) {
+		List<OverTimeToCSV> list = new ArrayList<>();
+		for (OverTime compensation : compensationlist) {
+			
+			  OverTimeToCSV overtimetocsv=new OverTimeToCSV();
+			  overtimetocsv.setUid(String.valueOf(compensation.getUid()));
+			  overtimetocsv.setOwner(compensation.getOwner().getName());
+			  overtimetocsv.setStartTime(TimeUtil.convertTimestampToTimeFormat(compensation.getStartTime()));
+			  overtimetocsv.setEndTime(TimeUtil.convertTimestampToTimeFormat(compensation.getEndTime()));
+			  overtimetocsv.setHours(String.valueOf((compensation.getEndTime()-compensation.getStartTime())/3600000));
+			  overtimetocsv.setStatus(compensation.getStatus());
+			  
+			  list.add(overtimetocsv); 
+			  
+			  }
+		return list;
+	}
+
 	
 	@Override
 	public ArrayList<LACsvFile> LaCsvMapper (List<LA> la){
@@ -129,4 +153,12 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 //		ArrayList<LA> list=(ArrayList<LA>)laRepo.findLAByOwnerId(uid);
 //		return list;
 //	}
+	
+	/*
+	 * public static String Timeformating(long ds) { Instant i =
+	 * Instant.ofEpochSecond(ds / 1000); ZoneId sgZone =
+	 * ZoneId.of("Asia/Singapore"); ZonedDateTime sgdt = ZonedDateTime.ofInstant(i,
+	 * sgZone); DateTimeFormatter df =
+	 * DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); return sgdt.format(df); }
+	 */
 }

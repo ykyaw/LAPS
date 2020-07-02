@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
+import com.team1.iss.trial.domain.OverTimeToCSV;
 import com.team1.iss.trial.domain.User;
 
 
@@ -26,4 +27,6 @@ public interface IManagerService {
 	public Page<User> getPaginatedEmployees(PageRequest pageable);
 	public ArrayList<User> getAllEmployees(String word);
 	public ArrayList<LACsvFile> LaCsvMapper(List<LA> la);
+	public List<OverTimeToCSV> convertOverTimetoCSV(ArrayList<OverTime> compensationlist);
+
 }

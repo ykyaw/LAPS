@@ -1,11 +1,6 @@
 package com.team1.iss.trial.controller;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +28,7 @@ import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
+import com.team1.iss.trial.domain.OverTimeToCSV;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.services.impl.EmailServiceImpl;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
@@ -162,6 +157,7 @@ public class ManagerController {
 	@RequestMapping("/compensationclaims")
 	public String compensationclaims(Model model) {
 		model.addAttribute("compensationclaims",mservice.findClaims());
+		System.out.println(mservice.findClaims());
 		return "/manager/compensationclaims";	
 	}
 	
@@ -233,35 +229,31 @@ public class ManagerController {
 		return "/manager/employeelistundermanager";
 	}
 	
-	// export to csv
-	@GetMapping("/exportcompensation")
-    public void exportCSV(HttpServletResponse response) throws Exception {
+	
+	  // export to csv
+	  
+	  @RequestMapping("/exportcompensation") 
+	  public void exportCSV(HttpServletResponse response) throws Exception { 
+	 
+		  //set file name and content type 
+		  String filename = "Compensation.csv"; 
 
-        //set file name and content type
-        String filename = "Compensation.csv";
+		  ArrayList<OverTime> compensationlist=mservice.findClaims(); 
+		  //for header
+		  response.setContentType("text/csv");
+	      response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"");
+			//create a csv writer 
+			StatefulBeanToCsv<OverTimeToCSV> writer = new
+			StatefulBeanToCsvBuilder<OverTimeToCSV>(response.getWriter())
+			.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+			.withSeparator(CSVWriter.DEFAULT_SEPARATOR) .withOrderedResults(false)
+			.build();
+    
+	      writer.write(mservice.convertOverTimetoCSV(compensationlist));
+  }
 
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
-        //create a csv writer
-        StatefulBeanToCsv<OverTime> writer = new StatefulBeanToCsvBuilder<OverTime>(response.getWriter())
-                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
-                .withOrderedResults(false)
-                .build();
-        
-        //write all claims to csv file
-        ArrayList<OverTime> compensationlist=mservice.findClaims();
-        writer.write(compensationlist);
-	}
-
-	//converte time format from unixstamp (for csv starttime and endtime format)
-	/*
-	 * public static String Timeformating(long ds) { Instant i =
-	 * Instant.ofEpochSecond(ds/1000); ZoneId sgZone = ZoneId.of("Asia/Singapore");
-	 * ZonedDateTime sgdt = ZonedDateTime.ofInstant(i, sgZone); DateTimeFormatter df
-	 * = DateTimeFormatter .ofPattern("dd/MM/yyyy HH:mm"); return sgdt.format(df); }
-	 */
+	
+	 
 	
 //	//Approve Claim
 //	@RequestMapping("/approveclaim/{uid}")
