@@ -109,7 +109,7 @@ public class LaServiceImpl implements ILaService {
                         duration--;
                     }
                     for (PublicHoliday holiday : holidays) {
-                        if(holiday.getDay()==fromTime){
+                        if(holiday.getDay()==i){
                             duration--;
                         }
                     }
