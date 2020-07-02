@@ -28,7 +28,7 @@
 			<tr th:each="la:${laList}">					  
 			<td th:utext="${#dates.format(la.fromTime, 'yyyy-MM-dd HH:mm')}"></td>
 			<td th:utext="${#dates.format(la.toTime, 'yyyy-MM-dd HH:mm')}"></td>
-			<td th:utext="${#dates.format((la.toTime - la.fromTime), 'dd')}"></td>
+			<td th:utext="${la.duration}"></td>
 			<td th:text="${la.type}"></td>
 			<td th:text="${la.status}"></td>
 			<td><a href="laDetails.html"

@@ -79,6 +79,10 @@ public class LaServiceImpl implements ILaService {
     @Override
     public List<LA> findLaByOwnerId(int uid) {
         List<LA> las = larepo.findAllLeaveByOwnerId(uid, TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
+        for (LA la : las) {
+            calculateApplicationDuration(la);
+        }
+
         return las;
     }
 
