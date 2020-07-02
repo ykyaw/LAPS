@@ -12,6 +12,7 @@ import com.team1.iss.trial.services.interfaces.IOverTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team1.iss.trial.domain.Employee;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.repo.EmployeeRepository;
 import com.team1.iss.trial.repo.LARepository;
@@ -86,11 +87,37 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		return user.getAnnualLeaveEntitlement()-usedDay;
 
 	}
+	
+	@Override
+	public float getAnnualApplicationBalance(int ownerId) {
+		User user = userRepository.findById(ownerId).get();
+		List<LA> las = laRepo.findAllApprovedAnnualLeaveByOwnerId(ownerId, TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
+		float usedDay=0;
+		for (LA item : las) {
+			laService.calculateApplicationDuration(item);
+			usedDay+=item.getDuration();
+		}
+		return user.getAnnualLeaveEntitlement()-usedDay;
+	}
+	
+	
 
 	@Override
 	public float getMedicalApplicationBalance(LA la) {
 		User user = userRepository.findById(la.getOwner().getUid()).get();
 		List<LA> las = laRepo.findAllApprovedMedicalLeaveByOwnerId(la.getOwner().getUid(), TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
+		float usedDay=0;
+		for (LA item : las) {
+			laService.calculateApplicationDuration(item);
+			usedDay+=item.getDuration();
+		}
+		return user.getMedicalLeaveEntitlement()-usedDay;
+	}
+	
+	@Override
+	public float getMedicalApplicationBalance(int ownerId) {
+		User user = userRepository.findById(ownerId).get();
+		List<LA> las = laRepo.findAllApprovedMedicalLeaveByOwnerId(ownerId, TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
 		float usedDay=0;
 		for (LA item : las) {
 			laService.calculateApplicationDuration(item);
@@ -115,4 +142,28 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		}
 		return totalOverTime/8.0f-usedDay;
 	}
+
+	@Override
+	public float getCompensationApplicationBalance(int ownerId) {
+		List<OverTime> overtimes = overTimeRepository.findCurrentYearApprovedOverTimeByOwnerId(ownerId, TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
+		int totalOverTime=0;
+		for (OverTime overtime : overtimes) {
+			overTimeService.calculateHours(overtime);
+			totalOverTime+=overtime.getHours();
+		}
+		List<LA> las=laRepo.findAllApprovedCompensationLeaveByOwnerId(ownerId, TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()));
+		float usedDay=0;
+		for (LA item : las) {
+			laService.calculateApplicationDuration(item);
+			usedDay+=item.getDuration();
+		}
+		return totalOverTime/8.0f-usedDay;
+	}
+
+	@Override
+	public User getUserByUid(int uid) {
+		// TODO Auto-generated method stub
+		User user = userRepository.findById(uid).get();
+		return user;
+	}	
 }

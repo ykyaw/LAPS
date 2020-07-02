@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.team1.iss.trial.domain.LA;
+import org.springframework.data.repository.query.Param;
 
 /*
 * Author: YC
@@ -28,4 +29,8 @@ public interface ILaService {
     void calculateApplicationDuration(LA la);
     
     Page<LA> findLaByOwnerIdPageable(Pageable pageable, int uid);
+
+    //test
+    List<LA> findLAOverlap(long new_start, long new_end, int ownerId, long currentYear);
+
 }
