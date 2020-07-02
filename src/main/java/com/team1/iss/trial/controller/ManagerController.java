@@ -32,6 +32,7 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.services.impl.EmailServiceImpl;
@@ -91,6 +92,29 @@ public class ManagerController {
 		model.addAttribute("listforapproval",mservice.findPendingApplications());
 		return "/manager/listforapproval";	
 	}
+	
+	@RequestMapping("/listforapprovalcsv")
+	public void exportLACSV (HttpServletResponse response) throws Exception {
+		
+		List<LA> la = mservice.findPendingApplications();
+        //set file name and content type
+        String filename = "pendingLA.csv";
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
+        List<LACsvFile> newlacsv = mservice.LaCsvMapper(la);
+        //create a csv writer
+        StatefulBeanToCsv<LACsvFile> writer = new StatefulBeanToCsvBuilder<LACsvFile>(response.getWriter())
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                .withOrderedResults(false)
+                .build();
+        //write all users to csv file
+        writer.write(newlacsv);
+                
+    }
+
+
 	
 	//show individual application
 	@RequestMapping("/individual/{uid}")
@@ -219,7 +243,6 @@ public class ManagerController {
         response.setContentType("text/csv");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + filename + "\"");
-
         //create a csv writer
         StatefulBeanToCsv<OverTime> writer = new StatefulBeanToCsvBuilder<OverTime>(response.getWriter())
                 .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)

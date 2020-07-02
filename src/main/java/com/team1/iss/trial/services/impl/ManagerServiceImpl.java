@@ -11,7 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.repo.LARepository;
@@ -19,6 +21,9 @@ import com.team1.iss.trial.repo.ManagerRepository;
 import com.team1.iss.trial.repo.OverTimeRepository;
 import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.interfaces.IManagerService;
+import com.team1.iss.trial.common.utils.TimeUtil;
+
+
 
 @Service
 @Primary
@@ -92,6 +97,31 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 	public ArrayList<User> getEmolyeeList(int managerid) {
 		ArrayList<User> employeeList=(ArrayList<User>)uRepo.getEmployeelistByManagerId(managerid);
 		return employeeList;
+	}
+	
+	@Override
+	public ArrayList<LACsvFile> LaCsvMapper (List<LA> la){
+		ArrayList<LACsvFile> newlist = new ArrayList<>();	
+		for(LA l:la) {
+			LACsvFile n = new LACsvFile();
+			n.setLAuid(l.getUid());
+			n.setContact(l.getContact());	
+			n.setFromTime(TimeUtil.convertTimestampToTimeFormat(l.getFromTime()));
+			n.setToTime(TimeUtil.convertTimestampToTimeFormat(l.getToTime()));
+			n.setReasons(l.getReasons());
+			n.setType(l.getType());	
+			if(l.getDissemination() != null) {
+				n.setStandin(l.getDissemination().getName());
+			}
+			else {
+				n.setStandin("None");
+			}
+			n.setStatus(l.getStatus());
+			n.setOwnername(l.getOwner().getName());
+			n.setOwnerID(l.getOwner().getUid());
+			newlist.add(n);
+		}	
+		return newlist;
 	}
 	
 //	@Override
