@@ -28,5 +28,4 @@ public interface IManagerService {
 	public ArrayList<User> getAllEmployees(String word);
 	public ArrayList<LACsvFile> LaCsvMapper(List<LA> la);
 	public List<OverTimeToCSV> convertOverTimetoCSV(ArrayList<OverTime> compensationlist);
-
 }

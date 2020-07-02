@@ -157,7 +157,6 @@ public class ManagerController {
 	@RequestMapping("/compensationclaims")
 	public String compensationclaims(Model model) {
 		model.addAttribute("compensationclaims",mservice.findClaims());
-		System.out.println(mservice.findClaims());
 		return "/manager/compensationclaims";	
 	}
 	
@@ -229,31 +228,34 @@ public class ManagerController {
 		return "/manager/employeelistundermanager";
 	}
 	
-	
-	  // export to csv
-	  
-	  @RequestMapping("/exportcompensation") 
-	  public void exportCSV(HttpServletResponse response) throws Exception { 
-	 
-		  //set file name and content type 
-		  String filename = "Compensation.csv"; 
+	@RequestMapping("/exportcompensation") 
+    public void exportCSV(HttpServletResponse response) throws Exception { 
+   
+        //set file name and content type 
+        String filename = "Compensation.csv"; 
 
-		  ArrayList<OverTime> compensationlist=mservice.findClaims(); 
-		  //for header
-		  response.setContentType("text/csv");
-	      response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"");
-			//create a csv writer 
-			StatefulBeanToCsv<OverTimeToCSV> writer = new
-			StatefulBeanToCsvBuilder<OverTimeToCSV>(response.getWriter())
-			.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-			.withSeparator(CSVWriter.DEFAULT_SEPARATOR) .withOrderedResults(false)
-			.build();
-    
-	      writer.write(mservice.convertOverTimetoCSV(compensationlist));
-  }
+        ArrayList<OverTime> compensationlist=mservice.findClaims(); 
+        //for header
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"");
+          //create a csv writer 
+          StatefulBeanToCsv<OverTimeToCSV> writer = new
+          StatefulBeanToCsvBuilder<OverTimeToCSV>(response.getWriter())
+          .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+          .withSeparator(CSVWriter.DEFAULT_SEPARATOR) .withOrderedResults(false)
+          .build();
+  
+        writer.write(mservice.convertOverTimetoCSV(compensationlist));
 
-	
-	 
+	}
+
+	//converte time format from unixstamp (for csv starttime and endtime format)
+	/*
+	 * public static String Timeformating(long ds) { Instant i =
+	 * Instant.ofEpochSecond(ds/1000); ZoneId sgZone = ZoneId.of("Asia/Singapore");
+	 * ZonedDateTime sgdt = ZonedDateTime.ofInstant(i, sgZone); DateTimeFormatter df
+	 * = DateTimeFormatter .ofPattern("dd/MM/yyyy HH:mm"); return sgdt.format(df); }
+	 */
 	
 //	//Approve Claim
 //	@RequestMapping("/approveclaim/{uid}")
