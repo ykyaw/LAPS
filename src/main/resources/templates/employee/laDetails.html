@@ -3,9 +3,9 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Leave Application Details</title>
-    <th:block th:include = "common :: header"></th:block>
+
     <th:block th:include = "common :: navbar"></th:block>
-    <div th:fragment="example">This is a thymeleaf fragment example</div>
+
     <link href="assets/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}"
           rel="stylesheet">
@@ -32,8 +32,8 @@
         <input type="hidden" name="fromTime" th:value="${la.fromTime}" />
         <input type="hidden" name="toTime" th:value="${la.toTime}"/>
         <div class="form-group row">
-            <label for="leavecategory" class="col-sm-2 col-form-label">leave
-                category</label>
+            <label for="leavecategory" class="col-sm-2 col-form-label">Leave
+                Category</label>
             <div class="col-sm-10">
                 <select class="form-control" id="leavecategory" name="type" onchange="onLeaveTypeChange()"
                         th:value="${la!=null}?${la.type}">
@@ -44,23 +44,23 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">reason</label>
+            <label class="col-sm-2 col-form-label">Reason for Leave</label>
             <div class="col-sm-10">
                 <input name="reasons" type="text" class="form-control"
-                       placeholder="please input leave reason"
+                       placeholder="Please input leave reason"
                        th:value="${la!=null}?${la.reasons}:''">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">contact</label>
+            <label class="col-sm-2 col-form-label">Contact</label>
             <div class="col-sm-10">
                 <input name="contact" type="text" class="form-control"
-                       placeholder="please input contact if on an overseas trip"
+                       placeholder="Please input contact details if on an overseas trip"
                        th:value="${la!=null}?${la.contact}:''">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">from time</label>
+            <label class="col-sm-2 col-form-label">Start Date</label>
             <div class="row col-sm-10">
                 <div class='col-sm-5 input-group date'>
                     <input type='text' class="form-control"  id='fromtime' /> <span
@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">to time</label>
+            <label class="col-sm-2 col-form-label">End Date</label>
             <div class="row col-sm-10">
                 <div class='col-sm-5 input-group date'>
                     <input type='text' class="form-control"  id='totime' /> <span
@@ -96,7 +96,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">dissemination</label>
+            <label class="col-sm-2 col-form-label">Covering Staff</label>
             <div class="col-sm-10">
                 <select class="form-control" name="dissemination"
                         th:value="${la!=null}?(${la.dissemination!=null}?${la.dissemination.uid}:null):null">

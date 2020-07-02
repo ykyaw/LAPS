@@ -125,7 +125,7 @@ public class EmployeeController {
 		la.setStatus(CommConstants.ApplicationStatus.APPLIED);
 		boolean isLAValidate=true;
 		if(la.getToTime()-la.getFromTime()<=0){
-			model.addAttribute("msg","the to time can not less than from time");
+			model.addAttribute("msg","End date cannot be before start date");
 			isLAValidate=false;
 		}
 		//check if fromtime is a public holiday
@@ -136,7 +136,7 @@ public class EmployeeController {
 				})
 				.collect(Collectors.toList());
 		if(holidays.size()>0){
-			model.addAttribute("msg","the from time can not be a public holiday");
+			model.addAttribute("msg","Start date cannot be a public holiday");
 			isLAValidate=false;
 		}
 		//balance check
@@ -145,19 +145,19 @@ public class EmployeeController {
 		if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)){
 			float balance = eService.getAnnualApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your annual leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your annual leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}else if(la.getType().equals(CommConstants.LeaveType.MEDICAL_LEAVE)){
 			float balance=eService.getMedicalApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your medical leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your medical leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}else{
 			float balance=eService.getCompensationApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your compensation leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your compensation leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}
@@ -165,7 +165,7 @@ public class EmployeeController {
 		// check if la is overlaped with existing leave
 		List<LA> existing_LA = laService.findLAOverlap(la.getFromTime(), la.getToTime(), la.getOwner().getUid(), TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp())); //1593224802
 		if (existing_LA.size() > 0) {
-			model.addAttribute("msg","The new LA is overlaped with existing LA");
+			model.addAttribute("msg","The dates of this application overlap with an existing application");
 			List<String> applicationType = new ArrayList();
 			applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
 			applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
@@ -210,7 +210,7 @@ public class EmployeeController {
 		la.setStatus(CommConstants.ApplicationStatus.UPDATED);
 		boolean isLAValidate=true;
 		if(la.getToTime()-la.getFromTime()<=0){
-			model.addAttribute("msg","the to time can not less than from time");
+			model.addAttribute("msg","End date cannot be before start date");
 			isLAValidate=false;
 		}
 		//check if fromtime is a public holiday
@@ -221,7 +221,7 @@ public class EmployeeController {
 				})
 				.collect(Collectors.toList());
 		if(holidays.size()>0){
-			model.addAttribute("msg","the from time can not be a public holiday");
+			model.addAttribute("msg","Start date cannot be a public holiday");
 			isLAValidate=false;
 		}
 		//balance check
@@ -230,19 +230,19 @@ public class EmployeeController {
 		if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)){
 			float balance = eService.getAnnualApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your annual leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your annual leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}else if(la.getType().equals(CommConstants.LeaveType.MEDICAL_LEAVE)){
 			float balance=eService.getMedicalApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your medical leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your medical leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}else {
 			float balance=eService.getCompensationApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your compensation leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your compensation leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}

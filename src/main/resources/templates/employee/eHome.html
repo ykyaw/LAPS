@@ -3,7 +3,7 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Employee Homepage</title>
-	<th:block th:include = "common :: header"></th:block>
+	
 	<th:block th:include = "common :: navbar"></th:block>
 </head>
 <body>
@@ -16,8 +16,9 @@
 	 <a href ="/employee/apply"> <button>Submit Leave Application</button></a>
 	 <!--<a href ="/employee/lalist"> <button>Manage Leave Application</button></a>-->
 	 <a href ="/employee/las"> <button>View Leave History</button></a>
-	 <a href ="/employee/ots"> <button>Manage Compensation</button></a>
+	 <a href ="/employee/ots"> <button>Submit Overtime</button></a>
 
+<p> 
 
 	<table class="table" style="width:50%">
 	  <thead class="thead-light">
@@ -47,20 +48,23 @@
 		<tr>
 			<th scope="col">Type of Leave</th>
 			<th scope="col">Entitlement (Hours)</th>
-			<th scope="col">Balance (Hours)</th>
+			<th scope="col">Balance (Days)</th>
 		</tr>
 	</thead>		
 		<tbody>
+		
 		<tr>
 	      <th scope="row">Compensation Leave</th>
 				<td th:utext="${CLfromOT}"></td>
 				<td th:utext="${CLBalance}"></td>
+						
     </tr>
 </tbody>
 </table>
 
-
-
+		<td>Note: Every 4 hours of approved Overtime equates to half-day of Compensation Leave</td>
+<p>
+<p>
 	<th:block th:include = "common :: footer"></th:block>
 </body>
 </html>

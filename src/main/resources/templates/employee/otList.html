@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Personal Leave History</title>
+    <title>Overtime Claims History</title>
+    <th:block th:include = "common :: navbar"></th:block>
+    
     <!-- Bootstrap core CSS -->
     <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
     <!-- jquery core js -->
@@ -11,8 +13,8 @@
     <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<h2>Personal Leave History</h2>
-<a href ="/employee/ot"> <button>Claim Compensation</button></a>
+<h2>Overtime Claims History</h2>
+
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -28,6 +30,9 @@
         <td th:utext="${#dates.format(ot.endTime, 'yyyy-MM-dd HH:mm')}"></td>
         <td th:text="${ot.status}"></td>
     </tr>
+    
 </table>
+<a href ="/employee/ot"> <button>Submit Overtime</button></a>
+
 </body>
 </html>
