@@ -66,7 +66,8 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 
 	@Override
 	public ArrayList<OverTime> findClaims() {
-		ArrayList<OverTime> listofallclaims=(ArrayList<OverTime>)otRepo.findAllClaims();
+		int managerid = getCurrentUid();
+		ArrayList<OverTime> listofallclaims=(ArrayList<OverTime>)otRepo.findAllClaims(managerid);
 		return listofallclaims;
 	}
 	
