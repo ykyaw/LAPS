@@ -1,11 +1,14 @@
 package com.team1.iss.trial.controller;
 
+import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.team1.iss.trial.common.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +29,12 @@ import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.repo.UserRepository;
+
 import com.team1.iss.trial.services.interfaces.IAdminService;
+
+import com.team1.iss.trial.services.impl.EmailServiceImpl;
+import com.team1.iss.trial.services.interfaces.IEmailService;
+
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IOverTimeService;
@@ -72,6 +80,14 @@ public class EmployeeController {
 		model.addAttribute("CLfromOT",sumOTHours );
 		model.addAttribute("CLBalance", eService.getCompensationApplicationBalance(uid));
 		return ("employee/eHome");
+	}
+	
+	@Autowired
+	private IEmailService emservice;
+	
+	@Autowired
+	public void setEmailService(EmailServiceImpl emserviceimpl) {
+		this.emservice = emserviceimpl;
 	}
 
 
@@ -146,6 +162,21 @@ public class EmployeeController {
 			}
 		}
 		//TODO overlap check
+		// check if la is overlaped with existing leave
+		List<LA> existing_LA = laService.findLAOverlap(la.getFromTime(), la.getToTime(), la.getOwner().getUid(), TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp())); //1593224802
+		if (existing_LA.size() > 0) {
+			model.addAttribute("msg","The new LA is overlaped with existing LA");
+			List<String> applicationType = new ArrayList();
+			applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
+			applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
+			applicationType.add(CommConstants.LeaveType.COMPENSATION_LEAVE);
+			model.addAttribute("types", applicationType);
+			List<User> users = eService.findAllUsers();
+			List<User> collect = users.stream().filter(user -> !user.getUserType().equals(CommConstants.UserType.AMDIN))
+					.collect(Collectors.toList());
+			model.addAttribute("employees",collect);
+			return "employee/leave-form";
+		}
 		if(!isLAValidate){
 			List<String> applicationType = new ArrayList();
 			applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
@@ -159,6 +190,7 @@ public class EmployeeController {
 			return "employee/leave-form";
 		}
 		laService.saveLA(la);
+		emservice.sendApplicationEmail();
 		return "redirect:/employee/las";
     }
 
@@ -207,7 +239,7 @@ public class EmployeeController {
 				model.addAttribute("msg","your medical leave balance is insufficient, only "+balance+" left");
 				isLAValidate=false;
 			}
-		}else{
+		}else {
 			float balance=eService.getCompensationApplicationBalance(la);
 			if(balance<la.getDuration()){
 				model.addAttribute("msg","your compensation leave balance is insufficient, only "+balance+" left");

@@ -30,6 +30,10 @@ public interface LARepository extends JpaRepository<LA, Integer>, JpaSpecificati
     @Query("FROM LA WHERE status = ?1")
     public List<LA> findLADetailsByStatus(String status);
 
+    // Check overlap -> return a list of overlaping with new la
+	@Query(value = "SELECT * FROM LA a where (:new_start <= a.to_time) and (:new_end >= a.from_time) and a.from_time>=:currentYear and a.owner_id=:ownerId and (a.status = 'APPROVED' or a.status = 'APPLIED' or a.status = 'UPDATED')" ,nativeQuery=true)
+	public List<LA> findLAOverlap(@Param("new_start")long new_start, @Param("new_end")long new_end, @Param("ownerId") int ownerId, @Param("currentYear") long currentYear);//1593224802 current timestamp
+
 //    @Modifying
 //    @Transactional  //Spring transactional
 //    @Query("update LA set LA.uid = ?1 where uid=LA.uid")

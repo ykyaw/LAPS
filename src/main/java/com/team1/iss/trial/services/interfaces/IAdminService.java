@@ -49,10 +49,6 @@ public interface IAdminService {
 	public PublicHoliday getPh(int uid);
 	public boolean deletePh(int uid);
 	
-//	public boolean saveUser(User u);
-//	public User findUserByUsername(String username);
-//	public ArrayList<String> findAllUsernames();
-	
 	public boolean isEmailAlreadyInUse (String email);
 }
 

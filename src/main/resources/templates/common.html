@@ -62,19 +62,19 @@
 			  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			    <div class="navbar-nav">
 		
-					<div sec:authorize="hasAuthority('ADMIN')">
-		<!-- 	  			Home button will show up, if I am an admin, to allow me to go back to admin page -->
+					<!-- <div sec:authorize="hasAuthority('ADMIN')">
+			  			Home button will show up, if I am an admin, to allow me to go back to admin page
 			  			<a class="nav-item nav-link active" href ="/"> Admin Home <span class="sr-only">(current)</span></a>
 					</div>
 					<div sec:authorize="hasAuthority('MANAGER')">
-		<!-- 	  			Home button will show up, if I am an manager, to allow me to go back to manager page -->
+			  			Home button will show up, if I am an manager, to allow me to go back to manager page
 			  			<a class="nav-item nav-link active" href ="/"> Manager Home <span class="sr-only">(current)</span></a>
 					</div>
 					
 					 <div sec:authorize="hasAnyAuthority('EMPLOYEE','ADMIN','MANAGER' )">
-		<!-- 	  			This content is shown to all users, which include user, admin, manager -->
+			  			This content is shown to all users, which include user, admin, manager
 			  			<a class="nav-item nav-link" href ="/logout"> Log out</a>
-					</div>
+					</div> -->
 			    </div>
 			  </div>
 			  	<span class="navbar-text">
@@ -83,7 +83,7 @@
 		</nav>
 	</div>
 
-	<div th:fragment="footer">
+	<div th:fragment="footer" >
 		<small>(c) ISS 2020 SA50 Team 1</small>
 	</div>
 	

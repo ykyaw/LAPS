@@ -119,4 +119,9 @@ public class LaServiceImpl implements ILaService {
         }
         la.setDuration(duration);
     }
+
+    public List<LA> findLAOverlap(long new_start, long new_end, int ownerId, long currentYear) {
+        List<LA> overlapList = larepo.findLAOverlap(new_start, new_end, ownerId, currentYear);
+        return overlapList;
+    }
 }

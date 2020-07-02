@@ -130,7 +130,6 @@ public class AdminServiceImpl implements IAdminService {
 		return false;
 	}
 
-
 	@Override
 	public ArrayList<Manager> findAllManager() {
 		ArrayList<Manager> list = (ArrayList<Manager>) mRepo.findAll();
@@ -142,25 +141,10 @@ public class AdminServiceImpl implements IAdminService {
 		return uRepo.findById(id).get();
 	}
 
-
-
-//	@Override
-//	public boolean saveUser(User u) {
-//		if(uRepo.save(u)!=null) {
-//			return true;
-//		}
-//		else return false;
-//	}
-
 	@Override
 	public String findUserManagerby(int uid) {
 		return uRepo.findUserManagerName(uid);
 	}
-
-//	@Override
-//	public User findUserByUsername(String username) {
-//		return null;
-//	}
 
 	@Override
 	public int findlatestUID() {
@@ -184,13 +168,6 @@ public class AdminServiceImpl implements IAdminService {
 		uRepo.updateAdminAnnualLeave(adminAL);
 		return true;
 	}
-	
-
-//	@Override
-//	public ArrayList<String> findAllUsernames() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 
 	@Override
 	public ArrayList<User> getAllUsers(String word) {
@@ -242,8 +219,5 @@ public class AdminServiceImpl implements IAdminService {
 		}
 		return inUse;
 	}
-
-	
-
 }
 

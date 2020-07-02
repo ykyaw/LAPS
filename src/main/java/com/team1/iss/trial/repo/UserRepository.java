@@ -19,28 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
-
-//	List<User> findByName(String s);
-	
-//	@Query("Select u.username from User u")
-//	ArrayList<String> findAllUsernames();
-
-
-//	@Modifying
-//	@Transactional
-//	@Query("update user set user_type = :#{#user.userType} "
-//			+ ", annual_leave_entitlement=:#{#user.annualLeaveEntitlement} "
-//			+ ", email=:#{#user.email} "
-//			+ ", enabled=#{#user.enabled} "
-//			+ ", medical_leave_entitlement=:#{#user.medicalLeaveEntitlement} "
-//			+ ", name=:#{#user.name} "
-//			+ ", password=:#{#user.password} "
-//			+ ", photo=:#{#user.photo} "
-//			+ ",manager_id=:#{#user.manager.uid} "
-//			+ "where uid=:#{#user.uid}")
-//	public void updateUserType(@Param("user") User user);
-	
-
 	@Query(value="select * from user where enabled=1 AND manager_id=:managerid",nativeQuery=true)
 	public List<User> getEmployeelistByManagerId(@Param("managerid") int managerid);
 	
@@ -82,26 +60,29 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	@Modifying
 	@Transactional
-	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALprof where user_type != 'ADMIN' ")
+	@Query("update User set annual_leave_entitlement = :ALprof where user_type != 'ADMIN' ")
 	public void updateProfAnnualLeave(@Param("ALprof") int ALprof);
 	
 	@Modifying
 	@Transactional
-	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALadmin where user_type LIKE 'ADMIN' ")
+	@Query("update User set annual_leave_entitlement = :ALadmin where user_type LIKE 'ADMIN' ")
 	public void updateAdminAnnualLeave(@Param("ALadmin") int ALadmin);
 	
 	//Pagination
 	Page<User> findAll(Pageable pageable);
 	
-
-//	@Query("select u from User u where name like '%word%' ")
-//	public List<User> findByName(@Param("word") String word);
 	
 	@Query("select u from User u where u.name like %?1% OR email like %?1% ") 
 	public ArrayList<User> findByName(@Param("word") String word);
 	
+    @Query(value = "select m.email from user u, user m where u.manager_id=m.uid and u.email =:email", nativeQuery=true)
+    public String findManageremailbyuseremail(@Param("email") String email);
+   
+    @Query(value = "select u.email from user u, la la where u.uid=la.owner_id and la.uid=?1 LIMIT 1",nativeQuery = true)
+    public String findemailbyLAUID(@Param("uid") int uid);
+	
 	@Query(value = "select email from user where email= :email LIMIT 1", nativeQuery=true)
-    public String findEmail(@Param("email") String email); //copy paste from sein
+    public String findEmail(@Param("email") String email); 
 };
 
 
