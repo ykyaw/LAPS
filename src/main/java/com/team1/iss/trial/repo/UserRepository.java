@@ -19,28 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
-
-//	List<User> findByName(String s);
-	
-//	@Query("Select u.username from User u")
-//	ArrayList<String> findAllUsernames();
-
-
-//	@Modifying
-//	@Transactional
-//	@Query("update user set user_type = :#{#user.userType} "
-//			+ ", annual_leave_entitlement=:#{#user.annualLeaveEntitlement} "
-//			+ ", email=:#{#user.email} "
-//			+ ", enabled=#{#user.enabled} "
-//			+ ", medical_leave_entitlement=:#{#user.medicalLeaveEntitlement} "
-//			+ ", name=:#{#user.name} "
-//			+ ", password=:#{#user.password} "
-//			+ ", photo=:#{#user.photo} "
-//			+ ",manager_id=:#{#user.manager.uid} "
-//			+ "where uid=:#{#user.uid}")
-//	public void updateUserType(@Param("user") User user);
-	
-
 	@Query(value="select * from user where enabled=1 AND manager_id=:managerid",nativeQuery=true)
 	public List<User> getEmployeelistByManagerId(@Param("managerid") int managerid);
 	
@@ -82,20 +60,17 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	@Modifying
 	@Transactional
-	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALprof where user_type != 'ADMIN' ")
+	@Query("update User set annual_leave_entitlement = :ALprof where user_type != 'ADMIN' ")
 	public void updateProfAnnualLeave(@Param("ALprof") int ALprof);
 	
 	@Modifying
 	@Transactional
-	@Query("update User set annual_leave_entitlement = annual_leave_entitlement + :ALadmin where user_type LIKE 'ADMIN' ")
+	@Query("update User set annual_leave_entitlement = :ALadmin where user_type LIKE 'ADMIN' ")
 	public void updateAdminAnnualLeave(@Param("ALadmin") int ALadmin);
 	
 	//Pagination
 	Page<User> findAll(Pageable pageable);
 	
-
-//	@Query("select u from User u where name like '%word%' ")
-//	public List<User> findByName(@Param("word") String word);
 	
 	@Query("select u from User u where u.name like %?1% OR email like %?1% ") 
 	public ArrayList<User> findByName(@Param("word") String word);

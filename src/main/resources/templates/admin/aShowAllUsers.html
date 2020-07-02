@@ -82,6 +82,8 @@ Add Hyperlink
 					<th scope="col">Name</th>
 					<th scope="col">Email</th>
 					<th scope="col">Role</th>
+					<th scope="col">AL</th>
+					<th scope="col">ML</th>
 					<th scope="col">Manager in Charge</th>
 					<th scope="col">Account Status</th>
                 </tr>
@@ -92,6 +94,8 @@ Add Hyperlink
 						<td th:text=${user.name}> Name</td>
 						<td th:text=${user.email}> Email</td>
 						<td th:text=${user.userType}>Role</td>
+						<th th:text=${user.annualLeaveEntitlement}>Annual Leave Entitled</th>
+						<th th:text=${user.medicalLeaveEntitlement}>Medical Leave Entitled</th>
 						<td >
 							<span th:text="${user.manager.name}" th:if="${user.manager != null}" > Manager </span>
 							<span th:text="${user.manager}" th:if="${user.manager == null}"> Manager </span>
@@ -119,6 +123,8 @@ Add Hyperlink
 					<th scope="col">Name</th>
 					<th scope="col">Email</th>
 					<th scope="col">Role</th>
+					<th scope="col">AL</th>
+					<th scope="col">ML</th>
 					<th scope="col">Manager in Charge</th>
 					<th scope="col">Account Status</th>
                 </tr>
@@ -129,6 +135,8 @@ Add Hyperlink
 						<td th:text=${user.name}> Name</td>
 						<td th:text=${user.email}> Email</td>
 						<td th:text=${user.userType}>Role</td>
+						<th th:text=${user.annualLeaveEntitlement}>Annual Leave Entitled</th>
+						<th th:text=${user.medicalLeaveEntitlement}>Medical Leave Entitled</th>
 						<td >
 							<span th:text="${user.manager.name}" th:if="${user.manager != null}" > Manager </span>
 							<span th:text="${user.manager}" th:if="${user.manager == null}"> Manager </span>

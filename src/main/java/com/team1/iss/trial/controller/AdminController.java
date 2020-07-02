@@ -83,7 +83,7 @@ public class AdminController {
 	
 	@RequestMapping("/list")
 	public String list() {
-		return "redirect:/admin/list/1";
+		return "forward:/admin/list/1";
 	}	
 	@RequestMapping("/list/{page}")
 	public String listByPagination(@PathVariable("page") int page, Model model) {
@@ -186,7 +186,7 @@ public class AdminController {
 		}
 		List<User> users= aservice.getAllUsers(word); //check to name and email
 	    model.addAttribute("users", users);
-	    return "redirect:/admin/list";
+	    return "forward:/admin/list";
 	}
 	
 	@RequestMapping("/ph")
