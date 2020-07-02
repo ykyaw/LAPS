@@ -34,9 +34,11 @@ import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.User;
+import com.team1.iss.trial.services.impl.EmailServiceImpl;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
 import com.team1.iss.trial.services.impl.ManagerServiceImpl;
 import com.team1.iss.trial.services.impl.OverTimeServiceImpl;
+import com.team1.iss.trial.services.interfaces.IEmailService;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IManagerService;
 import com.team1.iss.trial.services.interfaces.IOverTimeService;
@@ -68,6 +70,16 @@ public class ManagerController {
 		this.otservice = otserviceimpl;
 	}
 	
+	@Autowired
+	private IEmailService emservice;
+	
+	@Autowired
+	public void setEmailService(EmailServiceImpl emserviceimpl) {
+		this.emservice = emserviceimpl;
+	}
+	
+	
+	
 	
 	@RequestMapping("")
 	public String managerHome() {
@@ -95,6 +107,7 @@ public class ManagerController {
 		la.setStatus(CommConstants.ApplicationStatus.APPROVED);
 		mservice.saveLA(la);
 		model.addAttribute("la", la);
+		emservice.sendApprovedEmail(uid); // this sends a email to employee when leave is approved
 		return "/manager/confirmation";
 	}
 	
@@ -106,6 +119,7 @@ public class ManagerController {
 		la.setStatus(CommConstants.ApplicationStatus.REJECTED);
 		la.setRejectReason(rejectreason);
 		laservice.saveLA(la);
+		emservice.sendRejectEmail(la.getUid());
 		model.addAttribute("la", la);
 		session.removeAttribute("la");
 		return "/manager/confirmation";
