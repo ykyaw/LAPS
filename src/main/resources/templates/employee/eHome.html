@@ -11,11 +11,54 @@
 	<h2>This is the main page for all employees (admin, manager, employees) to apply leaves and to check all personal stuff</h2>
 	<p>If employee is manager or admin, he would see additional buttons to go to his manager or admin home page</p>
 	
+	<td>
 	
 	 <a href ="/employee/apply"> <button>Submit Leave Application</button></a>
 	 <!--<a href ="/employee/lalist"> <button>Manage Leave Application</button></a>-->
 	 <a href ="/employee/las"> <button>View Leave History</button></a>
 	 <a href ="/employee/ots"> <button>Manage Compensation</button></a>
+
+
+	<table class="table" style="width:50%">
+	  <thead class="thead-light">
+		<tr>
+			<th scope="col">Type of Leave</th>
+			<th scope="col">Entitlement (Days)</th>
+			<th scope="col">Balance (Days)</th>
+		</tr>
+	</thead>		
+		<tbody>
+		<tr>
+      <th scope="row">Annual Leave</th>
+      		<td th:utext="${ALEntitled}"></td>
+      	    <td th:utext="${ALBalance}"></td>
+    </tr>
+
+	<tr>
+	      <th scope="row">Medical Leave</th>
+				<td th:utext="${MLEntitled}"></td>
+				<td th:utext="${MLBalance}"></td>
+	    </tr>
+
+	</table>
+	<div></div>
+	<table class="table" style="width:50%">
+	  <thead class="thead-light">
+		<tr>
+			<th scope="col">Type of Leave</th>
+			<th scope="col">Entitlement (Hours)</th>
+			<th scope="col">Balance (Hours)</th>
+		</tr>
+	</thead>		
+		<tbody>
+		<tr>
+	      <th scope="row">Compensation Leave</th>
+				<td th:utext="${CLfromOT}"></td>
+				<td th:utext="${CLBalance}"></td>
+    </tr>
+</tbody>
+</table>
+
 
 
 	<th:block th:include = "common :: footer"></th:block>

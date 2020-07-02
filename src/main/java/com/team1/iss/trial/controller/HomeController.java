@@ -21,7 +21,7 @@ public class HomeController {
 		}
 		
 		if(request.isUserInRole("EMPLOYEE")){
-			return"employee/eHome";
+			return"redirect:/employee";
 		}
 		return"index";
 	}

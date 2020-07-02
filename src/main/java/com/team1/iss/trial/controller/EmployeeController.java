@@ -1,6 +1,7 @@
 package com.team1.iss.trial.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -8,12 +9,14 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.component.RequestLA;
@@ -23,6 +26,7 @@ import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.repo.UserRepository;
+import com.team1.iss.trial.services.interfaces.IAdminService;
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IOverTimeService;
@@ -35,6 +39,9 @@ public class EmployeeController {
 
 	@Autowired
 	private IEmployeeService eService;
+	
+	@Autowired
+	private IAdminService aService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -44,9 +51,26 @@ public class EmployeeController {
 
 	@Autowired
 	private IPublicHolidayService publicHolidayService;
+	
 
 	@RequestMapping("/employee")
-	public String user() {
+	public String user(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		int uid=userRepository.findUserUidByEmail(email);
+		User user=eService.getUserByUid(uid);
+		int sumOTHours=0;
+		for (Iterator<OverTime> iterator = overTimeService.findOtByOwnerId(uid).iterator(); iterator.hasNext();) {
+			OverTime overTime = iterator.next();
+			overTimeService.calculateHours(overTime);
+			sumOTHours+= overTime.getHours();
+				}
+		model.addAttribute("ALEntitled", user.getAnnualLeaveEntitlement());
+		model.addAttribute("ALBalance", eService.getAnnualApplicationBalance(uid));
+		model.addAttribute("MLEntitled", user.getMedicalLeaveEntitlement());
+		model.addAttribute("MLBalance", eService.getMedicalApplicationBalance(uid));
+		model.addAttribute("CLfromOT",sumOTHours );
+		model.addAttribute("CLBalance", eService.getCompensationApplicationBalance(uid));
 		return ("employee/eHome");
 	}
 
