@@ -2,21 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="ISO-8859-1">
+	<link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
 	<title>Admin Home Page</title>
-	<th:block th:include = "common :: navbar"></th:block>
+	
+	<!-- <th:block th:include = "common :: navbar"></th:block> -->	
 </head>
-<body>
-	<h1>Admin Home Page</h1>
-	<h2>This is the main page for admin. He access his services from here, or click on "Manage Personal Leave" to be directed to employee homepage for leave booking</h2>
-	<a href="/admin/list"><button class="btn btn-primary"> Manage Staff</button></a>
-	<a href="/employee"><button class="btn btn-primary"> Manage Personal Leave</button></a>
-	<a href="/admin/create"><button class="btn btn-primary"> Create new staff</button></a>
-	<a href="/admin/massEditLeave"><button class="btn btn-primary"> Manage Medical/Annual Leave</button></a>
-	<a href="/admin/ph"><button class="btn btn-primary"> Manage Public Holiday</button></a>
 
-&nbsp;
-<div class="panel-footer">
-<th:block th:include = "common :: footer"></th:block>
+
+<body>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>Admin</h2>
+        <ul>
+            <li><a href="/">Admin Home</a></li>
+            <li><a href="/admin/list">Manage Staff</a></li>
+            <li><a href="/employee">Manage Personal Leave</a></li>
+            <li><a href="/admin/create">Create new staff</a></li>
+            <li><a href="/admin/massEditLeave">Manage Medical/Annual Leave</a></li>
+            <li><a href="/admin/ph">Manage Public Holiday</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    </div>
+    <div class="main_content">
+        <div class="header"><th:block th:include = "common :: navbar"></div>  
+        <div class="info">
+          <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A sed nobis ut exercitationem atque accusamus sit natus officiis totam blanditiis at eum nemo, nulla et quae eius culpa eveniet voluptatibus repellat illum tenetur, facilis porro. Quae fuga odio perferendis itaque alias sint, beatae non maiores magnam ad, veniam tenetur atque ea exercitationem earum eveniet totam ipsam magni tempora aliquid ullam possimus? Tempora nobis facere porro, praesentium magnam provident accusamus temporibus! Repellendus harum veritatis itaque molestias repudiandae ea corporis maiores non obcaecati libero, unde ipsum consequuntur aut consectetur culpa magni omnis vero odio suscipit vitae dolor quod dignissimos perferendis eos? Consequuntur!</div>
+          <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A sed nobis ut exercitationem atque accusamus sit natus officiis totam blanditiis at eum nemo, nulla et quae eius culpa eveniet voluptatibus repellat illum tenetur, facilis porro. Quae fuga odio perferendis itaque alias sint, beatae non maiores magnam ad, veniam tenetur atque ea exercitationem earum eveniet totam ipsam magni tempora aliquid ullam possimus? Tempora nobis facere porro, praesentium magnam provident accusamus temporibus! Repellendus harum veritatis itaque molestias repudiandae ea corporis maiores non obcaecati libero, unde ipsum consequuntur aut consectetur culpa magni omnis vero odio suscipit vitae dolor quod dignissimos perferendis eos? Consequuntur!</div>
+          <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A sed nobis ut exercitationem atque accusamus sit natus officiis totam blanditiis at eum nemo, nulla et quae eius culpa eveniet voluptatibus repellat illum tenetur, facilis porro. Quae fuga odio perferendis itaque alias sint, beatae non maiores magnam ad, veniam tenetur atque ea exercitationem earum eveniet totam ipsam magni tempora aliquid ullam possimus? Tempora nobis facere porro, praesentium magnam provident accusamus temporibus! Repellendus harum veritatis itaque molestias repudiandae ea corporis maiores non obcaecati libero, unde ipsum consequuntur aut consectetur culpa magni omnis vero odio suscipit vitae dolor quod dignissimos perferendis eos? Consequuntur!</div>
+      </div>
+    </div>
+    
 </div>
 </body>
 </html>

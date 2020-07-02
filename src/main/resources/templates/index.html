@@ -1,22 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<!-- <head>
 <meta charset="ISO-8859-1">
 <title>ISS Leave booking system</title>
-<!-- Bootstrap core CSS -->
+Bootstrap core CSS
 <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
-<!-- jquery core js -->
+jquery core js
 <script th:src="@{/webjars/jquery/3.5.1/jquery.js}"></script>
-<!-- Bootstrap core js -->
+Bootstrap core js
 <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
-</head>
-<body>
+</head> -->
 
-<h1 th:utext = "#{greeting.welcome.message}"></h1>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>ISS Leave booking system</title>
+		
+		<link href="assets/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
+		
+		<link href="assets/css/signin.css" th:href="@{/assets/css/signin.css}" rel="stylesheet">
+	</head>
+	
+	
+<body class="text-center">
+<form class="form-signin" th:action="@{login}" method="">
+<img class="mb-4" th:src="@{/assets/img/LAPS_logo.png}" alt="LAPS_logo" width="100" height="100">
 
-<h2>This is the main landing page. No access is required to land here</h2>
-<a href ="login"> <button> Login here!</button></a>
+<!-- <h1 class="h3 mb-3 font-weight-normal" th:utext = "#{greeting.welcome.message}"></h1>
+<h1 class="h3 mb-3 font-weight-normal">This is the main landing page. No access is required to land here</h1> -->
 
+<h4 th:utext = "#{greeting.welcome.message}"></h4></br>
 
+<big><i><p>This is the main landing page. No access is required to land here</p></i></big>
+
+					
+
+<a href = "login"><button class="btn btn-lg btn-primary" >Login here!</button></a>
+</form>
 </body>
 </html>

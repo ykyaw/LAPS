@@ -75,8 +75,14 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query("select u from User u where u.name like %?1% OR email like %?1% ") 
 	public ArrayList<User> findByName(@Param("word") String word);
 	
+    @Query(value = "select m.email from user u, user m where u.manager_id=m.uid and u.email =:email", nativeQuery=true)
+    public String findManageremailbyuseremail(@Param("email") String email);
+   
+    @Query(value = "select u.email from user u, la la where u.uid=la.owner_id and la.uid=?1 LIMIT 1",nativeQuery = true)
+    public String findemailbyLAUID(@Param("uid") int uid);
+	
 	@Query(value = "select email from user where email= :email LIMIT 1", nativeQuery=true)
-    public String findEmail(@Param("email") String email); //copy paste from sein
+    public String findEmail(@Param("email") String email); 
 };
 
 

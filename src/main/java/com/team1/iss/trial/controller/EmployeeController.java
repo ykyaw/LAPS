@@ -26,6 +26,8 @@ import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.repo.UserRepository;
+import com.team1.iss.trial.services.impl.EmailServiceImpl;
+import com.team1.iss.trial.services.interfaces.IEmailService;
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IOverTimeService;
@@ -51,6 +53,14 @@ public class EmployeeController {
 	@RequestMapping("/employee")
 	public String user() {
 		return ("employee/eHome");
+	}
+	
+	@Autowired
+	private IEmailService emservice;
+	
+	@Autowired
+	public void setEmailService(EmailServiceImpl emserviceimpl) {
+		this.emservice = emserviceimpl;
 	}
 
 
@@ -153,6 +163,7 @@ public class EmployeeController {
 			return "employee/leave-form";
 		}
 		laService.saveLA(la);
+		emservice.sendApplicationEmail();
 		return "redirect:/employee/las";
     }
 
