@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-	<th:block th:include = "common :: navbar"></th:block>
+
 <title>Leave Application</title>
 <link href="assets/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}"
@@ -14,41 +14,55 @@
 <script th:src="@{/assets/js/transition.js}"></script>
 <script th:src="@{/assets/js/collapse.js}"></script>
 <script th:src="@{/assets/js/bootstrap-datetimepicker.min.js}"></script>
-<link th:href="@{/assets/css/bootstrap-datetimepicker.min.css}"rel="stylesheet">
+<link th:href="@{/assets/css/bootstrap-datetimepicker.min.css}"
+	rel="stylesheet">
 <script th:src="@{/assets/js/bootstrap.min.js}"></script>
 <link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet">
+
+<link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
 </head>
 <body>
 
-
-
-	<h2>Edit Public Holiday</h2>
-	<a class="nav-item nav-link active" href ="/"> <Button>Admin Home</Button> <span class="sr-only"></span></a>
-
-
-<!-- 	<div class="row" th:if="${phform != null && !phform.isEmpty()}">
-		<div class="col-md-2"></div>
-		<div class="col-md-8">
-			<table id="link-list" class="table" style="width: 100%">
-				<thead>
-					<tr>
-						<th scope="col">Entry</th>
-						<th scope="col">Date</th>
-						<th scope="col">Reason</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="ph:${phform}">
-						<th scope="row" th:text=${ph.uid}>Id</th>
-						<td th:text=${ph.day}>Date</td>
-						<td th:text=${ph.name}>Reason</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-md-2"></div>
+<div class="wrapper">
+    <div class="sidebar" style="font-size:16px;">
+        <h2>Admin</h2>
+        <ul>
+            <li><a href="/">Admin Home</a></li>
+            <li><a href="/admin/list">Manage Staff</a></li>
+            <li><a href="/employee">Manage Personal Leave</a></li>
+            <li><a href="/admin/create">Create new staff</a></li>
+            <li><a href="/admin/massEditLeave">Manage Medical/Annual Leave</a></li>
+            <li><a href="/admin/ph">Manage Public Holiday</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    </div>
+    <div class="main_content">
+        <div class="header">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			 
+			  <a class="navbar-brand" >
+				  <img src="/laps/src/main/resources/static/assets/img/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" >
+				  ISS Leave Application Portal
+			  </a>
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			    <span class="navbar-toggler-icon"></span>
+			  </button>
+			  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			    <div class="navbar-nav">
+		
+					
+			    </div>
+			  </div>
+			  	<span class="navbar-text">
+	     			Logged user: <span sec:authentication="name"></span>
+				</span>
+		</nav>
 	</div>
- -->
+       <h2 style="text-align:center">Edit Public Holiday</h2>
+	
+&nbsp;
+
 
 	<main class="row">
 		<form action="#" th:object="${phf}" th:action="@{/admin/updateph}"
@@ -95,9 +109,16 @@
 		</form>
 	</main>
 
-	<a class="nav-item nav-link active" href ="/admin/ph"> <Button>Back to List of Public Holidays</Button> <span class="sr-only"></span></a>
+	<!-- <a class="nav-item nav-link active" href ="/admin/ph"> <Button>Back to List of Public Holidays</Button> <span class="sr-only"></span></a> -->
+    </div>
+    
+</div>
+
+
+
+	
 	<script type="text/javascript" th:src="@{/assets/js/submitPH.js}">
 	</script>
-	<th:block th:include="common :: footer"></th:block>
+	
 </body>
 </html>
