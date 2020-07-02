@@ -13,13 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.component.RequestLA;
@@ -143,10 +137,75 @@ public class EmployeeController {
 		laService.saveLA(la);
 		return "redirect:/employee/las";
     }
-	@RequestMapping(value = "/employee/la", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public @ResponseBody void updateLA( LA la) {
+
+	/**
+	 * update leave application
+	 * @param la
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/employee/la/{uid}")
+	public String updateLA(@RequestLA LA la,Model model) {
 		System.out.println(la);
-//        laServiceImpl.saveLA(la);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		int uid=userRepository.findUserUidByEmail(email);
+		la.setOwner(new Employee(uid));
+		la.setStatus(CommConstants.ApplicationStatus.UPDATED);
+		boolean isLAValidate=true;
+		if(la.getToTime()-la.getFromTime()<=0){
+			model.addAttribute("msg","the to time can not less than from time");
+			isLAValidate=false;
+		}
+		//check if fromtime is a public holiday
+		List<PublicHoliday> holidays = publicHolidayService.getCurrentYearPublicHoliday()
+				.stream()
+				.filter(holiday -> {
+					return holiday.getDay() == la.getFromTime();
+				})
+				.collect(Collectors.toList());
+		if(holidays.size()>0){
+			model.addAttribute("msg","the from time can not be a public holiday");
+			isLAValidate=false;
+		}
+		//balance check
+		//calculate annual application leave duration
+		laService.calculateApplicationDuration(la);
+		if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)){
+			float balance = eService.getAnnualApplicationBalance(la);
+			if(balance<la.getDuration()){
+				model.addAttribute("msg","your annual leave balance is insufficient, only "+balance+" left");
+				isLAValidate=false;
+			}
+		}else if(la.getType().equals(CommConstants.LeaveType.MEDICAL_LEAVE)){
+			float balance=eService.getMedicalApplicationBalance(la);
+			if(balance<la.getDuration()){
+				model.addAttribute("msg","your medical leave balance is insufficient, only "+balance+" left");
+				isLAValidate=false;
+			}
+		}else{
+			float balance=eService.getCompensationApplicationBalance(la);
+			if(balance<la.getDuration()){
+				model.addAttribute("msg","your compensation leave balance is insufficient, only "+balance+" left");
+				isLAValidate=false;
+			}
+		}
+		//TODO overlap check
+		if(isLAValidate){
+			laService.updateLA(la);
+		}
+		List<String> applicationType = new ArrayList();
+		applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
+		applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
+		applicationType.add(CommConstants.LeaveType.COMPENSATION_LEAVE);
+		model.addAttribute("types", applicationType);
+		List<User> users = eService.findAllUsers();
+		List<User> collect = users.stream().filter(user -> !user.getUserType().equals(CommConstants.UserType.AMDIN))
+				.collect(Collectors.toList());
+		model.addAttribute("employees",collect);
+		LA updatedLA = laService.getLaById(la.getUid());
+		model.addAttribute("la",updatedLA);
+		return "employee/laDetails";
 	}
 
 	/**
@@ -175,26 +234,17 @@ public class EmployeeController {
 		return "employee/laDetails";
 	}
 
-
-
-	// Update an existing LA with udpated Body, not sure how to input uid
-	@RequestMapping(value = "/employee/la/{uid}", method = RequestMethod.PUT)
-	public void updateLA(@RequestBody LA la, int uid) {
-		laService.updateLA(la);
-	}
-
-	// Delete an existing LA
-	@RequestMapping(value = "/employee/la/{uid}", method = RequestMethod.DELETE)
-	public void deleteLA(int uid) {
-		laService.deleteLA(uid);
-	}
-
 	/**
-	 * view the employee leave history
-	 * @param model
-	 * @return
+	 * cancel leave application
+	 * @param uid
 	 */
-	
+	@PostMapping("/employee/cancel/{uid}")
+	public String deleteLA(@PathVariable int uid) {
+		laService.deleteLA(uid);
+		return  "redirect:/employee/las";
+	}
+
+
 	// View employee view history with pagination
 		@RequestMapping("/employee/las")
 		public String list() {

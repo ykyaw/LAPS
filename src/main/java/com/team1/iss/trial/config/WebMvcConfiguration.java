@@ -22,4 +22,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/static/","classpath:/META-INF/resources/webjars/");
     }
 
+
+
 }

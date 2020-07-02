@@ -51,26 +51,22 @@ public class LaServiceImpl implements ILaService {
     //Update the LA
     @Override
     public void updateLA(LA la) {
-//        larepo.updateLA(la);
-//        ArrayList<LA> list = (ArrayList<LA>) larepo.findAll();
-//        for (LA la_in : list) {
-//            if (la_in.getUid() == la.getUid()) {
-//                la_in.setStatus(la.getStatus());
-//                la_in.setContact(la.getContact());
-//                la_in.setReasons(la.getReasons());
-//                la_in.setRejectReason(la.getRejectReason());
-//                la_in.setOwner(la.getOwner());
-//                la_in.setFromTime(la.getFromTime());
-//                la_in.setToTime(la.getToTime());
-//                la_in.setDissemination(la.getDissemination());
-//                la_in.setType(la.getType());
-//            }
-//        }
+        LA oldLa = larepo.findById(la.getUid()).get();
+        oldLa.setStatus(la.getStatus());
+        oldLa.setContact(la.getContact());
+        oldLa.setReasons(la.getReasons());
+        oldLa.setType(la.getType());
+        oldLa.setDissemination(la.getDissemination());
+        oldLa.setToTime(la.getToTime());
+        oldLa.setFromTime(la.getFromTime());
+        larepo.save(oldLa);
     }
 
     //Remove the LA
     public void deleteLA(int id) {
-        larepo.delete(larepo.findById(id).get());
+        LA la = larepo.findById(id).get();
+        la.setStatus(CommConstants.ApplicationStatus.CANCELLED);
+        larepo.save(la);
     }
 
     @Override

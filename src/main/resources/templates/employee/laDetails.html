@@ -23,9 +23,10 @@
 </head>
 <body>
     <h1 th:utext="#{leave.application.title}">Leave Application Details</h1>
-    <form th:action="@{/employee/la}" method="post" id="form" onsubmit="return check()"
+    <span style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></span>
+    <form th:action="@{/employee/la/}+${la.uid}" method="post" id="form" onsubmit="return check()"
           class="col-md-6 offset-md-3" >
-        <input type="hidden" name="_method" value="put" th:if="${la!=null}" />
+        <input type="hidden" name="_method" value="put"/>
         <input type="hidden" name="uid" th:if="${la!=null}"
                th:value="${la.uid}">
         <input type="hidden" name="fromTime" th:value="${la.fromTime}" />
@@ -106,8 +107,14 @@
                 </select>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block"
-                th:text="${la!=null}?'update':'submit'" id="submit">submit</button>
+        <button  class="btn btn-primary btn-lg btn-block" th:if="${la.status!='REJECTED'&&la.status!='APPROVED'&&la.status!='CANCELLED'}"
+                 th:text="${la!=null}?'update':'submit'" id="submit">submit</button>
+    </form>
+
+    <form th:action="@{/employee/cancel/}+${la.uid}" method="post">
+        <input type="hidden" name="_method" value="delete"/>
+        <button type="submit" class="btn btn-primary btn-lg" th:if="${la!=null&&la.status!='REJECTED'&&la.status!='CANCELLED'}"
+                th:text="cancel" id="cancel">cancel</button>
     </form>
     <script type="text/javascript" th:src="@{/assets/js/laDetail.js}"></script>
 </body>

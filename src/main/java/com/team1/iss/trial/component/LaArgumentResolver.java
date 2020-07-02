@@ -40,6 +40,9 @@ public class LaArgumentResolver implements HandlerMethodArgumentResolver {
             String key = param.substring(0, param.indexOf("="));;
             String value = param.substring(param.indexOf("=")+1, param.length());
             switch (key){
+                case "uid":
+                    la.setUid(Integer.valueOf(value));
+                    break;
                 case "fromTime":
                     la.setFromTime(Long.valueOf(value));
                     break;
@@ -57,7 +60,7 @@ public class LaArgumentResolver implements HandlerMethodArgumentResolver {
                     la.setType(value);
                     break;
                 case "reasons":
-                    la.setReasons(value);
+                    la.setReasons(value.replace("+"," "));
                     break;
                 case "contact":
                     la.setContact(value);

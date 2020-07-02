@@ -7,11 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
+
+import javax.transaction.Transactional;
 
 /*
  * Author: YC
@@ -82,4 +85,9 @@ public interface LARepository extends JpaRepository<LA, Integer>, JpaSpecificati
 
 	@Query(value = "SELECT a FROM LA a where a.fromTime>=:currentYear and a.owner.uid=:ownerId and a.status='APPROVED' and a.type='COMPENSATION_LEAVE'")
 	List<LA> findAllApprovedCompensationLeaveByOwnerId(@Param("ownerId") int ownerId, @Param("currentYear") Long currentYear);
+
+//	@Modifying
+//    @Transactional  //Spring transactional
+//    @Query(value = "update la set status=#{#la.status}, set type=#{#la.type},")
+//    void updateLA(@Param("la") LA la);
 }
