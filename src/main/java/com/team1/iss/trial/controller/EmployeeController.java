@@ -111,7 +111,7 @@ public class EmployeeController {
 	}
 
 	/**
-	 * ubmit leave application
+	 * submit leave application
 	 * @param la
 	 * @param model
 	 * @return
@@ -161,7 +161,6 @@ public class EmployeeController {
 				isLAValidate=false;
 			}
 		}
-		//TODO overlap check
 		// check if la is overlaped with existing leave
 		List<LA> existing_LA = laService.findLAOverlap(la.getFromTime(), la.getToTime(), la.getOwner().getUid(), TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp())); //1593224802
 		if (existing_LA.size() > 0) {
@@ -246,8 +245,17 @@ public class EmployeeController {
 				isLAValidate=false;
 			}
 		}
-		//TODO overlap check
+		// check if la is overlaped with existing leave
+		List<LA> existing_LA = laService.findLAOverlap(la.getFromTime(), la.getToTime(), la.getOwner().getUid(), TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp()))
+				.stream()
+				.filter(x->la.getUid()!=x.getUid())
+				.collect(Collectors.toList());
+		if (existing_LA.size() > 0) {
+			model.addAttribute("msg","The dates of this application overlap with an existing application");
+			isLAValidate=false;
+		}
 		if(isLAValidate){
+			model.addAttribute("msg","update successfully");
 			laService.updateLA(la);
 		}
 		List<String> applicationType = new ArrayList();
