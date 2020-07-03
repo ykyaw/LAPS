@@ -62,4 +62,10 @@ public class OverTimeServiceImpl implements IOverTimeService {
 		int hours = (int) ((endTime - startTime) / (1000 * 60 * 60));
 		overtime.setHours(hours);
 	}
+
+	@Override
+	public List<OverTime> findAllByOwnerId(int uid) {
+		List<OverTime> ots=otrepo.findAllByOwnerId(uid);
+		return ots;
+	}
 }

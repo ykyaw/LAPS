@@ -360,7 +360,7 @@ public class EmployeeController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		int uid=userRepository.findUserUidByEmail(email);
-		List<OverTime> ots=overTimeService.findOtByOwnerId(uid);
+		List<OverTime> ots=overTimeService.findAllByOwnerId(uid);
 		model.addAttribute("ots",ots);
 		return "employee/otList";
 	}

@@ -18,4 +18,7 @@ public interface OverTimeRepository  extends JpaRepository<OverTime, Integer>{
 
 	@Query("select o from OverTime o where o.owner.uid=:ownerId and o.startTime>=:currentYear and o.status='APPROVED'")
     List<OverTime> findCurrentYearApprovedOverTimeByOwnerId(@Param("ownerId") int ownerId,@Param("currentYear") Long currentYear);
+	
+	 @Query("select o from OverTime o where o.owner.uid=:ownerId")
+	    List<OverTime> findAllByOwnerId(@Param("ownerId") int ownerId);
 }
