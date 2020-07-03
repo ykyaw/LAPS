@@ -3,7 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
-<title>Individual Application Details</title>
+<title th:text="${la.owner.name}+'\'s Leave Application Details'"></title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
@@ -17,6 +17,7 @@
     <div class="sidebar">
         <h2>Manager</h2>
         <ul>
+            <li><a href="/">Manager Home</a></li>
         	<li><a href="/employee">Manage Personal Leave</a></li>
             <li><a href="/manager/employeelist">Employee List</a></li>
             <li><a href="/manager/employeeonleave">Employees on Leave</a>
@@ -30,7 +31,7 @@
      <div class="main_content">
         <div class="header"><th:block th:include = "common :: navbar"></div>  
         <div class="container">
-<h1>Individual Application Details</h1>
+<h1><span th:text="${la.owner.name}"></span>'s Leave Application Details</h1>
 
 	<table class="table table-hover">
 		<thead>
@@ -56,7 +57,7 @@
 				<td th:utext="${#dates.format(la.toTime, 'yyyy-MM-dd HH:mm')}"></td>
 				<td th:text="${la.type}"></td>
 				<td th:text="${la.reasons}"></td>
-				<td th:text="${la.dissemination.uid}" th:if="${la.dissemination!=null}"></td>
+				<td th:text="${la.dissemination.name}" th:if="${la.dissemination!=null}"></td>
 				<td th:text="${la.contact}"></td>
 				<td th:text="${la.status}"></td>
 			</tr>
@@ -73,7 +74,6 @@
  	<table class="table table-hover">
 		<thead>
 			<tr>
-				<th scope="col">Application ID</th>
 				<th scope="col">Employee ID</th>
 				<th scope="col">Name</th>
 				<th scope="col">Start Date</th>
@@ -86,14 +86,13 @@
 		</thead>
 		<tbody>
 			<tr th:each="leaves:${leave}">
-				<td th:text="${leaves.uid}"></td>
 				<td th:text="${leaves.owner.uid}"></td>
 				<td th:text="${leaves.owner.name}"></td>
 				<td th:utext="${#dates.format(leaves.fromTime, 'yyyy-MM-dd')}"></td>
 				<td th:utext="${#dates.format(leaves.toTime, 'yyyy-MM-dd')}"></td>
 				<td th:text="${leaves.type}"></td>
 				<td th:text="${leaves.reasons}"></td>
-				<td th:text="${leaves.dissemination.uid}" th:if="${leaves.dissemination!=null}"></td>
+				<td th:text="${leaves.dissemination.name}" th:if="${leaves.dissemination!=null}"></td>
 				<td th:if="${leaves.dissemination==null}"></td>
 				<td th:text="${leaves.contact}"></td>
 			</tr>

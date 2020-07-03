@@ -17,6 +17,7 @@
     <div class="sidebar">
         <h2>Manager</h2>
         <ul>
+            <li><a href="/">Manager Home</a></li>
         	<li><a href="/employee">Manage Personal Leave</a></li>
             <li><a href="/manager/employeelist">Employee List</a></li>
             <li><a href="/manager/employeeonleave">Employees on Leave</a>
@@ -32,7 +33,7 @@
         <div class="container">
 <h1>Confirmation</h1>
 
-<h2>  you have <span th:text="${la.status}"> made a decision on </span> this application.</h2>
+<h2>You have <span th:text="${la.status}"> made a decision on </span> this application.</h2>
 	<br>
 	<br>
 	<table class="table table-hover">
@@ -52,30 +53,30 @@
 			</tr>
 		</thead>
 		<tr>
-			<td th:text="${la.uid}">ID</td>
-			<td th:text="${la.owner.uid}">User ID</td>
-			<td th:text="${la.owner.name}">Applicant ID</td>
-			<td th:text="${la.fromTime}">Leave Period From</td>
-			<td th:text="${la.toTime}">Leave Period To</td>
-			<td th:text="${la.type}">Leave Type</td>
-			<td th:text="${la.reasons}">Reason for Leave</td>
-			<td th:text="${la.dissemination.name}" th:if="${la.dissemination!=null}">Dissemination</td>
-			<td th:text="${la.contact}">Contact</td> 
-			<td th:text="${la.status}" >Status</td>
+			<td th:text="${la.uid}">I</td>
+			<td th:text="${la.owner.uid}"></td>
+			<td th:text="${la.owner.name}"></td>
+			<td th:text="${#dates.format(la.fromTime, 'yyyy-MM-dd HH:mm')}"></td>
+			<td th:text="${#dates.format(la.toTime, 'yyyy-MM-dd HH:mm')}"></td>
+			<td th:text="${la.type}"></td>
+			<td th:text="${la.reasons}"></td>
+			<td th:text="${la.dissemination.name}" th:if="${la.dissemination!=null}"></td>
+			<td th:text="${la.contact}"></td> 
+			<td th:text="${la.status}"></td>
 		</tr>	
 	</table>
 	<br>
 	<br>
-		<table class="w3-container" width="100%">
+		<table class="w3-container" width="100%" th:if="${la.rejectReason!=null}">
 			<thead>
 			<tr>
 				<th scope="col">Reject Reason</th>		
 			</tr>
-		</thead>
-		<tr>
-			<td th:text="${la.rejectReason}" th:if="${la.rejectReason!=null}">Reject Reason</td>
-		</tr>	
-	</table>
+			</thead>
+			<tr>
+				<td th:text="${la.rejectReason}">Reject Reason</td>
+			</tr>	
+		</table>
 		<br>
 		<br>
 	<div>
@@ -83,5 +84,8 @@
 	</div>
 	<br>
 	<br>
+	</div>
+	</div>
+	</div>
 </body>
 </html>

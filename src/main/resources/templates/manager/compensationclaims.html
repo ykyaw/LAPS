@@ -17,6 +17,7 @@
     <div class="sidebar">
         <h2>Manager</h2>
         <ul>
+            <li><a href="/">Manager Home</a></li>
         	<li><a href="/employee">Manage Personal Leave</a></li>
             <li><a href="/manager/employeelist">Employee List</a></li>
             <li><a href="/manager/employeeonleave">Employees on Leave</a>
@@ -31,6 +32,7 @@
         <div class="header"><th:block th:include = "common :: navbar"></div>  
         <div class="container">
 <h2 th:if="${not #lists.isEmpty(compensationclaims)}">Compensation Claims</h2>
+<h2 th:if="${#lists.isEmpty(compensationclaims)}">There is no compensation claim from your employees.</h2>
 	<table class="table table-hover" th:if="${not #lists.isEmpty(compensationclaims)}">
 		<thead>
 			<tr>
@@ -63,6 +65,8 @@
 	<a href ="/manager/exportcompensation"><button class="btn btn-primary">Export as CSV</button></a>
 	<br>
 	<br>
-
+</div>
+</div>
+</div>
 </body>
 </html>
