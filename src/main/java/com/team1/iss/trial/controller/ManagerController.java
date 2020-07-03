@@ -26,8 +26,10 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.common.utils.TimeUtil;
+import com.team1.iss.trial.domain.EmployeeToCSV;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.LACsvFile;
+import com.team1.iss.trial.domain.LeaveHistoryToCSV;
 import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.OverTimeToCSV;
 import com.team1.iss.trial.domain.User;
@@ -220,8 +222,8 @@ public class ManagerController {
   
         writer.write(mservice.convertOverTimetoCSV(compensationlist));
 
-	}
-	
+	}	
+
 	//Employees on Leave
 	@RequestMapping("/employeeonleave")
 	public String employeeonleave(Model model ) {
@@ -231,14 +233,50 @@ public class ManagerController {
 		return "/manager/employeeonleave";
 	}
 
-	//converte time format from unixstamp (for csv starttime and endtime format)
-	/*
-	 * public static String Timeformating(long ds) { Instant i =
-	 * Instant.ofEpochSecond(ds/1000); ZoneId sgZone = ZoneId.of("Asia/Singapore");
-	 * ZonedDateTime sgdt = ZonedDateTime.ofInstant(i, sgZone); DateTimeFormatter df
-	 * = DateTimeFormatter .ofPattern("dd/MM/yyyy HH:mm"); return sgdt.format(df); }
-	 */
+	@RequestMapping("/exportemployeelist") 
+    public void exportEmployeeToCSV(HttpServletResponse response) throws Exception { 
+   
+        //set file name and content type 
+        String filename = "Employee-List.csv"; 
+        int managerid=mservice.getCurrentUid();
+		//find employee under this manager
+		ArrayList<User> employeeList= mservice.getEmolyeeList(managerid);
+  
+        
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"");
+          StatefulBeanToCsv<EmployeeToCSV> writer = new
+          StatefulBeanToCsvBuilder<EmployeeToCSV>(response.getWriter())
+          .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+          .withSeparator(CSVWriter.DEFAULT_SEPARATOR) .withOrderedResults(false)
+          .build();
+  
+        writer.write(mservice.convertEmployeeListtoCSV(employeeList));
+
+	}
 	
+	@RequestMapping("/exporteleavehistory/{uid}") 
+    public void exportLeaveHistoryToCSV(HttpServletResponse response, @PathVariable("uid") Integer uid) throws Exception { 
+        //set file name and content type 
+        String filename = "Leave-History.csv"; 
+       // String name=mservice.getNameByUid();
+		List<LA> leavehistory= laservice.findLaByOwnerId(uid);
+  
+        //for header
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"");
+          //create a csv writer 
+          StatefulBeanToCsv<LeaveHistoryToCSV> writer = new
+          StatefulBeanToCsvBuilder<LeaveHistoryToCSV>(response.getWriter())
+          .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+          .withSeparator(CSVWriter.DEFAULT_SEPARATOR) .withOrderedResults(false)
+          .build();
+  
+        writer.write(mservice.convertLeaveHistorytoCSV(leavehistory));
+
+	}
+
+
 }
 
 

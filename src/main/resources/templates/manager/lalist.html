@@ -54,9 +54,12 @@
 					</tr>
 				</tbody>
 			</table>
+			<div><a th:href="@{/manager/exporteleavehistory/}+${lalist[0].owner.uid}"><button class="btn btn-primary">Download in CSV Format</button></a></div>
+			<br>
 			<div><a href="/manager/employeelist"><button class="btn btn-primary">Back to Employee List</button></a></div>
 		</div>
 	</div>
 </div>
+
 </body>
 </html>
