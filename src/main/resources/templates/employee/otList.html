@@ -2,9 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
+    <link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
     <title>Overtime Claims History</title>
-    <th:block th:include = "common :: navbar"></th:block>
-    
     <!-- Bootstrap core CSS -->
     <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
     <!-- jquery core js -->
@@ -12,9 +11,22 @@
     <!-- Bootstrap core js -->
     <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
-<body>
+<body><div class="wrapper">
+    <div class="sidebar">
+        <h2>Employee</h2>
+        <ul>
+            <li><a href="/employee">Employee Home</a></li>
+            <li><a href="/employee/apply">Submit Leave Application</a></li>
+            <li><a href="/employee/las">View Leave History</a></li>
+            <li><a href="/employee/ots">Manage Overtime</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    </div>
+     <div class="main_content">
+        <div class="header"><th:block th:include = "common :: navbar"></div>  
+        <div class="container">
 <h2>Overtime Claims History</h2>
-
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -32,7 +44,6 @@
     </tr>
     
 </table>
-<a href ="/employee/ot"> <button>Submit Overtime</button></a>
-
+<a href ="/employee/ot"> <button class="btn btn-primary">Submit Overtime</button></a>
 </body>
 </html>

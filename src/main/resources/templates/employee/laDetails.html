@@ -4,8 +4,6 @@
     <meta charset="ISO-8859-1">
     <title>Leave Application Details</title>
 
-    <th:block th:include = "common :: navbar"></th:block>
-
     <link href="assets/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}"
           rel="stylesheet">
@@ -20,9 +18,44 @@
           rel="stylesheet">
     <script th:src="@{/assets/js/bootstrap.min.js}"></script>
     <link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet">
+    <link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
 </head>
 <body>
-    <h1 th:utext="#{leave.application.title}">Leave Application Details</h1>
+<div class="wrapper">
+    <div class="sidebar" style="font-size:16px;">
+        <h2>Employee</h2>
+        <ul>
+            <li><a href="/employee">Employee Home</a></li>
+            <li><a href="/employee/apply">Submit Leave Application</a></li>
+            <li><a href="/employee/las">View Leave History</a></li>
+            <li><a href="/employee/ots">Manage Overtime</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    </div>
+    <div class="main_content">
+    <div class="header">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			 
+			  <a class="navbar-brand" >
+				  <img src="/laps/src/main/resources/static/assets/img/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" >
+				  ISS Leave Application Portal
+			  </a>
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			    <span class="navbar-toggler-icon"></span>
+			  </button>
+			  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			    <div class="navbar-nav">
+		
+					
+			    </div>
+			  </div>
+			  	<span class="navbar-text">
+	     			Logged user: <span sec:authentication="name"></span>
+				</span>
+		</nav>
+	</div>
+    <h1 style="padding-left: 15px" th:utext="#{leave.application.title}">Leave Application Details</h1>
     <span style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></span>
     <form th:action="@{/employee/la/}+${la.uid}" method="post" id="form" onsubmit="return check()"
           class="col-md-6 offset-md-3" >
@@ -44,7 +77,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Reason for Leave</label>
+            <label class="col-sm-2 col-form-label">Reason For Leave</label>
             <div class="col-sm-10">
                 <input name="reasons" type="text" class="form-control"
                        placeholder="Please input leave reason"
@@ -108,13 +141,13 @@
             </div>
         </div>
         <button  class="btn btn-primary btn-lg btn-block" th:if="${la.status!='REJECTED'&&la.status!='APPROVED'&&la.status!='CANCELLED'}"
-                 th:text="${la!=null}?'update':'submit'" id="submit">submit</button>
+                 th:text="${la!=null}?'update':'submit'" id="submit">Submit</button>
     </form>
 
     <form th:action="@{/employee/cancel/}+${la.uid}" method="post">
         <input type="hidden" name="_method" value="delete"/>
-        <button type="submit" class="btn btn-primary btn-lg" th:if="${la!=null&&la.status!='REJECTED'&&la.status!='CANCELLED'}"
-                th:text="cancel" id="cancel">cancel</button>
+        <button type="submit" class="btn btn-danger btn-lg" th:if="${la!=null&&la.status!='REJECTED'&&la.status!='CANCELLED'}"
+                th:text="cancel" id="cancel">Cancel Application</button>
     </form>
     <script type="text/javascript" th:src="@{/assets/js/laDetail.js}"></script>
 </body>
