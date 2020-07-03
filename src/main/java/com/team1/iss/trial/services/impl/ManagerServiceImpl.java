@@ -12,8 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.team1.iss.trial.common.utils.TimeUtil;
+import com.team1.iss.trial.domain.EmployeeToCSV;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.LACsvFile;
+import com.team1.iss.trial.domain.LeaveHistoryToCSV;
 import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.OverTimeToCSV;
 import com.team1.iss.trial.domain.User;
@@ -39,7 +41,7 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 	
 	@Autowired
 	UserRepository uRepo;
-	
+
 	@Override
 	public ArrayList<LA> findPendingApplications() {
 		int managerid=getCurrentUid();
@@ -162,4 +164,38 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 //		ArrayList<LA> list=(ArrayList<LA>)laRepo.findLAByOwnerId(uid);
 //		return list;
 //	}
+
+	@Override
+	public List<EmployeeToCSV> convertEmployeeListtoCSV(ArrayList<User> employeeList) {
+		List<EmployeeToCSV> list = new ArrayList<>();
+        for (User employee : employeeList) {
+            
+        	EmployeeToCSV employeetocsv=new EmployeeToCSV();
+              employeetocsv.setID(String.valueOf(employee.getUid()));
+              employeetocsv.setName(employee.getName());
+              employeetocsv.setEmail(employee.getEmail());
+              employeetocsv.setType(employee.getUserType());
+              list.add(employeetocsv); 
+        }
+        return list;
+		
+	}
+
+	@Override
+	public List<LeaveHistoryToCSV> convertLeaveHistorytoCSV(List<LA> leavehistory) {
+		List<LeaveHistoryToCSV> list = new ArrayList<>();
+        for (LA leave : leavehistory) {
+            
+        	LeaveHistoryToCSV leavehistorytocsv=new LeaveHistoryToCSV();
+              leavehistorytocsv.setLeaveID(String.valueOf(leave.getUid()));
+              leavehistorytocsv.setType(leave.getType());
+              leavehistorytocsv.setFrom(TimeUtil.convertTimestampToTimeFormat(leave.getFromTime()));
+              leavehistorytocsv.setTo(TimeUtil.convertTimestampToTimeFormat(leave.getToTime()));
+              leavehistorytocsv.setReason(leave.getReasons());
+              leavehistorytocsv.setStatus(leave.getStatus());
+              leavehistorytocsv.setNoOfDays(String.valueOf(leave.getDuration()));
+              list.add(leavehistorytocsv); 
+        }
+        return list;
+	}
 }

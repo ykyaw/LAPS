@@ -62,7 +62,6 @@
 			</tr>
 		</tbody>
 	</table>
-
 	<div class="text-center">
 		<a th:href="@{/manager/approveapplication/}+${la.uid}"><button class="btn btn-success">Approve</button></a>
 
@@ -102,8 +101,12 @@
 	</div>
 	<div style="margin-top: 100px" th:if="${#lists.isEmpty(leave)}">
 	<h4>There is no other employee on leave during this period.</h4></div>
+		<br>
+	<div><a href="/manager/listforapproval"><button class="btn btn-primary">Back to Leave Application for Approval</button></a></div>
+	<br>
 	</div>
 	</div>
 	</div>
+
 </body>
 </html>

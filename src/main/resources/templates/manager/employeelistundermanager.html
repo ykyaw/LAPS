@@ -12,6 +12,7 @@
 <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
+
 <div class="wrapper">
     <div class="sidebar">
         <h2>Manager</h2>
@@ -48,8 +49,10 @@
 						<td><a th:href="@{/manager/las/}+${emp.uid}"><button type="button" class="btn btn-primary">Leave History</button></a></td>
 					</tr>
 				</table>
+				<a href="/manager/exportemployeelist"><button class="btn btn-primary"> Export in CSV Format</button></a>
 		</div>
 	</div>
 </div>
+
 </body>
 </html>
