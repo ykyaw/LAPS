@@ -3,7 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
-<title>Insert title here</title>
+<title>Edit User-Manager Form</title>
 </head>
 <body>
 
@@ -41,7 +41,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-2"><b>Employee Name:</b></label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" th:field="*{uid}"
+						<input class="form-control" type="text" th:field="*{name}"
 							readonly>
 					</div>
 				</div>
@@ -51,7 +51,7 @@
 				<div class="dropdown">
 					<label class="control-label col-sm-2"><b>Manager in
 							charge:</b></label> <select th:field="*{manager.uid}" name="Select Manager">
-						<option th:each="manager:${managertohtml}"
+						<option th:each="manager:${m1tohtml}"
 							th:value="${manager.uid}" th:text="${manager.name}"></option>
 					</select>
 				</div>

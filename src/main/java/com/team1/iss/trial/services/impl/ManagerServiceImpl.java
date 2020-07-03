@@ -11,14 +11,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.team1.iss.trial.common.utils.TimeUtil;
 import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
+import com.team1.iss.trial.domain.OverTimeToCSV;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.repo.LARepository;
-import com.team1.iss.trial.repo.ManagerRepository;
 import com.team1.iss.trial.repo.OverTimeRepository;
 import com.team1.iss.trial.repo.UserRepository;
 import com.team1.iss.trial.services.interfaces.IManagerService;
+
+
 
 @Service
 @Primary
@@ -94,6 +98,65 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 		return employeeList;
 	}
 	
+	@Override
+	public ArrayList<LACsvFile> LaCsvMapper (List<LA> la){
+		ArrayList<LACsvFile> newlist = new ArrayList<>();	
+		for(LA l:la) {
+			LACsvFile n = new LACsvFile();
+			n.setLAuid(l.getUid());
+			n.setContact(l.getContact());	
+			n.setFromTime(TimeUtil.convertTimestampToTimeFormat(l.getFromTime()));
+			n.setToTime(TimeUtil.convertTimestampToTimeFormat(l.getToTime()));
+			n.setReasons(l.getReasons());
+			n.setType(l.getType());	
+			if(l.getDissemination() != null) {
+				n.setStandin(l.getDissemination().getName());
+			}
+			else {
+				n.setStandin("None");
+			}
+			n.setStatus(l.getStatus());
+			n.setOwnername(l.getOwner().getName());
+			n.setOwnerID(l.getOwner().getUid());
+			newlist.add(n);
+		}	
+		return newlist;
+	}
+	@Override
+    public List<OverTimeToCSV> convertOverTimetoCSV(ArrayList<OverTime> compensationlist) {
+        List<OverTimeToCSV> list = new ArrayList<>();
+        for (OverTime compensation : compensationlist) {
+            
+              OverTimeToCSV overtimetocsv=new OverTimeToCSV();
+              overtimetocsv.setUid(String.valueOf(compensation.getUid()));
+              overtimetocsv.setOwner(compensation.getOwner().getName());
+              overtimetocsv.setStartTime(TimeUtil.convertTimestampToTimeFormat(compensation.getStartTime()));
+              overtimetocsv.setEndTime(TimeUtil.convertTimestampToTimeFormat(compensation.getEndTime()));
+              overtimetocsv.setHours(String.valueOf((compensation.getEndTime()-compensation.getStartTime())/3600000));
+              overtimetocsv.setStatus(compensation.getStatus());
+              
+              list.add(overtimetocsv); 
+              
+              }
+        return list;
+    }
+	
+	@Override
+	public long getFromTime(Integer uid) {
+		return laRepo.findLADetailsByUid(uid).get(0).getFromTime();
+	}
+
+	@Override
+	public long getToTIme(Integer uid) {
+		return laRepo.findLADetailsByUid(uid).get(0).getToTime();
+	}
+
+	@Override
+	public ArrayList<LA> findEmployeesOnLeave(long fromTime, long toTime) {
+		int managerid=getCurrentUid();
+		ArrayList<LA> employeeList=laRepo.findEmployeesOnLeaveDuringPeriod(fromTime, toTime, managerid);
+		return employeeList;
+	}
 //	@Override
 //	public ArrayList<LA> findEmployeeLeaveByEmployeeId(int uid) {
 //		ArrayList<LA> list=(ArrayList<LA>)laRepo.findLAByOwnerId(uid);

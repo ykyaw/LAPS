@@ -18,6 +18,7 @@ public interface IOverTimeService {
 
     List<OverTime> findOtByOwnerId(int uid);
 
-
     void calculateHours(OverTime overtime);
+
+	List<OverTime> findAllByOwnerId(int uid);
 }

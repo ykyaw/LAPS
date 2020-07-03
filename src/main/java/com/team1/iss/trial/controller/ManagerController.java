@@ -1,11 +1,6 @@
 package com.team1.iss.trial.controller;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,8 +25,11 @@ import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.team1.iss.trial.common.CommConstants;
+import com.team1.iss.trial.common.utils.TimeUtil;
 import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
+import com.team1.iss.trial.domain.OverTimeToCSV;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.services.impl.EmailServiceImpl;
 import com.team1.iss.trial.services.impl.LaServiceImpl;
@@ -92,10 +89,34 @@ public class ManagerController {
 		return "/manager/listforapproval";	
 	}
 	
+	@RequestMapping("/listforapprovalcsv")
+	public void exportLACSV (HttpServletResponse response) throws Exception {
+		
+		List<LA> la = mservice.findPendingApplications();
+        //set file name and content type
+        String filename = "pendingLA.csv";
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
+        List<LACsvFile> newlacsv = mservice.LaCsvMapper(la);
+        //create a csv writer
+        StatefulBeanToCsv<LACsvFile> writer = new StatefulBeanToCsvBuilder<LACsvFile>(response.getWriter())
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                .withOrderedResults(false)
+                .build();
+        //write all users to csv file
+        writer.write(newlacsv);
+                
+    }
+	
 	//show individual application
 	@RequestMapping("/individual/{uid}")
 	public String individualapplication(@PathVariable("uid") Integer uid,Model model ) {
 		model.addAttribute("la", mservice.findLAByID(uid));
+		long fromTime = mservice.getFromTime(uid);
+		long toTime = mservice.getToTIme(uid);
+		model.addAttribute("leave", mservice.findEmployeesOnLeave(fromTime, toTime));
 		return "/manager/individualapplication";
 	}
 
@@ -169,35 +190,6 @@ public class ManagerController {
 		return "/manager/lalist";
 	}
 	
-	@RequestMapping("/list")
-	public String list() {
-		return "forward:/manager/list/1";
-	}	
-	@RequestMapping("/list/{page}")
-	public String listByPagination(@PathVariable("page") int page, Model model) {
-		PageRequest pageable = PageRequest.of(page-1, 3);
-		Page<User> userpage = mservice.getPaginatedEmployees(pageable);
-        int totalPages = userpage.getTotalPages();
-        if(totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("currentuseremail", auth.getName());
-        model.addAttribute("userList", userpage.getContent());
-		return "manager/subordinates";
-	}
-	
-	@RequestMapping(value = "search", method = RequestMethod.GET)
-	public String getUser(@RequestParam (value = "word", required = false) String word, Model model) {
-		if (word.isEmpty()) {
-			return "forward:/manager/list";
-		}
-		List<User> users= mservice.getAllEmployees(word); //check to name and email
-	    model.addAttribute("users", users);
-	    return "forward:/manager/list";
-	}
-	
 	//retrieve employees under logged-in manager 
 	@RequestMapping("/employeelist")
 	public String getEmployeeListUnderManager(Model model) {
@@ -209,27 +201,34 @@ public class ManagerController {
 		return "/manager/employeelistundermanager";
 	}
 	
-	// export to csv
-	@GetMapping("/exportcompensation")
-    public void exportCSV(HttpServletResponse response) throws Exception {
+	@RequestMapping("/exportcompensation") 
+    public void exportCSV(HttpServletResponse response) throws Exception { 
+   
+        //set file name and content type 
+        String filename = "Compensation.csv"; 
 
-        //set file name and content type
-        String filename = "Compensation.csv";
-
+        ArrayList<OverTime> compensationlist=mservice.findClaims(); 
+        //for header
         response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"");
+          //create a csv writer 
+          StatefulBeanToCsv<OverTimeToCSV> writer = new
+          StatefulBeanToCsvBuilder<OverTimeToCSV>(response.getWriter())
+          .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+          .withSeparator(CSVWriter.DEFAULT_SEPARATOR) .withOrderedResults(false)
+          .build();
+  
+        writer.write(mservice.convertOverTimetoCSV(compensationlist));
 
-        //create a csv writer
-        StatefulBeanToCsv<OverTime> writer = new StatefulBeanToCsvBuilder<OverTime>(response.getWriter())
-                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
-                .withOrderedResults(false)
-                .build();
-        
-        //write all claims to csv file
-        ArrayList<OverTime> compensationlist=mservice.findClaims();
-        writer.write(compensationlist);
+	}
+	
+	//Employees on Leave
+	@RequestMapping("/employeeonleave")
+	public String employeeonleave(Model model ) {
+		long fromTime = TimeUtil.getCurrentTimestamp();
+		long toTime = TimeUtil.getCurrentTimestamp();
+		model.addAttribute("employeeonleave", mservice.findEmployeesOnLeave(fromTime, toTime));
+		return "/manager/employeeonleave";
 	}
 
 	//converte time format from unixstamp (for csv starttime and endtime format)
@@ -240,27 +239,6 @@ public class ManagerController {
 	 * = DateTimeFormatter .ofPattern("dd/MM/yyyy HH:mm"); return sgdt.format(df); }
 	 */
 	
-//	//Approve Claim
-//	@RequestMapping("/approveclaim/{uid}")
-//	public String approveClaim(@PathVariable("uid") int uid, Model model) {
-//		OverTime ot=otservice.getOverTimeById(uid);
-//		ot.setStatus(CommConstants.ClaimStatus.APPROVED);
-//		mservice.saveOverTime(ot);
-//		model.addAttribute("ot", ot);
-//		return "/manager/compensationclaims";
-//	}
-//		
-//	//Reject Claim
-//	@RequestMapping("/rejectclaim/{uid}")
-//	public String rejectClaim(@PathVariable("uid") int uid, Model model) {
-//		LA la=laservice.getLaById(uid);
-//		la.setStatus(CommConstants.ClaimStatus.REJECTED);
-//		mservice.saveOverTime(ot);
-//		model.addAttribute("ot", ot);
-//		return "/manager/compensationclaims";
-//	}
-
-
 }
 
 

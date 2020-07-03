@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Compensation CLaims</title>
-	<th:block th:include = "common :: header"></th:block>
-	<th:block th:include = "common :: navbar"></th:block>
+<link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
+<title>Compensation Claims</title>
+
 <!-- Bootstrap core CSS -->
 <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
 <!-- jquery core js -->
@@ -13,8 +13,25 @@
 <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>Manager</h2>
+        <ul>
+        	<li><a href="/employee">Manage Personal Leave</a></li>
+            <li><a href="/manager/employeelist">Employee List</a></li>
+            <li><a href="/manager/employeeonleave">Employees on Leave</a>
+            <li><a href="/manager/listforapproval">Leave Applications for Approval</a></li>
+            <li><a href="/manager/compensationclaims">Compensation Claims</a></li>           
+          	<li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    
+    </div>
+     <div class="main_content">
+        <div class="header"><th:block th:include = "common :: navbar"></div>  
+        <div class="container">
 <h2 th:if="${not #lists.isEmpty(compensationclaims)}">Compensation Claims</h2>
-	<table class="table table-bordered table-hover" th:if="${not #lists.isEmpty(compensationclaims)}">
+	<table class="table table-hover" th:if="${not #lists.isEmpty(compensationclaims)}">
 		<thead>
 			<tr>
 				<th scope="col">Claim ID</th>
@@ -22,8 +39,7 @@
 				<th scope="col">Start Time</th>
 				<th scope="col">End Time</th>
 				<th scope="col">Status</th>
-				<th scope="col">Approve</th>
-				<th scope="col">Reject</th>
+				<th scope="col"></th>
 			</tr>
 		</thead>
   		<tbody>
@@ -33,8 +49,8 @@
 				<td th:utext="${#dates.format(ot.startTime, 'yyyy-MM-dd HH:mm')}"></td>
 				<td th:utext="${#dates.format(ot.endTime, 'yyyy-MM-dd HH:mm')}"></td>
 				<td th:text=${ot.status}></td>
-				<td><a class="button" th:href="@{/manager/approveClaim/}+${ot.uid}">Approve</a></td>
-				<td><a class="button" th:href="@{/manager/rejectClaim/}+${ot.uid}">Reject</a></td>
+				<td><span th:if="${ot.status=='APPLIED'}"><a th:href="@{/manager/approveClaim/}+${ot.uid}"><button type="button" class="btn btn-success">Approve</button></a><a th:href="@{/manager/rejectClaim/}+${ot.uid}"><button type="button" class="btn btn-danger">Reject</button></a></span></td>
+				<td></td>
 				<!-- <td><a href="individualapplication.html"
 					th:href="@{/manager/individual/}+${la.uid}" >Approve</a></td>
 				<td><a href="individualapplication.html"
@@ -44,9 +60,9 @@
 	</table>
 	<br>
 	<br>
-	<a href ="/manager/exportcompensation"><button>Export as CSV</button></a>
+	<a href ="/manager/exportcompensation"><button class="btn btn-primary">Export as CSV</button></a>
 	<br>
 	<br>
-	<th:block th:include = "common :: footer"></th:block>
+
 </body>
 </html>

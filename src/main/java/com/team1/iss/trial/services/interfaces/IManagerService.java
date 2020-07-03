@@ -7,8 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.team1.iss.trial.domain.LA;
+import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
+import com.team1.iss.trial.domain.OverTimeToCSV;
 import com.team1.iss.trial.domain.User;
+
 
 public interface IManagerService {
 
@@ -23,4 +26,9 @@ public interface IManagerService {
 //	public ArrayList<LA> findEmployeeLeaveByEmployeeId(int uid);
 	public Page<User> getPaginatedEmployees(PageRequest pageable);
 	public ArrayList<User> getAllEmployees(String word);
+	public ArrayList<LACsvFile> LaCsvMapper(List<LA> la);
+	public List<OverTimeToCSV> convertOverTimetoCSV(ArrayList<OverTime> compensationlist);
+	public long getFromTime(Integer uid);
+	public long getToTIme(Integer uid);
+	public ArrayList<LA> findEmployeesOnLeave(long fromTime, long toTime);
 }

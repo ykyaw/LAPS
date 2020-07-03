@@ -3,6 +3,7 @@ package com.team1.iss.trial.controller;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -11,12 +12,14 @@ import com.team1.iss.trial.common.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.component.RequestLA;
@@ -26,8 +29,12 @@ import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.domain.PublicHoliday;
 import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.repo.UserRepository;
+
+import com.team1.iss.trial.services.interfaces.IAdminService;
+
 import com.team1.iss.trial.services.impl.EmailServiceImpl;
 import com.team1.iss.trial.services.interfaces.IEmailService;
+
 import com.team1.iss.trial.services.interfaces.IEmployeeService;
 import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IOverTimeService;
@@ -40,6 +47,9 @@ public class EmployeeController {
 
 	@Autowired
 	private IEmployeeService eService;
+	
+	@Autowired
+	private IAdminService aService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -49,9 +59,26 @@ public class EmployeeController {
 
 	@Autowired
 	private IPublicHolidayService publicHolidayService;
+	
 
 	@RequestMapping("/employee")
-	public String user() {
+	public String user(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		int uid=userRepository.findUserUidByEmail(email);
+		User user=eService.getUserByUid(uid);
+		int sumOTHours=0;
+		for (Iterator<OverTime> iterator = overTimeService.findOtByOwnerId(uid).iterator(); iterator.hasNext();) {
+			OverTime overTime = iterator.next();
+			overTimeService.calculateHours(overTime);
+			sumOTHours+= overTime.getHours();
+				}
+		model.addAttribute("ALEntitled", user.getAnnualLeaveEntitlement());
+		model.addAttribute("ALBalance", eService.getAnnualApplicationBalance(uid));
+		model.addAttribute("MLEntitled", user.getMedicalLeaveEntitlement());
+		model.addAttribute("MLBalance", eService.getMedicalApplicationBalance(uid));
+		model.addAttribute("CLfromOT",sumOTHours );
+		model.addAttribute("CLBalance", eService.getCompensationApplicationBalance(uid));
 		return ("employee/eHome");
 	}
 	
@@ -98,7 +125,7 @@ public class EmployeeController {
 		la.setStatus(CommConstants.ApplicationStatus.APPLIED);
 		boolean isLAValidate=true;
 		if(la.getToTime()-la.getFromTime()<=0){
-			model.addAttribute("msg","the to time can not less than from time");
+			model.addAttribute("msg","End date cannot be before start date");
 			isLAValidate=false;
 		}
 		//check if fromtime is a public holiday
@@ -109,7 +136,7 @@ public class EmployeeController {
 				})
 				.collect(Collectors.toList());
 		if(holidays.size()>0){
-			model.addAttribute("msg","the from time can not be a public holiday");
+			model.addAttribute("msg","Start date cannot be a public holiday");
 			isLAValidate=false;
 		}
 		//balance check
@@ -118,19 +145,19 @@ public class EmployeeController {
 		if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)){
 			float balance = eService.getAnnualApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your annual leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your annual leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}else if(la.getType().equals(CommConstants.LeaveType.MEDICAL_LEAVE)){
 			float balance=eService.getMedicalApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your medical leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your medical leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}else{
 			float balance=eService.getCompensationApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your compensation leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your compensation leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}
@@ -138,7 +165,7 @@ public class EmployeeController {
 		// check if la is overlaped with existing leave
 		List<LA> existing_LA = laService.findLAOverlap(la.getFromTime(), la.getToTime(), la.getOwner().getUid(), TimeUtil.getYearStartTime(TimeUtil.getCurrentTimestamp())); //1593224802
 		if (existing_LA.size() > 0) {
-			model.addAttribute("msg","The new LA is overlaped with existing LA");
+			model.addAttribute("msg","The dates of this application overlap with an existing application");
 			List<String> applicationType = new ArrayList();
 			applicationType.add(CommConstants.LeaveType.ANNUAL_LEAVE);
 			applicationType.add(CommConstants.LeaveType.MEDICAL_LEAVE);
@@ -183,7 +210,7 @@ public class EmployeeController {
 		la.setStatus(CommConstants.ApplicationStatus.UPDATED);
 		boolean isLAValidate=true;
 		if(la.getToTime()-la.getFromTime()<=0){
-			model.addAttribute("msg","the to time can not less than from time");
+			model.addAttribute("msg","End date cannot be before start date");
 			isLAValidate=false;
 		}
 		//check if fromtime is a public holiday
@@ -194,7 +221,7 @@ public class EmployeeController {
 				})
 				.collect(Collectors.toList());
 		if(holidays.size()>0){
-			model.addAttribute("msg","the from time can not be a public holiday");
+			model.addAttribute("msg","Start date cannot be a public holiday");
 			isLAValidate=false;
 		}
 		//balance check
@@ -203,19 +230,19 @@ public class EmployeeController {
 		if(la.getType().equals(CommConstants.LeaveType.ANNUAL_LEAVE)){
 			float balance = eService.getAnnualApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your annual leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your annual leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}else if(la.getType().equals(CommConstants.LeaveType.MEDICAL_LEAVE)){
 			float balance=eService.getMedicalApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your medical leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your medical leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}else {
 			float balance=eService.getCompensationApplicationBalance(la);
 			if(balance<la.getDuration()){
-				model.addAttribute("msg","your compensation leave balance is insufficient, only "+balance+" left");
+				model.addAttribute("msg","Your compensation leave balance is insufficient, only "+balance+" days left");
 				isLAValidate=false;
 			}
 		}
@@ -333,7 +360,7 @@ public class EmployeeController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		int uid=userRepository.findUserUidByEmail(email);
-		List<OverTime> ots=overTimeService.findOtByOwnerId(uid);
+		List<OverTime> ots=overTimeService.findAllByOwnerId(uid);
 		model.addAttribute("ots",ots);
 		return "employee/otList";
 	}

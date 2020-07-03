@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
+  <link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
     <!-- Required meta tags -->
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,9 +9,24 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <title>Personal Leave History</title>
-	<th:block th:include = "common :: navbar"></th:block>
+	
   </head>
   <body>
+  <div class="wrapper">
+    <div class="sidebar">
+        <h2>Employee</h2>
+        <ul>
+            <li><a href="/employee">Employee Home</a></li>
+            <li><a href="/employee/apply">Submit Leave Application</a></li>
+            <li><a href="/employee/las">View Leave History</a></li>
+            <li><a href="/employee/ots">Manage Overtime</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    </div>
+     <div class="main_content">
+        <div class="header"><th:block th:include = "common :: navbar"></div>  
+        <div class="container">
 	<h2>Personal Leave History</h2>
 	<table class="table table-bordered table-hover">
 	  <thead>
@@ -52,6 +68,6 @@
 	
 	
 	
-	  	<th:block th:include = "common :: footer"></th:block>
+	  
 </body>
 </html>
