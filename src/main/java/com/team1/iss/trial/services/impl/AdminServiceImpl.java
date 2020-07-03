@@ -19,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.team1.iss.trial.common.CommConstants;
@@ -218,6 +220,13 @@ public class AdminServiceImpl implements IAdminService {
 			inUse = true;
 		}
 		return inUse;
+	}
+	
+	@Override
+	public String getCurrentName() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		return uRepo.findNameByEmail(email);
 	}
 }
 

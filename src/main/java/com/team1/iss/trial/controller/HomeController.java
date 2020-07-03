@@ -13,15 +13,18 @@ public class HomeController {
 	public String home(HttpServletRequest request) {
 		
 		if(request.isUserInRole("MANAGER")){
-			return"manager/mHome";
+			return "redirect:/manager";
+			//return"manager/mHome";
 		}
 		
 		if(request.isUserInRole("ADMIN")){
-			return"admin/aHome";
+			return "redirect:/admin";
+			//return"admin/aHome";
 		}
 		
 		if(request.isUserInRole("EMPLOYEE")){
-			return"redirect:/employee";
+			return "redirect:/employee";
+			//return"redirect:/employee";
 		}
 		return"index";
 	}

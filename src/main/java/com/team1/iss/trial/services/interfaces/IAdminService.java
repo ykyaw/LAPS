@@ -50,6 +50,7 @@ public interface IAdminService {
 	public boolean deletePh(int uid);
 	
 	public boolean isEmailAlreadyInUse (String email);
+	public String getCurrentName();
 }
 
 	

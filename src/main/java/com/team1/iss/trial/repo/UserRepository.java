@@ -82,7 +82,11 @@ public interface UserRepository extends JpaRepository<User, Integer>{
     public String findemailbyLAUID(@Param("uid") int uid);
 	
 	@Query(value = "select email from user where email= :email LIMIT 1", nativeQuery=true)
-    public String findEmail(@Param("email") String email); 
+    public String findEmail(@Param("email") String email);
+	
+	
+	@Query("select u.name from User u where u.email=:email")
+	public String findNameByEmail(@Param("email") String email); 
 };
 
 

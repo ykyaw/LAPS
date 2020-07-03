@@ -70,7 +70,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping("")
-	public String adminHome() {
+	public String adminHome(Model model) {
+		
+		String name = aservice.getCurrentName();
+		model.addAttribute("name", name);
 		return ("admin/aHome");
 	}
 	
