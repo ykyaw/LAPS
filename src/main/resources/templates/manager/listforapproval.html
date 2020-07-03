@@ -40,6 +40,7 @@
 				<th scope="col">Name</th>
 				<th scope="col">Start Date</th>
 				<th scope="col">End Date</th>
+				<th scope="col">Number of Days</th>
 				<th scope="col">Status</th>
 				<th scope="col">View Details</th>
 				
@@ -51,6 +52,7 @@
 				<td th:text=${la.owner.name}></td>
 				<td th:utext="${#dates.format(la.fromTime, 'yyyy-MM-dd')}"></td>
 				<td th:utext="${#dates.format(la.toTime, 'yyyy-MM-dd')}"></td>
+				<td th:text=${la.duration}></td>
 				<td th:text=${la.status}></td>
 				<td><a href="individualapplication.html"
 					th:href="@{/manager/individual/}+${la.uid}"><button type="button" class="btn btn-primary">View Details</button></a></td>

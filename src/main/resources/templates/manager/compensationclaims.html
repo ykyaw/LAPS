@@ -40,6 +40,7 @@
 				<th scope="col">Employee Name</th>
 				<th scope="col">Start Time</th>
 				<th scope="col">End Time</th>
+				<th scope="col">Hours</th>
 				<th scope="col">Status</th>
 				<th scope="col"></th>
 			</tr>
@@ -50,6 +51,7 @@
 				<td th:text=${ot.owner.name}></td>
 				<td th:utext="${#dates.format(ot.startTime, 'yyyy-MM-dd HH:mm')}"></td>
 				<td th:utext="${#dates.format(ot.endTime, 'yyyy-MM-dd HH:mm')}"></td>
+				<td th:utext="${#dates.format((ot.endTime-ot.startTime), 'HH:mm')}"></td>
 				<td th:text=${ot.status}></td>
 				<td><span th:if="${ot.status=='APPLIED'}"><a th:href="@{/manager/approveClaim/}+${ot.uid}"><button type="button" class="btn btn-success">Approve</button></a><a th:href="@{/manager/rejectClaim/}+${ot.uid}"><button type="button" class="btn btn-danger">Reject</button></a></span></td>
 				<td></td>

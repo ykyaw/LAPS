@@ -1,6 +1,7 @@
 package com.team1.iss.trial.services.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.team1.iss.trial.domain.User;
 import com.team1.iss.trial.repo.LARepository;
 import com.team1.iss.trial.repo.OverTimeRepository;
 import com.team1.iss.trial.repo.UserRepository;
+import com.team1.iss.trial.services.interfaces.ILaService;
 import com.team1.iss.trial.services.interfaces.IManagerService;
 
 
@@ -41,11 +43,18 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 	
 	@Autowired
 	UserRepository uRepo;
+	
+	@Autowired
+	ILaService laService;
 
 	@Override
 	public ArrayList<LA> findPendingApplications() {
 		int managerid=getCurrentUid();
 		ArrayList<LA> applicationlistForApproval= (ArrayList<LA>)laRepo.getPendingLA(managerid);
+		for (Iterator<LA> iterator = applicationlistForApproval.iterator(); iterator.hasNext();) {
+			LA la = iterator.next();
+			laService.calculateApplicationDuration(la);
+		}
 		return applicationlistForApproval;
 	}
 
