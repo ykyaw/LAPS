@@ -56,7 +56,7 @@
 			<td th:text="${la.uid}">I</td>
 			<td th:text="${la.owner.uid}"></td>
 			<td th:text="${la.owner.name}"></td>
-			<td th:text="$${#dates.format(la.fromTime, 'yyyy-MM-dd HH:mm')}"></td>
+			<td th:text="${#dates.format(la.fromTime, 'yyyy-MM-dd HH:mm')}"></td>
 			<td th:text="${#dates.format(la.toTime, 'yyyy-MM-dd HH:mm')}"></td>
 			<td th:text="${la.type}"></td>
 			<td th:text="${la.reasons}"></td>
@@ -74,7 +74,7 @@
 			</tr>
 			</thead>
 			<tr>
-				<td th:text="${la.rejectReason}"">Reject Reason</td>
+				<td th:text="${la.rejectReason}">Reject Reason</td>
 			</tr>	
 		</table>
 		<br>
