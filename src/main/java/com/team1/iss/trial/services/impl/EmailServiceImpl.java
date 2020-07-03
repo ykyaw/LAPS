@@ -29,16 +29,15 @@ public class EmailServiceImpl implements IEmailService {
 		String myemail=auth.getName();
 		String managerEmail = uRepo.findManageremailbyuseremail(myemail);
 		
-		mailMessage.setTo(managerEmail);
-		mailMessage.setSubject("Leave Application Notification" );
-		
-		String text = "There is a new leave application by " + myemail + " for your review. "
-				+ "Please login by this link to view: http://localhost:8080/manager/listforapproval ";
-		
-		mailMessage.setText(text);
-		
-		javaMailSender.send(mailMessage);
-		
+		if(managerEmail!=null) {
+			mailMessage.setTo(managerEmail);
+			mailMessage.setSubject("Leave Application Notification" );			
+			String text = "There is a new leave application by " + myemail + " for your review. "
+					+ "Please login by this link to view: http://localhost:8080/manager/listforapproval ";			
+			mailMessage.setText(text);			
+			javaMailSender.send(mailMessage);			
+		}
+	
 	}
 	@Override
 	public void sendRejectEmail(int leaveid) {
