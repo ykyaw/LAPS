@@ -22,7 +22,7 @@
             <li><a href="/manager/employeelist">Employee List</a></li>
             <li><a href="/manager/employeeonleave">Employees on Leave</a>
             <li><a href="/manager/listforapproval">Leave Applications for Approval</a></li>
-            <li><a href="/manager/compensationclaims">Compensation Claims</a></li>           
+            <li><a href="/manager/compensationclaims">Overtime Claims</a></li>           
           	<li><a href="/logout">Log Out</a></li>
         </ul> 
        
@@ -58,7 +58,7 @@
 					th:href="@{/manager/individual/}+${la.uid}"><button type="button" class="btn btn-primary">View Details</button></a></td>
 			</tr>
 	</table>
-	<div><a href="/manager/listforapprovalcsv"><button class="btn btn-primary">Export in CSV Format</button></a></div>
+	<div th:if="${not #lists.isEmpty(listforapproval)}"><a href="/manager/listforapprovalcsv"><button class="btn btn-primary">Export as CSV</button></a></div>
 	</div>
 	</div>
 </div>

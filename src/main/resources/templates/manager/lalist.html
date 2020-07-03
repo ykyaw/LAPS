@@ -21,7 +21,7 @@
             <li><a href="/manager/employeelist">Employee List</a></li>
             <li><a href="/manager/employeeonleave">Employees on Leave</a>
             <li><a href="/manager/listforapproval">Leave Applications for Approval</a></li>
-            <li><a href="/manager/compensationclaims">Compensation Claims</a></li>           
+            <li><a href="/manager/compensationclaims">Overtime Claims</a></li>           
           	<li><a href="/logout">Log Out</a></li>
         </ul>  
     </div>
@@ -54,7 +54,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<div><a th:href="@{/manager/exporteleavehistory/}+${lalist[0].owner.uid}"><button class="btn btn-primary">Download in CSV Format</button></a></div>
+			<div><a th:href="@{/manager/exporteleavehistory/}+${lalist[0].owner.uid}"><button class="btn btn-primary">Export as CSV</button></a></div>
 			<br>
 			<div><a href="/manager/employeelist"><button class="btn btn-primary">Back to Employee List</button></a></div>
 		</div>

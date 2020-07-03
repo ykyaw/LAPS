@@ -81,7 +81,9 @@ public class ManagerController {
 	
 	
 	@RequestMapping("")
-	public String managerHome() {
+	public String managerHome(Model model) {
+		String name = mservice.getCurrentName();
+		model.addAttribute("name", name);
 		return ("manager/mHome");
 	}
 	

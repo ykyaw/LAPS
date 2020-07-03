@@ -3,7 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
-<title>Compensation Claims</title>
+<title>Overtime Claims</title>
 
 <!-- Bootstrap core CSS -->
 <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
@@ -22,7 +22,7 @@
             <li><a href="/manager/employeelist">Employee List</a></li>
             <li><a href="/manager/employeeonleave">Employees on Leave</a>
             <li><a href="/manager/listforapproval">Leave Applications for Approval</a></li>
-            <li><a href="/manager/compensationclaims">Compensation Claims</a></li>           
+            <li><a href="/manager/compensationclaims">Overtime Claims</a></li>           
           	<li><a href="/logout">Log Out</a></li>
         </ul> 
        
@@ -31,8 +31,8 @@
      <div class="main_content">
         <div class="header"><th:block th:include = "common :: navbar"></div>  
         <div class="container">
-<h2 th:if="${not #lists.isEmpty(compensationclaims)}">Compensation Claims</h2>
-<h2 th:if="${#lists.isEmpty(compensationclaims)}">There is no compensation claim from your employees.</h2>
+<h2 th:if="${not #lists.isEmpty(compensationclaims)}">Overtime Claims</h2>
+<h2 th:if="${#lists.isEmpty(compensationclaims)}">There is no overtime claim from your employees.</h2>
 	<table class="table table-hover" th:if="${not #lists.isEmpty(compensationclaims)}">
 		<thead>
 			<tr>
@@ -51,7 +51,7 @@
 				<td th:text=${ot.owner.name}></td>
 				<td th:utext="${#dates.format(ot.startTime, 'yyyy-MM-dd HH:mm')}"></td>
 				<td th:utext="${#dates.format(ot.endTime, 'yyyy-MM-dd HH:mm')}"></td>
-				<td th:utext="${#dates.format((ot.endTime-ot.startTime), 'HH:mm')}"></td>
+				<td th:text="${#numbers.formatDecimal((ot.endTime-ot.startTime)/3600000,1,1)}"></td>
 				<td th:text=${ot.status}></td>
 				<td><span th:if="${ot.status=='APPLIED'}"><a th:href="@{/manager/approveClaim/}+${ot.uid}"><button type="button" class="btn btn-success">Approve</button></a><a th:href="@{/manager/rejectClaim/}+${ot.uid}"><button type="button" class="btn btn-danger">Reject</button></a></span></td>
 				<td></td>
@@ -64,7 +64,7 @@
 	</table>
 	<br>
 	<br>
-	<a href ="/manager/exportcompensation"><button class="btn btn-primary">Export as CSV</button></a>
+	<div th:if="${not #lists.isEmpty(compensationclaims)}"><a href ="/manager/exportcompensation"><button class="btn btn-primary">Export as CSV</button></a></div>
 	<br>
 	<br>
 </div>

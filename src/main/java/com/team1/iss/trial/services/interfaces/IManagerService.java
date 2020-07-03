@@ -35,5 +35,6 @@ public interface IManagerService {
 	public ArrayList<LA> findEmployeesOnLeave(long fromTime, long toTime);
 	public List<EmployeeToCSV> convertEmployeeListtoCSV(ArrayList<User> employeeList);
 	public List<LeaveHistoryToCSV > convertLeaveHistorytoCSV(List<LA> leavehistory);
+	public String getCurrentName();
 
 }

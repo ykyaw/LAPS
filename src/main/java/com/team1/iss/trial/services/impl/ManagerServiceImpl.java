@@ -207,4 +207,11 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
         }
         return list;
 	}
+	
+	@Override
+	public String getCurrentName() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		return uRepo.findNameByEmail(email);
+	}
 }

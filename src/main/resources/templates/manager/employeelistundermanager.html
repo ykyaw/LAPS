@@ -22,15 +22,16 @@
             <li><a href="/manager/employeelist">Employee List</a></li>
             <li><a href="/manager/employeeonleave">Employees on Leave</a>
             <li><a href="/manager/listforapproval">Leave Applications for Approval</a></li>
-            <li><a href="/manager/compensationclaims">Compensation Claims</a></li>           
+            <li><a href="/manager/compensationclaims">Overtime Claims</a></li>           
           	<li><a href="/logout">Log Out</a></li>
         </ul> 
     </div>
      <div class="main_content">
         <div class="header"><th:block th:include = "common :: navbar"></div>  
         <div class="container">
-			<h2>Employee List</h2>
-				<table class="table table-hover">
+			<h2 th:if="${not #lists.isEmpty(employeelist)}">Employee List</h2>
+			<h2 th:if="${#lists.isEmpty(employeelist)}">Currently, there is no employee under this manager.</h2>
+				<table th:if="${not #lists.isEmpty(employeelist)}" class="table table-hover">
 				  <thead>
 					<tr>
 						<th scope="col">ID</th>
@@ -50,7 +51,8 @@
 						<td><a th:href="@{/manager/las/}+${emp.uid}"><button type="button" class="btn btn-primary">Leave History</button></a></td>
 					</tr>
 				</table>
-				<a href="/manager/exportemployeelist"><button class="btn btn-primary"> Export in CSV Format</button></a>
+				<div th:if="${not #lists.isEmpty(employeelist)}">
+				<a href="/manager/exportemployeelist"><button class="btn btn-primary">Export as CSV</button></a></div>
 		</div>
 	</div>
 </div>
