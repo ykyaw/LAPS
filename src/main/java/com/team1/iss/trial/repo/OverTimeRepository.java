@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface OverTimeRepository  extends JpaRepository<OverTime, Integer>{
 	
-	@Query(value = "SELECT a FROM OverTime a, User u where a.owner.uid=u.uid AND u.manager.uid=?1 order by a.startTime asc")
+	@Query(value = "SELECT a FROM OverTime a, User u where a.owner.uid=u.uid AND u.manager.uid=?1 order by a.startTime desc")
 	public List<OverTime> findAllClaims(int manageruid);
 
 	@Query("select o from OverTime o where o.owner.uid=:ownerId and o.status='APPROVED'")
