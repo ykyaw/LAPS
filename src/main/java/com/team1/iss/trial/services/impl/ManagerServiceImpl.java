@@ -140,6 +140,23 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
               }
         return list;
     }
+	
+	@Override
+	public long getFromTime(Integer uid) {
+		return laRepo.findLADetailsByUid(uid).get(0).getFromTime();
+	}
+
+	@Override
+	public long getToTIme(Integer uid) {
+		return laRepo.findLADetailsByUid(uid).get(0).getToTime();
+	}
+
+	@Override
+	public ArrayList<LA> findEmployeesOnLeave(long fromTime, long toTime) {
+		int managerid=getCurrentUid();
+		ArrayList<LA> employeeList=laRepo.findEmployeesOnLeaveDuringPeriod(fromTime, toTime, managerid);
+		return employeeList;
+	}
 //	@Override
 //	public ArrayList<LA> findEmployeeLeaveByEmployeeId(int uid) {
 //		ArrayList<LA> list=(ArrayList<LA>)laRepo.findLAByOwnerId(uid);

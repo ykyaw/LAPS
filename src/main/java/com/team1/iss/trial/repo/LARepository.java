@@ -90,6 +90,9 @@ public interface LARepository extends JpaRepository<LA, Integer>, JpaSpecificati
 	@Query(value = "SELECT a FROM LA a where a.fromTime>=:currentYear and a.owner.uid=:ownerId and a.status='APPROVED' and a.type='COMPENSATION_LEAVE'")
 	List<LA> findAllApprovedCompensationLeaveByOwnerId(@Param("ownerId") int ownerId, @Param("currentYear") Long currentYear);
 
+	@Query(value = "SELECT a FROM LA a, User u where a.owner.uid=u.uid AND u.manager.uid=?3 AND a.status='APPROVED' AND a.fromTime <= ?2 AND a.toTime >= ?1 order by a.fromTime desc")
+	public ArrayList<LA> findEmployeesOnLeaveDuringPeriod(long fromTime, long toTime, int manageruid);
+	
 //	@Modifying
 //    @Transactional  //Spring transactional
 //    @Query(value = "update la set status=#{#la.status}, set type=#{#la.type},")

@@ -25,6 +25,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.team1.iss.trial.common.CommConstants;
+import com.team1.iss.trial.common.utils.TimeUtil;
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.domain.LACsvFile;
 import com.team1.iss.trial.domain.OverTime;
@@ -108,13 +109,14 @@ public class ManagerController {
         writer.write(newlacsv);
                 
     }
-
-
 	
 	//show individual application
 	@RequestMapping("/individual/{uid}")
 	public String individualapplication(@PathVariable("uid") Integer uid,Model model ) {
 		model.addAttribute("la", mservice.findLAByID(uid));
+		long fromTime = mservice.getFromTime(uid);
+		long toTime = mservice.getToTIme(uid);
+		model.addAttribute("leave", mservice.findEmployeesOnLeave(fromTime, toTime));
 		return "/manager/individualapplication";
 	}
 
@@ -188,35 +190,6 @@ public class ManagerController {
 		return "/manager/lalist";
 	}
 	
-	@RequestMapping("/list")
-	public String list() {
-		return "forward:/manager/list/1";
-	}	
-	@RequestMapping("/list/{page}")
-	public String listByPagination(@PathVariable("page") int page, Model model) {
-		PageRequest pageable = PageRequest.of(page-1, 3);
-		Page<User> userpage = mservice.getPaginatedEmployees(pageable);
-        int totalPages = userpage.getTotalPages();
-        if(totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("currentuseremail", auth.getName());
-        model.addAttribute("userList", userpage.getContent());
-		return "manager/subordinates";
-	}
-	
-	@RequestMapping(value = "search", method = RequestMethod.GET)
-	public String getUser(@RequestParam (value = "word", required = false) String word, Model model) {
-		if (word.isEmpty()) {
-			return "forward:/manager/list";
-		}
-		List<User> users= mservice.getAllEmployees(word); //check to name and email
-	    model.addAttribute("users", users);
-	    return "forward:/manager/list";
-	}
-	
 	//retrieve employees under logged-in manager 
 	@RequestMapping("/employeelist")
 	public String getEmployeeListUnderManager(Model model) {
@@ -248,6 +221,15 @@ public class ManagerController {
         writer.write(mservice.convertOverTimetoCSV(compensationlist));
 
 	}
+	
+	//Employees on Leave
+	@RequestMapping("/employeeonleave")
+	public String employeeonleave(Model model ) {
+		long fromTime = TimeUtil.getCurrentTimestamp();
+		long toTime = TimeUtil.getCurrentTimestamp();
+		model.addAttribute("employeeonleave", mservice.findEmployeesOnLeave(fromTime, toTime));
+		return "/manager/employeeonleave";
+	}
 
 	//converte time format from unixstamp (for csv starttime and endtime format)
 	/*
@@ -257,27 +239,6 @@ public class ManagerController {
 	 * = DateTimeFormatter .ofPattern("dd/MM/yyyy HH:mm"); return sgdt.format(df); }
 	 */
 	
-//	//Approve Claim
-//	@RequestMapping("/approveclaim/{uid}")
-//	public String approveClaim(@PathVariable("uid") int uid, Model model) {
-//		OverTime ot=otservice.getOverTimeById(uid);
-//		ot.setStatus(CommConstants.ClaimStatus.APPROVED);
-//		mservice.saveOverTime(ot);
-//		model.addAttribute("ot", ot);
-//		return "/manager/compensationclaims";
-//	}
-//		
-//	//Reject Claim
-//	@RequestMapping("/rejectclaim/{uid}")
-//	public String rejectClaim(@PathVariable("uid") int uid, Model model) {
-//		LA la=laservice.getLaById(uid);
-//		la.setStatus(CommConstants.ClaimStatus.REJECTED);
-//		mservice.saveOverTime(ot);
-//		model.addAttribute("ot", ot);
-//		return "/manager/compensationclaims";
-//	}
-
-
 }
 
 

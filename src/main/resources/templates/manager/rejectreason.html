@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
+<link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
 <title>Reject Reason</title>
-	<th:block th:include = "common :: header"></th:block>
-	<th:block th:include = "common :: navbar"></th:block>
+
 	<!-- Bootstrap core CSS -->
 	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
 	<!-- jquery core js -->
@@ -13,16 +13,35 @@
 	<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>Manager</h2>
+        <ul>
+        	<li><a href="/employee">Manage Personal Leave</a></li>
+            <li><a href="/manager/employeelist">Employee List</a></li>
+            <li><a href="/manager/employeeonleave">Employees on Leave</a>
+            <li><a href="/manager/listforapproval">Leave Applications for Approval</a></li>
+            <li><a href="/manager/compensationclaims">Compensation Claims</a></li>           
+          	<li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    
+    </div>
+     <div class="main_content">
+        <div class="header"><th:block th:include = "common :: navbar"></div>  
+        <div class="container">
 <h1> Reject Reason</h1>
 
 	<form th:action="@{/manager/rejectapplication}" th:object="${rejectreason}"
 		method="get">
-		<textarea th:text="${rejectreason}" name="rejectreason"
+		<textarea rows="4" cols="50" th:text="${rejectreason}" name="rejectreason"
 			placeholder="Please enter your reject reason" required></textarea>
 		<br />
 		
-			<button type="submit" th:object="${rejectreason}">Submit</button>
+			<button type="submit" th:object="${rejectreason}" class="btn btn-primary btn-danger">Submit</button>
 	</form>
-	<th:block th:include = "common :: footer"></th:block>
+	</div>
+	</div>
+	</div>
 </body>
 </html>

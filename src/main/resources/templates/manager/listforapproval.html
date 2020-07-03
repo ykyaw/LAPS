@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
 <meta charset="ISO-8859-1">
-<title>Leave Application for Approval</title>
-	<th:block th:include = "common :: header"></th:block>
-	<th:block th:include = "common :: navbar"></th:block>
+<title>Leave Applications for Approval</title>
+
 	<!-- Bootstrap core CSS -->
 	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
 	<!-- jquery core js -->
@@ -13,8 +13,26 @@
 	<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
-	<h1 th:if="${not #lists.isEmpty(listforapproval)}">Leave Application for Approval</h1>
-	<table class="table table-bordered table-hover" th:if="${not #lists.isEmpty(listforapproval)}">
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>Manager</h2>
+        <ul>
+        	<li><a href="/employee">Manage Personal Leave</a></li>
+            <li><a href="/manager/employeelist">Employee List</a></li>
+            <li><a href="/manager/employeeonleave">Employees on Leave</a>
+            <li><a href="/manager/listforapproval">Leave Applications for Approval</a></li>
+            <li><a href="/manager/compensationclaims">Compensation Claims</a></li>           
+          	<li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    
+    </div>
+     <div class="main_content">
+        <div class="header"><th:block th:include = "common :: navbar"></div>  
+        <div class="container">
+	<h1 th:if="${not #lists.isEmpty(listforapproval)}">Leave Applications for Approval</h1>
+	<h1 th:if="${#lists.isEmpty(listforapproval)}">There are currently no leave applications pending approval.</h1>
+	<table class="table table-hover" th:if="${not #lists.isEmpty(listforapproval)}">
 		<thead>
 			<tr>
 				<th scope="col">Employee ID</th>
@@ -22,7 +40,6 @@
 				<th scope="col">Start Date</th>
 				<th scope="col">End Date</th>
 				<th scope="col">Status</th>
-				<th scope="col">Leave History</th>
 				<th scope="col">View Details</th>
 				
 			</tr>
@@ -34,14 +51,12 @@
 				<td th:utext="${#dates.format(la.fromTime, 'yyyy-MM-dd')}"></td>
 				<td th:utext="${#dates.format(la.toTime, 'yyyy-MM-dd')}"></td>
 				<td th:text=${la.status}></td>
-				<td><a href="lalist.html"
-					th:href="@{/manager/las/}+${la.owner.uid}">Leave History</a></td>
 				<td><a href="individualapplication.html"
-					th:href="@{/manager/individual/}+${la.uid}">View Details</a></td>
+					th:href="@{/manager/individual/}+${la.uid}"><button type="button" class="btn btn-primary">View Details</button></a></td>
 			</tr>
 	</table>
-
-	<a href="/manager/listforapprovalcsv">Download in CSV format</a>
-	<th:block th:include = "common :: footer"></th:block>
+	</div>
+	</div>
+</div>
 </body>
 </html>

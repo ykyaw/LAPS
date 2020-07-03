@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
+<link href="assets/css/signin.css" th:href="@{/assets/css/sidebar.css}" rel="stylesheet">
 <title>Confirmation</title>
-	<th:block th:include = "common :: header"></th:block>
-	<th:block th:include = "common :: navbar"></th:block>
+
 	<!-- Bootstrap core CSS -->
 	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.css}" rel="stylesheet">
 	<!-- jquery core js -->
@@ -13,12 +13,29 @@
 	<script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>Manager</h2>
+        <ul>
+        	<li><a href="/employee">Manage Personal Leave</a></li>
+            <li><a href="/manager/employeelist">Employee List</a></li>
+            <li><a href="/manager/employeeonleave">Employees on Leave</a>
+            <li><a href="/manager/listforapproval">Leave Applications for Approval</a></li>
+            <li><a href="/manager/compensationclaims">Compensation Claims</a></li>           
+          	<li><a href="/logout">Log Out</a></li>
+        </ul> 
+       
+    
+    </div>
+     <div class="main_content">
+        <div class="header"><th:block th:include = "common :: navbar"></div>  
+        <div class="container">
 <h1>Confirmation</h1>
 
 <h2>  you have <span th:text="${la.status}"> made a decision on </span> this application.</h2>
 	<br>
 	<br>
-	<table class="w3-container" width="100%">
+	<table class="table table-hover">
 			<thead>
 			<tr>
 				<th scope="col">Application ID</th>
@@ -42,7 +59,7 @@
 			<td th:text="${la.toTime}">Leave Period To</td>
 			<td th:text="${la.type}">Leave Type</td>
 			<td th:text="${la.reasons}">Reason for Leave</td>
-			<td th:text="${la.dissemination.uid}" th:if="${la.dissemination!=null}">Dissemination</td>
+			<td th:text="${la.dissemination.name}" th:if="${la.dissemination!=null}">Dissemination</td>
 			<td th:text="${la.contact}">Contact</td> 
 			<td th:text="${la.status}" >Status</td>
 		</tr>	
@@ -62,10 +79,9 @@
 		<br>
 		<br>
 	<div>
-		<a th:href="@{/manager/listforapproval}"><button>Back to View Applications pending approval</button></a>
+		<a th:href="@{/manager/listforapproval}"><button class="btn btn-primary">Back to View Applications pending approval</button></a>
 	</div>
 	<br>
 	<br>
-	<th:block th:include = "common :: footer"></th:block>
 </body>
 </html>
