@@ -12,9 +12,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.User;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 public interface UserRepository extends JpaRepository<User, Integer>{

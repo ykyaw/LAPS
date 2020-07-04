@@ -9,5 +9,5 @@ public interface IEmailService {
 	
 	public void sendApprovedEmail(int leaveid);
 	
-	//public String findemailbyLAUID(int uid);
+
 }

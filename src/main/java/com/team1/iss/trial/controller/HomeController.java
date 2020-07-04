@@ -14,17 +14,14 @@ public class HomeController {
 		
 		if(request.isUserInRole("MANAGER")){
 			return "redirect:/manager";
-			//return"manager/mHome";
 		}
 		
 		if(request.isUserInRole("ADMIN")){
 			return "redirect:/admin";
-			//return"admin/aHome";
 		}
 		
 		if(request.isUserInRole("EMPLOYEE")){
 			return "redirect:/employee";
-			//return"redirect:/employee";
 		}
 		return"index";
 	}

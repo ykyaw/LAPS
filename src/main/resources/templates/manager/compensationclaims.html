@@ -55,10 +55,7 @@
 				<td th:text=${ot.status}></td>
 				<td><span th:if="${ot.status=='APPLIED'}"><a th:href="@{/manager/approveClaim/}+${ot.uid}"><button type="button" class="btn btn-success">Approve</button></a><a th:href="@{/manager/rejectClaim/}+${ot.uid}"><button type="button" class="btn btn-danger">Reject</button></a></span></td>
 				<td></td>
-				<!-- <td><a href="individualapplication.html"
-					th:href="@{/manager/individual/}+${la.uid}" >Approve</a></td>
-				<td><a href="individualapplication.html"
-					th:href="@{/manager/individual/}+${la.uid}" >Reject</a></td>-->
+
 			</tr>
 		</tbody>
 	</table>

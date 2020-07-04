@@ -1,19 +1,15 @@
 package com.team1.iss.trial.services.impl;
 
-import com.team1.iss.trial.common.utils.TimeUtil;
-import com.team1.iss.trial.domain.LA;
+
 import com.team1.iss.trial.domain.OverTime;
 import com.team1.iss.trial.repo.OverTimeRepository;
 import com.team1.iss.trial.services.interfaces.IOverTimeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
+
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+
 import java.util.ArrayList;
 import java.util.List;
 

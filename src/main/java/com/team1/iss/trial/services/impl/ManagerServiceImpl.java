@@ -34,9 +34,7 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 
 	@Autowired
 	LARepository laRepo;
-//	
-//	@Autowired
-//	ManagerRepository mRepo;
+
 
 	@Autowired
 	OverTimeRepository otRepo;
@@ -168,11 +166,7 @@ public class ManagerServiceImpl extends EmployeeServiceImpl implements IManagerS
 		ArrayList<LA> employeeList=laRepo.findEmployeesOnLeaveDuringPeriod(fromTime, toTime, managerid);
 		return employeeList;
 	}
-//	@Override
-//	public ArrayList<LA> findEmployeeLeaveByEmployeeId(int uid) {
-//		ArrayList<LA> list=(ArrayList<LA>)laRepo.findLAByOwnerId(uid);
-//		return list;
-//	}
+
 
 	@Override
 	public List<EmployeeToCSV> convertEmployeeListtoCSV(ArrayList<User> employeeList) {

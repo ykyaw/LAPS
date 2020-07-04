@@ -12,7 +12,7 @@ import com.team1.iss.trial.services.interfaces.IOverTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.team1.iss.trial.domain.Employee;
+
 import com.team1.iss.trial.domain.LA;
 import com.team1.iss.trial.repo.EmployeeRepository;
 import com.team1.iss.trial.repo.LARepository;

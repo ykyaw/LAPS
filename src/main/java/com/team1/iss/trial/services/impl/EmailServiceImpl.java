@@ -1,6 +1,6 @@
 package com.team1.iss.trial.services.impl;
 
-import org.aspectj.lang.reflect.UnlockSignature;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -73,9 +73,4 @@ public class EmailServiceImpl implements IEmailService {
 		
 	}
 	
-//	@Override
-//	public String findemailbyLAUID(int uid) {
-//		uRepo.findemailbyLAUID(uid);
-//		return null;
-//	
 }

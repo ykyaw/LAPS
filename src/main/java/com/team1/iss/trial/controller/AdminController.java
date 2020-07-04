@@ -1,19 +1,10 @@
 package com.team1.iss.trial.controller;
 
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import javax.validation.Valid;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-
-
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,12 +62,7 @@ public class AdminController {
 		return ("admin/aHome");
 	}
 	
-	/*
-	 * @RequestMapping("/list") public String list(Model model) { List<User> u1 =
-	 * aservice.findAll(); for(User u:u1) { u.setPassword(""); //so as not to send
-	 * password over } model.addAttribute("userlist", u1); return
-	 * "admin/aShowAllUsers"; }
-	 */
+
 	
 	@RequestMapping("/list")
 	public String list() {
@@ -241,42 +221,3 @@ public class AdminController {
 }
 
 
-//// Create a new LA with full LA details info in Body
-//@RequestMapping(value = "/employee/la", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-//public @ResponseBody void saveLA(LA la) {
-//    System.out.println(la);
-////    laServiceImpl.saveLA(la);
-//}
-
-//@RequestMapping("/save")
-//public String saveUser(@ModelAttribute("user")User user, Model model) {
-//	aservice.saveUser(user);
-//	return "forward:/admin/list";
-//}
-
-
-//@RequestMapping("/updaterole")
-//public void updateRole() {
-//	aservice.updateUserType(CommConstants.UserType.EMPLOYEE,1);
-//	User user = userRepository.findById(1).get();
-//	user.setUserType(CommConstants.UserType.EMPLOYEE);
-//}
-/*	
-@RequestMapping("/update/{usertype}") //follow up, need to pass in uid from UI form to make the edits
-public String updateUser(@PathVariable("usertype") String usertype) {
-	if(usertype.equals("a"))
-		aservice.updateUserType(CommConstants.UserType.AMDIN, 1);
-	if(usertype.equals("m"))
-		aservice.updateUserType(CommConstants.UserType.MANAGER, 1);
-	if(usertype.equals("e"))
-		aservice.updateUserType(CommConstants.UserType.EMPLOYEE, 1);	
-	return "<h1> Done! </h1>";
-}
-
-@RequestMapping("/updatemg")
-public String updateManager() {
-	aservice.updateUserManager(4, 1);
-	return "";
-}
-
-*/

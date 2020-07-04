@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.Employee;
-import com.team1.iss.trial.domain.LA;
+
 
 
 

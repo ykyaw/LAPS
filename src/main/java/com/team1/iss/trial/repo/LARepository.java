@@ -7,14 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.team1.iss.trial.common.CommConstants;
 import com.team1.iss.trial.domain.LA;
 
-import javax.transaction.Transactional;
+
 
 /*
  * Author: YC
@@ -34,18 +34,7 @@ public interface LARepository extends JpaRepository<LA, Integer>, JpaSpecificati
 	@Query(value = "SELECT * FROM la a where (:new_start <= a.to_time) and (:new_end >= a.from_time) and a.from_time>=:currentYear and a.owner_id=:ownerId and (a.status = 'APPROVED' or a.status = 'APPLIED' or a.status = 'UPDATED')" ,nativeQuery=true)
 	public List<LA> findLAOverlap(@Param("new_start")long new_start, @Param("new_end")long new_end, @Param("ownerId") int ownerId, @Param("currentYear") long currentYear);//1593224802 current timestamp
 
-//    @Modifying
-//    @Transactional  //Spring transactional
-//    @Query("update LA set LA.uid = ?1 where uid=LA.uid")
-//    public void updateLA(@Param("la") LA la);
 
-//    @Query("update LA set fromTime=:#{#la.fromTime},xxx=xxx where uid=:#{#la.uid}")
-//    public void updateLA1(@Param("la") LA la);
-
-//    @Query("update LA set LA.firstname = ?1, LA.lastname = ?2 where LA.uid = ?1")
-
-
-//    void setUserInfoById(String firstname, String lastname, Integer userId);
 	@Query(value = "SELECT a FROM LA a")
 	List<LA> findAllLeave();
 	
@@ -93,8 +82,5 @@ public interface LARepository extends JpaRepository<LA, Integer>, JpaSpecificati
 	@Query(value = "SELECT a FROM LA a, User u where a.owner.uid=u.uid AND u.manager.uid=?3 AND a.status='APPROVED' AND a.fromTime <= ?2 AND a.toTime >= ?1 order by a.fromTime desc")
 	public ArrayList<LA> findEmployeesOnLeaveDuringPeriod(long fromTime, long toTime, int manageruid);
 	
-//	@Modifying
-//    @Transactional  //Spring transactional
-//    @Query(value = "update la set status=#{#la.status}, set type=#{#la.type},")
-//    void updateLA(@Param("la") LA la);
+
 }
